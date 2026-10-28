@@ -12,11 +12,12 @@ import analysis as A
 
 COLORS = ["#ffcf4a", "#ff8fb1", "#6fd3a8", "#9aa6b8", "#5b84f0", "#b08cf0", "#f0645a"]  # EMO 순서
 TEMPLATE = (Path(__file__).parent / "templates" / "sky.html").read_text(encoding="utf-8")
+MAP_TEMPLATE = (Path(__file__).parent / "templates" / "sky_map.html").read_text(encoding="utf-8")
 
 
-def _render(data: dict, height: int) -> str:
+def _render(data: dict, height: int, template: str = TEMPLATE) -> str:
     js = json.dumps(data, ensure_ascii=False).replace("</", "<\\/")  # 일기에 </script>가 있어도 안전하게
-    return TEMPLATE.replace("__DATA__", js).replace("__HEIGHT__", str(height))
+    return template.replace("__DATA__", js).replace("__HEIGHT__", str(height))
 
 
 def _stars(entries, X, xy=None, sims=None):
@@ -32,14 +33,14 @@ def _stars(entries, X, xy=None, sims=None):
     return out
 
 
-def map_html(entries: list[dict], height: int = 560) -> str:
+def map_html(entries: list[dict], height: int = 680) -> str:
     """탐험 화면: 감정이 비슷한 날은 가까이, 비슷한 날끼리 선으로 연결"""
     X = A.matrix(entries)
     dates = [e["date"] for e in entries]
     data = {"mode": "map", "emo": A.EMO, "colors": COLORS, "seed": 7,
             "stars": _stars(entries, X, A.layout(X), A.similar_days(X, dates)),
             "links": A.links(X)}
-    return _render(data, height)
+    return _render(data, height, MAP_TEMPLATE)
 
 
 def poster_html(entries: list[dict], year: int, month: int, height: int = 640) -> str:

@@ -15,7 +15,7 @@ import db
 import sky
 from model import EMO, predict
 
-st.set_page_config(page_title="감정 별자리", page_icon="✦", layout="centered")
+st.set_page_config(page_title="감정 별자리", page_icon="✦", layout="wide")
 
 # ---------- 공통 스타일 ----------
 st.markdown("""
@@ -120,13 +120,9 @@ def page_map():
     months = sorted({e["date"][:7] for e in entries}, reverse=True)
     scope = st.selectbox("범위", ["전체 기간"] + months)
     shown = entries if scope == "전체 기간" else [e for e in entries if e["date"].startswith(scope)]
-    components.html(sky.map_html(shown), height=570)
+    components.html(sky.map_html(shown), height=690)
 
-    X = A.matrix(shown)
     groups = A.co_occurring(shown)
-    c1, c2 = st.columns(2)
-    c1.metric("뜬 별", f"{len(shown)}개")
-    c2.metric("이어진 비슷한 날", f"{len(A.links(X))}쌍")
     if groups:
         st.markdown("**자주 함께 온 감정**")
         for a, b, n in groups[:3]:
