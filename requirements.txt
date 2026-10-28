@@ -1,7 +1,6 @@
---extra-index-url https://download.pytorch.org/whl/cpu
-streamlit>=1.40
-torch
-transformers>=4.44
-numpy
-pandas
-supabase>=2.4
+   streamlit>=1.40
+   torch
+   transformers>=4.44
+   numpy
+   pandas
+   supabase>=2.4
