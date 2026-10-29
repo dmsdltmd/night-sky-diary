@@ -55,3 +55,12 @@ def poster_html(entries: list[dict], year: int, month: int, height: int = 640) -
             "title": f"{month}월의 하늘", "subtitle": sub,
             "stars": _stars(entries, X, sims=A.similar_days(X, dates)), "links": []}
     return _render(data, height)
+
+
+STAR_TEMPLATE = (Path(__file__).parent / "templates" / "star.html").read_text(encoding="utf-8")
+
+
+def star_html(probs: list[float], label: str = "", height: int = 300) -> str:
+    """오늘의 별 미리보기: 감정 비율로 별 하나 그리기"""
+    data = {"p": [round(float(v), 4) for v in probs], "colors": COLORS, "label": label}
+    return _render(data, height, STAR_TEMPLATE)
