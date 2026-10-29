@@ -104,3 +104,14 @@ def co_occurring(entries: list[dict], min_share: float = 0.2) -> list[tuple[str,
             key = tuple(sorted((EMO[idx[0]], EMO[idx[1]])))
             count[key] = count.get(key, 0) + 1
     return sorted(((a, b, n) for (a, b), n in count.items()), key=lambda t: -t[2])
+
+
+POSITIVE = ["기쁨", "설렘", "평온"]
+
+
+def positive_share(entries: list[dict]) -> float | None:
+    """긍정 감정(기쁨+설렘+평온) 평균 비율(%). 기록이 없으면 None"""
+    if not entries:
+        return None
+    m = month_mean(entries)
+    return float(sum(m[EMO.index(e)] for e in POSITIVE) * 100)

@@ -2,84 +2,112 @@
 <html lang="ko"><head><meta charset="utf-8">
 <link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-  /* 레이아웃: 위 숫자 카드 4개 → 큰 그래프 영역(필터·상세 패널·확대 버튼이 떠 있음) → 아래 설명 한 줄 */
+  /* 레이아웃: [숫자 카드 4개 | 감정 필터] 한 줄 → 아래 성운 배경의 별자리 지도 (상세 패널은 왼쪽 아래, 지도 버튼은 오른쪽 아래) */
   :root{
-    --bg:#0b0c14; --panel:#111320; --panel2:#171a2b; --line:#262a3f; --ink:#eceefa; --sub:#9a9fbd; --faint:#646a8a;
-    --link:#7b68f0; --good:#5fd08f;
+    --bg:#070918; --card:rgba(17,20,48,.78); --card-hi:rgba(26,30,70,.9); --line:rgba(150,160,255,.16); --line-hi:rgba(170,160,255,.42);
+    --ink:#eef0ff; --sub:#a3a8cf; --faint:#6b7099; --gold:#ffcf6a; --violet:#9b8cff;
   }
   *{box-sizing:border-box}
-  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Gothic A1","Apple SD Gothic Neo","Malgun Gothic",sans-serif;overflow:hidden}
-  #app{display:grid;gap:12px;height:__HEIGHT__px;grid-template-rows:auto 1fr auto}
+  html,body{margin:0;background:transparent;color:var(--ink);font-family:"Gothic A1","Apple SD Gothic Neo","Malgun Gothic",sans-serif;overflow:hidden}
+  #app{position:relative;height:__HEIGHT__px;display:grid;grid-template-rows:auto 1fr;gap:14px}
+  button{font-family:inherit;color:inherit}
+  button:focus-visible{outline:2px solid var(--violet);outline-offset:2px}
 
-  .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-  .stat{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--c);border-radius:10px;padding:12px 16px;min-width:0}
-  .stat b{display:block;font-size:26px;font-weight:700;line-height:1.1;color:var(--c);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .stat span{font-size:12px;color:var(--sub)}
+  /* 위쪽 줄 */
+  .top{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) minmax(280px,1.55fr);gap:12px}
+  .stat{position:relative;display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px;overflow:hidden;min-width:0}
+  .stat::after{content:"";position:absolute;right:-30px;bottom:-40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,var(--glow,rgba(155,140,255,.18)),transparent 70%);pointer-events:none}
+  .ic{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:rgba(155,140,255,.12);border:1px solid var(--line)}
+  .ic svg{width:20px;height:20px;stroke:var(--c,#b9b0ff);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+  .stat .lab{font-size:12.5px;color:var(--sub);font-weight:500}
+  .stat .val{font-size:27px;font-weight:700;line-height:1.25;margin-top:6px;color:var(--c,#eef0ff);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .stat .val small{font-size:13px;font-weight:500;color:var(--sub);margin-left:3px}
+  .stat .sub{font-size:11.5px;color:var(--faint);margin-top:2px}
 
-  #stage{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;min-height:0}
+  .filter{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+  .fh{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+  .fh svg{width:16px;height:16px;stroke:var(--ink);fill:none;stroke-width:1.6}
+  .fh b{font-size:14px;font-weight:700}
+  .all{margin-left:auto;border:0;background:none;color:var(--sub);font-size:12px;cursor:pointer;display:flex;align-items:center;gap:4px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px 8px}
+  .chip{display:flex;align-items:center;gap:8px;border:1px solid transparent;background:rgba(255,255,255,.05);border-radius:99px;padding:4px 12px 4px 5px;font-size:12.5px;cursor:pointer;transition:opacity .15s}
+  .chip i{width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff 0%,var(--c) 45%,var(--c) 100%);box-shadow:0 0 10px var(--c)}
+  .chip[aria-pressed="false"]{opacity:.35}
+  .chip[aria-pressed="true"]{border-color:color-mix(in srgb,var(--c) 45%,transparent)}
+
+  /* 지도 */
+  #stage{position:relative;border-radius:18px;overflow:hidden;min-height:0;border:1px solid var(--line)}
   canvas{display:block;width:100%;height:100%;cursor:grab}
   canvas.drag{cursor:grabbing}
+  .tip{position:absolute;transform:translate(-50%,-100%);background:rgba(14,16,40,.92);border:1px solid var(--line-hi);border-radius:8px;padding:6px 11px;font-size:13px;font-weight:500;white-space:nowrap;pointer-events:none}
+  .tip::after{content:"";position:absolute;left:50%;bottom:-6px;transform:translateX(-50%) rotate(45deg);width:10px;height:10px;background:rgba(14,16,40,.92);border-right:1px solid var(--line-hi);border-bottom:1px solid var(--line-hi)}
+  .tip[hidden]{display:none}
 
-  .status{position:absolute;left:12px;top:12px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--sub);pointer-events:none}
-  .pill{background:rgba(95,208,143,.14);color:var(--good);border-radius:6px;padding:2px 8px;font-weight:500}
+  .panel{position:absolute;left:16px;bottom:16px;width:min(390px,calc(100% - 92px));max-height:calc(100% - 32px);overflow:auto;background:rgba(12,14,36,.93);border:1px solid var(--line-hi);border-radius:16px;padding:18px 20px;backdrop-filter:blur(10px);box-shadow:0 20px 50px rgba(0,0,0,.45)}
+  .panel[hidden]{display:none}
+  .ph{display:flex;align-items:center;gap:10px}
+  .ph .star{color:var(--gold);font-size:16px}
+  .ph b{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
+  .pill{font-size:12px;font-weight:500;padding:3px 10px;border-radius:99px}
+  .x{margin-left:auto;border:0;background:none;color:var(--sub);font-size:20px;cursor:pointer;line-height:1;padding:2px 4px}
+  .sec{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;margin:16px 0 10px;color:#d8dbf2}
+  .sec svg{width:14px;height:14px;stroke:#d8dbf2;fill:none;stroke-width:1.6}
+  .bar{display:flex;gap:3px;height:10px}
+  .bar i{display:block;border-radius:6px;min-width:4px}
+  .list{display:grid;grid-template-columns:1fr 1fr;gap:6px 26px;margin-top:12px;font-size:12.5px}
+  .list div{display:grid;grid-template-columns:10px 1fr auto;gap:8px;align-items:center}
+  .list i{width:9px;height:9px;border-radius:50%}
+  .list span:last-child{color:var(--sub);font-variant-numeric:tabular-nums}
+  .txt{font-size:13px;line-height:1.75;color:#d3d6ee;margin:0 0 0 20px}
+  .sims{display:flex;flex-wrap:wrap;gap:8px}
+  .sims button{border:0;border-radius:99px;padding:6px 14px;font-size:12.5px;cursor:pointer}
 
-  .filter{position:absolute;right:12px;top:12px;width:232px;background:rgba(17,19,32,.94);border:1px solid var(--line);border-radius:10px;padding:12px}
-  .filter h4{margin:0 0 10px;font-size:12px;font-weight:500;color:var(--sub)}
-  .chips{display:flex;flex-wrap:wrap;gap:6px}
-  .chip{display:flex;align-items:center;gap:6px;border:1px solid transparent;background:color-mix(in srgb,var(--c) 14%,transparent);color:var(--ink);border-radius:7px;padding:4px 9px;font-size:12px;cursor:pointer;font-family:inherit}
-  .chip i{width:8px;height:8px;border-radius:50%;background:var(--c)}
-  .chip em{font-style:normal;color:var(--c);font-weight:700;font-variant-numeric:tabular-nums}
-  .chip[aria-pressed="true"]{border-color:var(--c);background:color-mix(in srgb,var(--c) 30%,transparent)}
-  .chip:disabled{opacity:.3;cursor:default}
-  .clear{margin-top:10px;border:0;background:none;color:var(--sub);font-size:12px;cursor:pointer;padding:0;font-family:inherit}
-  .clear[hidden]{display:none}
+  .ctrl{position:absolute;right:16px;bottom:16px;display:grid;gap:10px}
+  .ctrl button{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:rgba(14,16,40,.85);cursor:pointer;display:grid;place-items:center}
+  .ctrl svg{width:18px;height:18px;stroke:var(--ink);fill:none;stroke-width:1.7;stroke-linecap:round}
+  .ctrl .gap{height:6px}
+  .empty{position:absolute;inset:0;display:grid;place-items:center;color:var(--sub);font-size:14px;text-align:center;line-height:1.7}
 
-  .detail{position:absolute;left:12px;bottom:12px;width:min(320px,calc(100% - 24px));max-height:calc(100% - 60px);overflow:auto;background:rgba(17,19,32,.96);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
-  .detail[hidden]{display:none}
-  .dh{display:flex;align-items:center;gap:8px}
-  .dh i{width:10px;height:10px;border-radius:50%}
-  .dh b{font-size:15px;letter-spacing:.04em}
-  .x{margin-left:auto;border:0;background:none;color:var(--sub);font-size:18px;cursor:pointer;line-height:1}
-  .tags{margin:8px 0 0;display:flex;flex-wrap:wrap;gap:4px}
-  .tag{font-size:11px;padding:2px 8px;border-radius:5px}
-  .mix{display:flex;height:6px;border-radius:4px;overflow:hidden;margin:12px 0 0}
-  .txt{font-size:13px;line-height:1.65;margin:12px 0 0;padding-top:12px;border-top:1px solid var(--line)}
-  .conn{font-size:12px;color:var(--sub);margin:12px 0 6px;padding-top:12px;border-top:1px solid var(--line)}
-  .rel{display:grid;grid-template-columns:8px auto minmax(0,1fr);gap:8px;align-items:center;width:100%;border:0;background:none;color:var(--ink);text-align:left;padding:4px 0;cursor:pointer;font-family:inherit;font-size:12px}
-  .rel i{width:8px;height:8px;border-radius:50%}
-  .rel b{font-weight:500;white-space:nowrap}
-  .rel span{color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .rel:hover span{color:var(--sub)}
-
-  .zoom{position:absolute;right:12px;bottom:12px;display:grid;gap:8px}
-  .zoom button{width:34px;height:34px;border:1px solid var(--line);background:rgba(17,19,32,.94);color:var(--ink);border-radius:8px;cursor:pointer;font-size:16px;line-height:1}
-  .hint{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);font-size:11.5px;color:var(--sub);background:rgba(17,19,32,.9);border:1px solid var(--line);border-radius:99px;padding:6px 14px;white-space:nowrap;pointer-events:none}
-  .foot{font-size:12px;color:var(--faint);display:flex;gap:6px;align-items:flex-start;line-height:1.5}
-  .empty{position:absolute;inset:0;display:grid;place-items:center;color:var(--sub);font-size:14px}
-  button:focus-visible{outline:2px solid #8fa6ff;outline-offset:2px}
-
-  @media (max-width:640px){
-    .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-    .stat{padding:8px 12px}.stat b{font-size:20px}
-    .filter{left:12px;right:12px;width:auto;top:40px;padding:8px 10px}
-    .filter h4{display:none}
-    .hint{display:none}
-    .detail{max-height:55%}
+  @media (max-width:820px){
+    .top{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .filter{grid-column:1/-1}
+    .stat{padding:12px;grid-template-columns:32px minmax(0,1fr);gap:10px}
+    .ic{width:32px;height:32px}.stat .val{font-size:21px}
+    .panel{width:calc(100% - 32px);bottom:72px;max-height:55%}
+    .ctrl{grid-auto-flow:column;right:16px;bottom:16px}
   }
 </style></head>
 <body>
 <div id="app">
-  <div class="stats" id="stats"></div>
+  <div class="top">
+    <div class="stat" style="--c:#c7bdff"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z"/></svg></div>
+      <div><div class="lab">총 기록 수</div><div class="val" id="s1"></div><div class="sub">별이 된 하루</div></div></div>
+    <div class="stat" style="--c:#9fc2ff;--glow:rgba(110,160,255,.18)"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="7" cy="12" r="3.2"/><circle cx="17" cy="7" r="3.2"/><circle cx="17" cy="17" r="3.2"/><path d="M10 11l4-2.5M10 13l4 2.5"/></svg></div>
+      <div><div class="lab">연결된 별 수</div><div class="val" id="s2"></div><div class="sub">비슷한 날과 이어짐</div></div></div>
+    <div class="stat" id="s3box"><div class="ic"><svg viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14z"/><path d="M5 19l7-7"/></svg></div>
+      <div><div class="lab">가장 많은 감정</div><div class="val" id="s3"></div><div class="sub" id="s3s"></div></div></div>
+    <div class="stat" id="s4box"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></div>
+      <div><div class="lab">이번 달 변화</div><div class="val" id="s4"></div><div class="sub" id="s4s"></div></div></div>
+    <div class="filter">
+      <div class="fh"><svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v6l-4 2v-8z"/></svg><b>감정 필터</b><button class="all" id="all">✓ 전체 선택</button></div>
+      <div class="chips" id="chips"></div>
+    </div>
+  </div>
   <div id="stage">
     <canvas id="cv"></canvas>
-    <div class="status"><span class="pill">● 기록 중</span><span id="summary"></span></div>
-    <div class="filter"><h4>감정 종류</h4><div class="chips" id="chips"></div><button class="clear" id="clear" hidden>× 필터 해제</button></div>
-    <div class="detail" id="detail" hidden></div>
-    <div class="zoom"><button id="zin" aria-label="확대">+</button><button id="zout" aria-label="축소">−</button><button id="zfit" aria-label="전체 보기">⤢</button></div>
-    <div class="hint">마우스를 올리면 강조 · 클릭하면 자세히 · 스크롤로 확대 · 드래그로 이동</div>
+    <div class="tip" id="tip" hidden></div>
+    <div class="panel" id="panel" hidden></div>
+    <div class="ctrl">
+      <button id="cCenter" aria-label="선택한 별로 이동"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="1.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button>
+      <div class="gap"></div>
+      <button id="cIn" aria-label="확대"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+      <button id="cOut" aria-label="축소"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+      <div class="gap"></div>
+      <button id="cFit" aria-label="전체 보기"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+    </div>
   </div>
-  <div class="foot">ⓘ 큰 별은 감정, 작은 별은 하루예요. 보라색 선은 그날 담긴 감정(굵을수록 많이), 회색 선은 감정 구성이 비슷한 날끼리의 연결이에요.</div>
 </div>
+
 <script>
 // 오류가 나면 화면에 바로 보여주기 (원인 찾기용)
 window.addEventListener('error', e => {
@@ -91,237 +119,241 @@ window.addEventListener('error', e => {
 </script>
 <script>
 const DATA = __DATA__;
-const EMO = DATA.emo, COL = DATA.colors, NE = EMO.length;
+const EMO = DATA.emo, COL = DATA.colors, NE = EMO.length, EXTRA = DATA.extra || {};
 const cv = document.getElementById('cv'), g = cv.getContext('2d'), stage = document.getElementById('stage');
-const DPR = Math.min(2, window.devicePixelRatio || 1);
-const MIN_SHARE = 0.2;                       // 이 비율 이상인 감정과 연결
-let W = 0, H = 0, sel = -1, hover = -1, filt = -1, view = {k:1, x:0, y:0}, fit = {s:1, ox:0, oy:0};
+const DPR = Math.min(2, window.devicePixelRatio || 1), GOLD = '#ffcf6a';
+let W = 0, H = 0, sel = -1, hover = -1, view = {k:1, x:0, y:0}, fit = {s:1, ox:0, oy:0};
+const on = new Set(EMO.map((e,k) => k));          // 필터에 켜져 있는 감정
 
 function rgba(h,a){const n=parseInt(h.slice(1),16);return `rgba(${n>>16},${n>>8&255},${n&255},${a})`}
 function order(v){return v.map((x,i)=>i).sort((a,b)=>v[b]-v[a])}
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-function md(d){return d.slice(5).replace('-','/')}
+function dot(d){return d.slice(5).replace('-','.')}
+function full(d){const w='일월화수목금토'[new Date(d+'T00:00:00').getDay()];return d.replace(/-/g,'.')+' ('+w+')'}
 function mb32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
-const R = mb32(17);
 
-/* ---------- 노드: 감정 허브 7개 + 하루 별 ---------- */
-const days = DATA.stars.map(s => { const o = order(s.p); return {...s, kind:'day', top:o[0], second:o[1], conf:s.p[o[0]]}; });
-const count = Array(NE).fill(0);
-days.forEach(d => d.p.forEach((v,k) => { if (v >= MIN_SHARE) count[k]++; }));
-const hubs = EMO.map((e,k) => ({kind:'hub', k, name:e, count:count[k]})).filter(h => h.count > 0);
-const nodes = [...hubs, ...days];
-const hubIdx = {}; hubs.forEach((h,i) => hubIdx[h.k] = i);
-const H0 = hubs.length;
+/* ---------- 별 준비 ---------- */
+const N = DATA.stars.length;
+const nb = Array.from({length:N}, () => []);
+DATA.links.forEach(([i,j,s]) => { nb[i].push({j,s}); nb[j].push({j:i,s}); });
+const stars = DATA.stars.map((s,i) => { const o = order(s.p); return {...s, i, top:o[0], second:o[1], conf:s.p[o[0]], ax:s.x, ay:s.y, x:s.x, y:s.y}; });
+stars.forEach(s => s.r = 4.5 + s.conf * 3.5 + Math.min(4, nb[s.i].length * 1.1));
 
-/* ---------- 선: 하루 → 감정(보라), 하루 ↔ 하루(회색) ---------- */
-const edges = [];
-days.forEach((d,i) => d.p.forEach((v,k) => { if (v >= MIN_SHARE) edges.push({a:H0+i, b:hubIdx[k], w:v, kind:'emo'}); }));
-DATA.links.forEach(([i,j,s]) => edges.push({a:H0+i, b:H0+j, w:s, kind:'sim'}));
-const adj = nodes.map(() => []);
-edges.forEach((e,n) => { adj[e.a].push(n); adj[e.b].push(n); });
-
-const maxCount = Math.max(1, ...count);
-nodes.forEach((n,i) => {
-  n.i = i;
-  if (n.kind === 'hub') n.r = 15 + 15 * Math.sqrt(n.count / maxCount);
-  else n.r = 5 + n.conf * 4 + Math.min(4, adj[i].length * .6);
-});
-
-/* ---------- 배치: 감정은 둥글게, 하루는 자기 감정 쪽으로 끌려가게 ---------- */
-(function layout(){
-  hubs.forEach((h,i) => { const a = -Math.PI/2 + i / Math.max(1,H0) * 6.283; h.x = .5 + Math.cos(a) * .3; h.y = .5 + Math.sin(a) * .3; });
-  days.forEach(d => {
-    let x = 0, y = 0, s = 0;
-    d.p.forEach((v,k) => { if (hubIdx[k] !== undefined) { x += hubs[hubIdx[k]].x * v; y += hubs[hubIdx[k]].y * v; s += v; } });
-    d.x = (s ? x/s : .5) + (R() - .5) * .08; d.y = (s ? y/s : .5) + (R() - .5) * .08;
-  });
-  const n = nodes.length;
-  for (let it = 0; it < 360; it++) {
-    const cool = 1 - it / 400, fx = new Float64Array(n), fy = new Float64Array(n);
-    for (let a = 0; a < n; a++) for (let b = a + 1; b < n; b++) {
-      const A = nodes[a], B = nodes[b]; let dx = A.x - B.x, dy = A.y - B.y, d2 = dx*dx + dy*dy + 1e-5;
-      const big = (A.kind === 'hub' ? 2.2 : 1) * (B.kind === 'hub' ? 2.2 : 1);
-      const f = Math.min(.02, .00045 * big / d2), d = Math.sqrt(d2);
-      fx[a] += dx/d*f; fy[a] += dy/d*f; fx[b] -= dx/d*f; fy[b] -= dy/d*f;
+/* 감정 지도 좌표(PCA)를 중심으로, 별끼리 겹치지 않게 펼치기 */
+(function relax(){
+  const R = mb32(11);
+  for (let it = 0; it < 260; it++) {
+    for (let a = 0; a < N; a++) {
+      const A = stars[a]; let fx = (A.ax - A.x) * .03, fy = (A.ay - A.y) * .03;
+      for (let b = 0; b < N; b++) { if (a === b) continue; const B = stars[b];
+        let dx = A.x - B.x, dy = A.y - B.y, d2 = dx*dx + dy*dy;
+        if (d2 < 1e-6) { dx = R() - .5; dy = R() - .5; d2 = 1e-4; }
+        const min = .11; if (d2 < min*min) { const d = Math.sqrt(d2), f = (min - d) / d * .4; fx += dx*f; fy += dy*f; } }
+      nb[a].forEach(({j,s}) => { const B = stars[j]; fx += (B.x - A.x) * .006 * s; fy += (B.y - A.y) * .006 * s; });
+      A.x = Math.min(1, Math.max(0, A.x + fx)); A.y = Math.min(1, Math.max(0, A.y + fy));
     }
-    edges.forEach(e => {
-      const A = nodes[e.a], B = nodes[e.b], dx = B.x - A.x, dy = B.y - A.y, d = Math.sqrt(dx*dx + dy*dy) + 1e-6;
-      const rest = e.kind === 'emo' ? .1 + .12 * (1 - e.w) : .07, k = e.kind === 'emo' ? .06 * e.w : .015;
-      const f = (d - rest) * k; fx[e.a] += dx/d*f; fy[e.a] += dy/d*f; fx[e.b] -= dx/d*f; fy[e.b] -= dy/d*f;
-    });
-    nodes.forEach((N,i) => {
-      fx[i] += (.5 - N.x) * .004; fy[i] += (.5 - N.y) * .004;
-      const m = N.kind === 'hub' ? .35 : 1;
-      N.x += Math.max(-.02, Math.min(.02, fx[i] * m * cool)); N.y += Math.max(-.02, Math.min(.02, fy[i] * m * cool));
-    });
   }
 })();
 
-/* ---------- 숫자 카드, 필터 ---------- */
-(function header(){
-  const tops = Array(NE).fill(0); days.forEach(d => tops[d.top]++);
-  const topE = days.length ? tops.indexOf(Math.max(...tops)) : -1;
-  const mixed = days.filter(d => d.p.filter(v => v >= MIN_SHARE).length >= 2).length;
-  const cards = [
-    [days.length, '하루의 별', '#eceefa'],
-    [edges.filter(e => e.kind === 'emo').length, '감정 연결', '#5fd08f'],
-    [topE >= 0 ? EMO[topE] : '-', '가장 많이 빛난 감정', topE >= 0 ? COL[topE] : '#9a9fbd'],
-    [mixed, '감정이 섞인 날', '#9b8cf5'],
-  ];
-  document.getElementById('stats').innerHTML = cards.map(([v,l,c]) => `<div class="stat" style="--c:${c}"><b>${esc(v)}</b><span>${l}</span></div>`).join('');
-  document.getElementById('summary').textContent = `${days.length}개의 별 · ${edges.length}개의 연결`;
-  const box = document.getElementById('chips');
-  box.innerHTML = EMO.map((e,k) => `<button class="chip" data-k="${k}" style="--c:${COL[k]}" aria-pressed="false" ${count[k] ? '' : 'disabled'}><i></i>${e} <em>${count[k]}</em></button>`).join('');
-  box.querySelectorAll('.chip').forEach(b => b.onclick = () => { const k = +b.dataset.k; filt = filt === k ? -1 : k; syncChips(); draw(); });
-  document.getElementById('clear').onclick = () => { filt = -1; syncChips(); draw(); };
+/* ---------- 숫자 카드 ---------- */
+(function cards(){
+  const tops = Array(NE).fill(0); stars.forEach(s => tops[s.top]++);
+  const topE = N ? tops.indexOf(Math.max(...tops)) : -1;
+  document.getElementById('s1').innerHTML = `${N}<small>개</small>`;
+  document.getElementById('s2').innerHTML = `${stars.filter(s => nb[s.i].length).length}<small>개</small>`;
+  const b3 = document.getElementById('s3box');
+  if (topE >= 0) { b3.style.setProperty('--c', COL[topE]); b3.style.setProperty('--glow', rgba(COL[topE], .2)); }
+  document.getElementById('s3').textContent = topE >= 0 ? EMO[topE] : '-';
+  document.getElementById('s3s').textContent = topE >= 0 ? `(${tops[topE]}일)` : '';
+  const d = EXTRA.pos_delta, b4 = document.getElementById('s4box');
+  const c4 = d == null ? '#a3a8cf' : d >= 0 ? '#7fe0a6' : '#ff8f86';
+  b4.style.setProperty('--c', c4); b4.style.setProperty('--glow', rgba(c4, .16));
+  document.getElementById('s4').textContent = d == null ? '-' : (d >= 0 ? '+' : '') + Math.round(d) + '%';
+  document.getElementById('s4s').textContent = d == null ? '지난달 기록이 없어요' : '긍정 감정 · 지난달 대비';
 })();
-function syncChips(){
-  document.querySelectorAll('.chip').forEach(b => b.setAttribute('aria-pressed', +b.dataset.k === filt));
-  document.getElementById('clear').hidden = filt < 0;
-}
-function passFilter(n){ return filt < 0 || (n.kind === 'hub' ? n.k === filt : n.p[filt] >= MIN_SHARE); }
 
-/* ---------- 화면 좌표 ---------- */
+/* ---------- 감정 필터 ---------- */
+(function filter(){
+  const box = document.getElementById('chips');
+  box.innerHTML = EMO.map((e,k) => `<button class="chip" data-k="${k}" style="--c:${COL[k]}" aria-pressed="true"><i></i>${e}</button>`).join('');
+  box.querySelectorAll('.chip').forEach(b => b.onclick = () => {
+    const k = +b.dataset.k; if (on.has(k)) on.delete(k); else on.add(k);
+    if (!on.size) EMO.forEach((e,i) => on.add(i));
+    sync(); if (sel >= 0 && !visible(stars[sel])) openPanel(-1); else draw();
+  });
+  document.getElementById('all').onclick = () => { EMO.forEach((e,i) => on.add(i)); sync(); draw(); };
+})();
+function sync(){ document.querySelectorAll('.chip').forEach(b => b.setAttribute('aria-pressed', on.has(+b.dataset.k))); }
+function visible(s){ return on.has(s.top); }
+
+/* ---------- 좌표 ---------- */
 function computeFit(){
-  const padL = 40, padR = W > 640 ? 270 : 40, padT = W > 640 ? 50 : 150, padB = 60;
-  let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
-  nodes.forEach(n => { x0 = Math.min(x0,n.x); x1 = Math.max(x1,n.x); y0 = Math.min(y0,n.y); y1 = Math.max(y1,n.y); });
-  const bw = Math.max(.05, x1 - x0), bh = Math.max(.05, y1 - y0);
-  const s = Math.min((W - padL - padR) / bw, (H - padT - padB) / bh);
-  fit = {s, ox: padL + (W - padL - padR - bw*s)/2 - x0*s, oy: padT + (H - padT - padB - bh*s)/2 - y0*s};
+  const narrow = W < 820, padL = 70, padR = narrow ? 40 : 90, padT = 60, padB = narrow ? 90 : 70;
+  const s = Math.min(W - padL - padR, H - padT - padB);
+  fit = { sx: W - padL - padR, sy: H - padT - padB, ox: padL, oy: padT };
 }
-function sx(n){ return (n.x * fit.s + fit.ox) * view.k + view.x; }
-function sy(n){ return (n.y * fit.s + fit.oy) * view.k + view.y; }
+function px(s){ return (fit.ox + s.x * fit.sx) * view.k + view.x; }
+function py(s){ return (fit.oy + s.y * fit.sy) * view.k + view.y; }
 
-let bg = [];
-function makeBg(){ const r = mb32(5); bg = Array.from({length: Math.round(W*H/2600)}, () => ({x:r()*W, y:r()*H, s:.3+r()*.9, a:.06+r()*.3})); }
+/* ---------- 성운 배경 (한 번만 그려 두기) ---------- */
+let bgc = null;
+function paintBg(){
+  bgc = document.createElement('canvas'); bgc.width = W * DPR; bgc.height = H * DPR;
+  const b = bgc.getContext('2d'); b.scale(DPR, DPR); const R = mb32(23);
+  const base = b.createLinearGradient(0,0,W,H); base.addColorStop(0,'#0a0c22'); base.addColorStop(.6,'#080a1c'); base.addColorStop(1,'#0e0a26');
+  b.fillStyle = base; b.fillRect(0,0,W,H);
+  b.globalCompositeOperation = 'lighter';
+  const clouds = [
+    [.18,.30,.45,'#3b2a8a',.22],[.85,.80,.40,'#7a3fb8',.26],[.70,.95,.30,'#c050c0',.14],[.95,.35,.35,'#2a3a9a',.18],
+    [.45,.60,.35,'#2a2470',.18],[.10,.85,.30,'#3a2a90',.16],[.55,.15,.30,'#24307a',.14]
+  ];
+  clouds.forEach(([cx,cy,r,c,a]) => { for (let k=0;k<6;k++){ const x=(cx+(R()-.5)*.12)*W, y=(cy+(R()-.5)*.12)*H, rr=r*Math.max(W,H)*(.5+R()*.5);
+    const gr=b.createRadialGradient(x,y,0,x,y,rr); gr.addColorStop(0,rgba(c,a*.55)); gr.addColorStop(1,rgba(c,0)); b.fillStyle=gr; b.fillRect(0,0,W,H);} });
+  // 은하수 띠 (오른쪽 아래로 흐르는 별무리)
+  for (let i=0;i<Math.round(W*H/90);i++){ const t=R(), off=(R()+R()+R()-1.5)*.16; const x=(.35+t*.75+off*.5)*W, y=(.25+t*.8-off*.6)*H;
+    b.fillStyle=`rgba(${200+R()*55|0},${190+R()*50|0},255,${.08+R()*.35})`; b.fillRect(x,y,R()*1.2+.3,R()*1.2+.3); }
+  b.globalCompositeOperation = 'source-over';
+  for (let i=0;i<Math.round(W*H/1400);i++){ b.fillStyle=`rgba(255,255,255,${.12+R()*.6})`; b.beginPath(); b.arc(R()*W,R()*H,.3+R()*1.1,0,6.283); b.fill(); }
+  for (let i=0;i<14;i++){ const x=R()*W, y=R()*H, r=6+R()*8, gr=b.createRadialGradient(x,y,0,x,y,r); gr.addColorStop(0,'rgba(255,255,255,.8)'); gr.addColorStop(.3,'rgba(190,180,255,.25)'); gr.addColorStop(1,'rgba(190,180,255,0)'); b.fillStyle=gr; b.beginPath(); b.arc(x,y,r,0,6.283); b.fill(); }
+  const vg=b.createRadialGradient(W/2,H/2,Math.min(W,H)*.3,W/2,H/2,Math.max(W,H)*.75); vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,0,0,.45)'); b.fillStyle=vg; b.fillRect(0,0,W,H);
+}
 
 /* ---------- 처음 열릴 때 별이 하나씩 떠오르기 ---------- */
-const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-let born = reduce ? 1e9 : 0, t0 = performance.now();
-function appear(n){ if (reduce) return 1; const delay = n.kind === 'hub' ? 0 : 200 + (n.i - H0) * 18; return Math.max(0, Math.min(1, (born - delay) / 400)); }
+const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+let born = reduce ? 1e9 : 0;
+const orderIdx = stars.map(s => s.i).sort((a,b) => stars[a].date < stars[b].date ? -1 : 1);
+const rank = []; orderIdx.forEach((i,r) => rank[i] = r);
+function appear(s){ return reduce ? 1 : Math.max(0, Math.min(1, (born - rank[s.i] * 35) / 500)); }
 
 /* ---------- 그리기 ---------- */
-function curve(x1,y1,x2,y2){ const mx = (x1+x2)/2 + (y2-y1)*.08, my = (y1+y2)/2 - (x2-x1)*.08; return [mx,my]; }
 function draw(){
   g.setTransform(DPR,0,0,DPR,0,0);
-  g.fillStyle = '#0d0f1a'; g.fillRect(0,0,W,H);
-  const glow = g.createRadialGradient(W*.45,H*.5,10,W*.45,H*.5,Math.max(W,H)*.7);
-  glow.addColorStop(0,'rgba(60,52,140,.18)'); glow.addColorStop(1,'rgba(0,0,0,0)'); g.fillStyle = glow; g.fillRect(0,0,W,H);
-  bg.forEach(b => { g.fillStyle = `rgba(255,255,255,${b.a})`; g.beginPath(); g.arc(b.x,b.y,b.s,0,6.283); g.fill(); });
-  if (!days.length) return;
-
+  g.clearRect(0,0,W,H);
+  if (bgc) g.drawImage(bgc, 0, 0, W, H);
+  if (!N) return;
   const focus = sel >= 0 ? sel : hover;
-  const near = new Set(); if (focus >= 0) { near.add(focus); adj[focus].forEach(n => { near.add(edges[n].a); near.add(edges[n].b); }); }
+  const near = new Set(focus >= 0 ? [focus, ...nb[focus].map(o => o.j)] : []);
 
-  // 선
-  edges.forEach(e => {
-    const A = nodes[e.a], B = nodes[e.b], vis = Math.min(appear(A), appear(B)); if (!vis) return;
-    const on = focus >= 0 && (e.a === focus || e.b === focus);
-    const off = (filt >= 0 && !(passFilter(A) && passFilter(B))) || (focus >= 0 && !on);
-    const x1 = sx(A), y1 = sy(A), x2 = sx(B), y2 = sy(B), [mx,my] = curve(x1,y1,x2,y2);
-    if (e.kind === 'emo') { g.strokeStyle = rgba('#7b68f0', (off ? .06 : on ? .95 : .22 + .45*e.w) * vis); g.lineWidth = (on ? 2 : .8 + 1.8*e.w); }
-    else { g.strokeStyle = `rgba(170,175,210,${(off ? .03 : on ? .55 : .12) * vis})`; g.lineWidth = on ? 1.3 : .8; }
-    g.beginPath(); g.moveTo(x1,y1); g.quadraticCurveTo(mx,my,x2,y2); g.stroke();
-    if (on || (!off && e.kind === 'emo' && e.w > .45)) {
-      for (const t of [.33,.66]) { const px=(1-t)*(1-t)*x1+2*(1-t)*t*mx+t*t*x2, py=(1-t)*(1-t)*y1+2*(1-t)*t*my+t*t*y2;
-        g.fillStyle = `rgba(220,215,255,${(on ? .9 : .45) * vis})`; g.beginPath(); g.arc(px,py,1.6,0,6.283); g.fill(); }
-    }
-  });
-
-  // 노드 (반짝이는 구슬)
-  const labels = [];
-  nodes.forEach(n => {
-    const a = appear(n); if (!a) return;
-    const x = sx(n), y = sy(n), c = n.kind === 'hub' ? COL[n.k] : COL[n.top];
-    const grow = (n.i === hover ? 1.15 : 1) * (.6 + .4*a);
-    const r = n.r * Math.sqrt(view.k) * grow;
-    const off = !passFilter(n) || (focus >= 0 && !near.has(n.i));
-    g.globalAlpha = (off ? .18 : 1) * a;
-    g.fillStyle = rgba(c, n.kind === 'hub' ? .12 : .1); g.beginPath(); g.arc(x,y,r*1.75,0,6.283); g.fill();
-    g.fillStyle = 'rgba(8,9,16,.55)'; g.beginPath(); g.arc(x,y,r*1.25,0,6.283); g.fill();
-    if (n.kind === 'hub') { const hg = g.createRadialGradient(x,y,r,x,y,r*2.4); hg.addColorStop(0,rgba(c,.35)); hg.addColorStop(1,rgba(c,0)); g.fillStyle = hg; g.beginPath(); g.arc(x,y,r*2.4,0,6.283); g.fill(); }
-    const body = g.createRadialGradient(x - r*.35, y - r*.4, r*.08, x, y, r);
-    body.addColorStop(0, 'rgba(255,255,255,.95)'); body.addColorStop(.28, rgba(c,1)); body.addColorStop(1, rgba(c,.72));
-    g.fillStyle = body; g.beginPath(); g.arc(x,y,r,0,6.283); g.fill();
-    if (n.kind === 'day') { g.strokeStyle = rgba(COL[n.second], .85); g.lineWidth = 1.3; g.beginPath(); g.arc(x,y,r+2.2,0,6.283); g.stroke(); }
-    if (n.kind === 'day' && n.corrected) { g.fillStyle = '#e8c472'; g.beginPath(); g.arc(x + r*.8, y - r*.8, 2.6, 0, 6.283); g.fill(); }
-    if (n.i === sel) { g.strokeStyle = '#ffffff'; g.lineWidth = 1.4; g.setLineDash([3,3]); g.beginPath(); g.arc(x,y,r+6,0,6.283); g.stroke(); g.setLineDash([]); }
-
-    // 이름표는 모든 별을 그린 뒤에 (허브 이름이 작은 별에 가리지 않게)
-    const show = n.kind === 'hub' || near.has(n.i) || view.k >= 1.4 || days.length <= 30;
-    if (show && !(off && n.kind === 'day')) labels.push({n, x, y, r, a: g.globalAlpha});
-    g.globalAlpha = 1;
-  });
-  labels.sort((p,q) => (p.n.kind === 'hub') - (q.n.kind === 'hub')).forEach(({n,x,y,r,a}) => {
-    const hub = n.kind === 'hub', t = hub ? n.name : md(n.date);
+  // 연결선
+  DATA.links.forEach(([i,j,s]) => {
+    const A = stars[i], B = stars[j], a = Math.min(appear(A), appear(B)); if (!a) return;
+    const hit = focus >= 0 && (i === focus || j === focus);
+    const dim = !(visible(A) && visible(B));
+    const x1=px(A), y1=py(A), x2=px(B), y2=py(B);
     g.globalAlpha = a;
-    g.font = hub ? '700 12px "Gothic A1", sans-serif' : '500 10px "Gothic A1", sans-serif';
-    const tw = g.measureText(t).width + (hub ? 14 : 10), th = hub ? 19 : 15, ly = hub ? y - th/2 : y + r + 6;
-    g.fillStyle = 'rgba(12,13,22,.9)'; g.beginPath(); g.roundRect(x - tw/2, ly, tw, th, 4); g.fill();
-    g.fillStyle = hub ? '#ffffff' : '#c9cce4'; g.textAlign = 'center'; g.fillText(t, x, ly + th - (hub ? 5.5 : 4.5)); g.textAlign = 'left';
+    if (hit) {
+      const lg = g.createLinearGradient(x1,y1,x2,y2); lg.addColorStop(0, rgba(GOLD,.95)); lg.addColorStop(1, rgba(GOLD,.35));
+      g.strokeStyle = lg; g.lineWidth = 1.6; g.shadowColor = GOLD; g.shadowBlur = 8;
+    } else {
+      const lg = g.createLinearGradient(x1,y1,x2,y2); lg.addColorStop(0, rgba(COL[A.top], dim ? .05 : .45)); lg.addColorStop(1, rgba(COL[B.top], dim ? .05 : .45));
+      g.strokeStyle = lg; g.lineWidth = 1; g.shadowBlur = 0;
+    }
+    g.beginPath(); g.moveTo(x1,y1); g.lineTo(x2,y2); g.stroke(); g.shadowBlur = 0;
+    if (hit) for (let t=.2;t<1;t+=.2){ g.fillStyle='rgba(255,236,190,.85)'; g.beginPath(); g.arc(x1+(x2-x1)*t, y1+(y2-y1)*t, 1.2, 0, 6.283); g.fill(); }
     g.globalAlpha = 1;
   });
+
+  // 별
+  stars.forEach(s => {
+    const a = appear(s); if (!a) return;
+    const isSel = s.i === sel, x = px(s), y = py(s), c = isSel ? GOLD : COL[s.top];
+    const dim = !visible(s);
+    const r = (isSel ? s.r * 2.1 : s.r * (s.i === hover ? 1.25 : 1)) * Math.sqrt(view.k) * (.5 + .5 * a);
+    g.globalAlpha = (dim ? .22 : 1) * a;
+    g.globalCompositeOperation = 'lighter';
+    const halo = g.createRadialGradient(x,y,0,x,y,r*(isSel ? 9 : 5));
+    halo.addColorStop(0, rgba(c, isSel ? .75 : .55)); halo.addColorStop(.35, rgba(c, isSel ? .22 : .16)); halo.addColorStop(1, rgba(c,0));
+    g.fillStyle = halo; g.beginPath(); g.arc(x,y,r*(isSel ? 9 : 5),0,6.283); g.fill();
+    if (isSel || s.conf > .5) {
+      const L = r * (isSel ? 6 : 3.2);
+      for (let q=0;q<4;q++){ const an=q*Math.PI/2, ex=x+Math.cos(an)*L, ey=y+Math.sin(an)*L, sp=g.createLinearGradient(x,y,ex,ey);
+        sp.addColorStop(0,'rgba(255,255,255,.9)'); sp.addColorStop(1,'rgba(255,255,255,0)'); g.strokeStyle=sp; g.lineWidth=isSel?1.4:.9; g.beginPath(); g.moveTo(x,y); g.lineTo(ex,ey); g.stroke(); }
+    }
+    g.globalCompositeOperation = 'source-over';
+    const core = g.createRadialGradient(x - r*.25, y - r*.25, 0, x, y, r);
+    core.addColorStop(0,'#ffffff'); core.addColorStop(.45, rgba(c,1)); core.addColorStop(1, rgba(c,.85));
+    g.fillStyle = core; g.beginPath(); g.arc(x,y,r,0,6.283); g.fill();
+    if (isSel) { g.strokeStyle = 'rgba(255,230,170,.7)'; g.lineWidth = 1.2; g.beginPath(); g.arc(x,y,r+5,0,6.283); g.stroke(); }
+    if (s.corrected) { g.fillStyle = GOLD; g.beginPath(); g.arc(x + r + 1, y - r - 1, 2.2, 0, 6.283); g.fill(); }
+    // 날짜
+    if (!dim) {
+      g.font = `${isSel ? 700 : 500} ${isSel ? 13 : 11.5}px "Gothic A1", sans-serif`; g.textAlign = 'center';
+      g.fillStyle = 'rgba(5,6,18,.55)'; g.fillText(dot(s.date), x + 1, y + r + 15 + (isSel ? 6 : 0));
+      g.fillStyle = isSel ? '#ffffff' : '#c9cce8'; g.fillText(dot(s.date), x, y + r + 14 + (isSel ? 6 : 0)); g.textAlign = 'left';
+    }
+    g.globalAlpha = 1;
+  });
+  placeTip();
+}
+
+/* ---------- 말풍선 (선택하거나 마우스를 올린 별의 날짜) ---------- */
+function placeTip(){
+  const tip = document.getElementById('tip'), i = sel >= 0 ? sel : hover;
+  if (i < 0 || appear(stars[i]) < 1) { tip.hidden = true; return; }
+  const s = stars[i], r = (i === sel ? s.r * 2.1 : s.r) * Math.sqrt(view.k);
+  tip.textContent = s.date.replace(/-/g,'.'); tip.hidden = false;
+  tip.style.left = px(s) + 'px'; tip.style.top = (py(s) - r - 22) + 'px';
 }
 
 /* ---------- 상세 패널 ---------- */
-function openDetail(i){
+const IC = {
+  ratio:'<svg viewBox="0 0 24 24"><path d="M12 3l9 9-9 9-9-9z"/></svg>',
+  note:'<svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>',
+  sim:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="13" height="13" rx="2"/><path d="M8 3h11a2 2 0 0 1 2 2v11"/></svg>',
+};
+function openPanel(i){
   sel = i; draw();
-  const box = document.getElementById('detail');
+  const box = document.getElementById('panel');
   if (i < 0) { box.hidden = true; return; }
-  const n = nodes[i];
-  let html;
-  if (n.kind === 'hub') {
-    const list = days.map(d => ({d, v:d.p[n.k]})).filter(o => o.v >= MIN_SHARE).sort((a,b) => b.v - a.v);
-    html = `<div class="dh"><i style="background:${COL[n.k]}"></i><b>${esc(n.name)}</b><button class="x" aria-label="닫기">×</button></div>
-      <div class="tags"><span class="tag" style="background:${rgba(COL[n.k],.2)};color:${COL[n.k]}">감정</span></div>
-      <div class="conn">${list.length}개의 날에 ${esc(n.name)}이(가) 담겨 있어요</div>
-      ${list.map(o => `<button class="rel" data-j="${o.d.i}"><i style="background:${COL[o.d.top]}"></i><b>${md(o.d.date)}</b><span>${Math.round(o.v*100)}% · ${esc(o.d.text)}</span></button>`).join('')}`;
-  } else {
-    const o = order(n.p);
-    const emoLinks = o.filter(k => n.p[k] >= MIN_SHARE && hubIdx[k] !== undefined);
-    const sims = adj[i].map(e => edges[e]).filter(e => e.kind === 'sim').map(e => ({j: e.a === i ? e.b : e.a, w: e.w})).sort((a,b) => b.w - a.w);
-    html = `<div class="dh"><i style="background:${COL[n.top]}"></i><b>${esc(n.date)}</b><button class="x" aria-label="닫기">×</button></div>
-      <div class="tags">${o.slice(0,3).filter(k => n.p[k] >= .05).map(k => `<span class="tag" style="background:${rgba(COL[k],.18)};color:${COL[k]}">${EMO[k]} ${Math.round(n.p[k]*100)}%</span>`).join('')}
-        ${n.corrected ? `<span class="tag" style="background:rgba(232,196,114,.18);color:#e8c472">내가 고른 감정 · ${esc(n.corrected)}</span>` : ''}</div>
-      <div class="mix">${o.map(k => `<i style="width:${(n.p[k]*100).toFixed(1)}%;background:${COL[k]}"></i>`).join('')}</div>
-      <div class="txt">${esc(n.text)}</div>
-      <div class="conn">${emoLinks.length + sims.length}개의 연결</div>
-      ${emoLinks.map(k => `<button class="rel" data-j="${hubIdx[k]}"><i style="background:${COL[k]}"></i><b>${EMO[k]}</b><span>이 날의 ${Math.round(n.p[k]*100)}%</span></button>`).join('')}
-      ${sims.map(s => { const d = nodes[s.j]; return `<button class="rel" data-j="${s.j}"><i style="background:${COL[d.top]}"></i><b>${md(d.date)}</b><span>${Math.round(s.w*100)}% 비슷 · ${esc(d.text)}</span></button>`; }).join('')}`;
-  }
-  box.innerHTML = html; box.hidden = false;
-  box.querySelector('.x').onclick = () => openDetail(-1);
-  box.querySelectorAll('.rel').forEach(b => b.onclick = () => openDetail(+b.dataset.j));
+  const s = stars[i], o = order(s.p), mine = s.corrected && EMO.indexOf(s.corrected) >= 0 ? EMO.indexOf(s.corrected) : s.top;
+  const sims = (s.similar || []).slice(0,3).map(t => ({...t, k: (stars.find(q => q.date === t.date) || {}).top}));
+  const half = Math.ceil(NE / 2), cols = [o.slice(0, half), o.slice(half)];
+  box.innerHTML = `
+    <div class="ph"><span class="star">✦</span><b>${full(s.date)}</b>
+      <span class="pill" style="background:${rgba(COL[mine],.18)};color:${COL[mine]}">${EMO[mine]}</span>
+      <button class="x" aria-label="닫기">×</button></div>
+    <div class="sec">${IC.ratio}감정 비율</div>
+    <div class="bar">${EMO.map((e,k) => s.p[k] >= .01 ? `<i style="flex:${s.p[k]};background:${COL[k]}"></i>` : '').join('')}</div>
+    <div class="list">${[0,1].map(c => `<div style="display:grid;gap:6px;grid-template-columns:1fr">${cols[c].map(k => `<div><i style="background:${COL[k]}"></i><span>${EMO[k]}</span><span>${Math.round(s.p[k]*100)}%</span></div>`).join('')}</div>`).join('')}</div>
+    <div class="sec">${IC.note}일기 내용</div>
+    <p class="txt">${esc(s.text)}</p>
+    ${sims.length ? `<div class="sec">${IC.sim}비슷했던 날 TOP ${sims.length}</div>
+      <div class="sims">${sims.map(t => `<button data-d="${esc(t.date)}" style="background:${rgba(COL[t.k ?? 0],.2)};color:${COL[t.k ?? 0]}">${dot(t.date)} (${EMO[t.k ?? 0]})</button>`).join('')}</div>` : ''}`;
+  box.hidden = false;
+  box.querySelector('.x').onclick = () => openPanel(-1);
+  box.querySelectorAll('.sims button').forEach(b => b.onclick = () => { const j = stars.findIndex(q => q.date === b.dataset.d); if (j >= 0) { if (!visible(stars[j])) { on.add(stars[j].top); sync(); } openPanel(j); } });
 }
 
-/* ---------- 마우스 ---------- */
-function pick(mx,my){
-  let best = -1, bd = 1e9;
-  nodes.forEach(n => { if (!passFilter(n)) return; const d = Math.hypot(sx(n)-mx, sy(n)-my) - n.r * Math.sqrt(view.k); if (d < bd) { bd = d; best = n.i; } });
-  return bd <= 6 ? best : -1;
-}
+/* ---------- 마우스, 버튼 ---------- */
+function pick(mx,my){ let best=-1, bd=1e9; stars.forEach(s => { if (!visible(s)) return; const d = Math.hypot(px(s)-mx, py(s)-my); if (d < bd) { bd = d; best = s.i; } }); return bd <= 16 ? best : -1; }
 function pos(e){ const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
 let drag = null, moved = false;
 cv.addEventListener('pointerdown', e => { drag = {p:pos(e), x:view.x, y:view.y}; moved = false; cv.setPointerCapture(e.pointerId); });
 cv.addEventListener('pointermove', e => {
   const [mx,my] = pos(e);
-  if (drag) { const dx = mx - drag.p[0], dy = my - drag.p[1]; if (Math.abs(dx) + Math.abs(dy) > 3) { moved = true; cv.classList.add('drag'); } if (moved) { view.x = drag.x + dx; view.y = drag.y + dy; draw(); } return; }
+  if (drag) { const dx = mx - drag.p[0], dy = my - drag.p[1]; if (Math.abs(dx)+Math.abs(dy) > 3) { moved = true; cv.classList.add('drag'); } if (moved) { view.x = drag.x + dx; view.y = drag.y + dy; draw(); } return; }
   const h = pick(mx,my); if (h !== hover) { hover = h; cv.style.cursor = h >= 0 ? 'pointer' : 'grab'; draw(); }
 });
-cv.addEventListener('pointerup', e => { cv.classList.remove('drag'); if (!moved) { const [mx,my] = pos(e); const i = pick(mx,my); if (i >= 0 || sel >= 0) openDetail(i); } drag = null; });
+cv.addEventListener('pointerup', e => { cv.classList.remove('drag'); if (!moved) { const [mx,my] = pos(e); const i = pick(mx,my); if (i >= 0 || sel >= 0) openPanel(i); } drag = null; });
 cv.addEventListener('pointerleave', () => { if (hover >= 0) { hover = -1; draw(); } });
-function zoomAt(f,cx,cy){ const k = Math.min(4, Math.max(.5, view.k * f)); f = k / view.k; view.x = cx - (cx - view.x) * f; view.y = cy - (cy - view.y) * f; view.k = k; draw(); }
+function zoomAt(f,cx,cy){ const k = Math.min(4, Math.max(.6, view.k*f)); f = k/view.k; view.x = cx-(cx-view.x)*f; view.y = cy-(cy-view.y)*f; view.k = k; draw(); }
 cv.addEventListener('wheel', e => { e.preventDefault(); const [mx,my] = pos(e); zoomAt(e.deltaY < 0 ? 1.15 : 1/1.15, mx, my); }, {passive:false});
-document.getElementById('zin').onclick = () => zoomAt(1.25, W/2, H/2);
-document.getElementById('zout').onclick = () => zoomAt(1/1.25, W/2, H/2);
-document.getElementById('zfit').onclick = () => { view = {k:1,x:0,y:0}; draw(); };
+document.getElementById('cIn').onclick = () => zoomAt(1.25, W/2, H/2);
+document.getElementById('cOut').onclick = () => zoomAt(1/1.25, W/2, H/2);
+document.getElementById('cFit').onclick = () => { view = {k:1,x:0,y:0}; draw(); };
+document.getElementById('cCenter').onclick = () => {
+  const i = sel >= 0 ? sel : (stars.length ? orderIdx[orderIdx.length-1] : -1); if (i < 0) return;
+  const s = stars[i]; view.x += W/2 - px(s); view.y += H/2 - py(s); if (sel < 0) openPanel(i); else draw();
+};
 
-/* ---------- 크기, 시작 ---------- */
-function resize(){ W = stage.clientWidth; H = stage.clientHeight; cv.width = W*DPR; cv.height = H*DPR; makeBg(); computeFit(); draw(); }
-if (!days.length) { const e = document.createElement('div'); e.className = 'empty'; e.textContent = '아직 뜬 별이 없어요. 오늘의 별에서 첫 일기를 써 보세요.'; stage.appendChild(e); }
+/* ---------- 시작 ---------- */
+function resize(){ W = stage.clientWidth; H = stage.clientHeight; cv.width = W*DPR; cv.height = H*DPR; computeFit(); paintBg(); draw(); }
+if (!N) { const e = document.createElement('div'); e.className = 'empty'; e.innerHTML = '아직 뜬 별이 없어요.<br>오늘의 별에서 첫 일기를 써 보세요.'; stage.appendChild(e); }
 new ResizeObserver(resize).observe(stage);
 resize();
-if (!reduce && days.length) { const end = 200 + days.length * 18 + 450; (function tick(now){ born = now - t0; draw(); if (born < end) requestAnimationFrame(tick); })(t0); }
+if (!reduce && N) { const t0 = performance.now(), end = N * 35 + 550; (function tick(now){ born = now - t0; draw(); if (born < end) requestAnimationFrame(tick); else { born = 1e9; openBusiest(); } })(t0); }
+else if (N) openBusiest();
+// 처음에는 가장 많이 이어진 별을 열어서, 누르면 무엇이 보이는지 바로 알 수 있게
+function openBusiest(){ let b = 0; stars.forEach(s => { if (nb[s.i].length > nb[b].length) b = s.i; }); openPanel(b); }
 </script>
 </body></html>

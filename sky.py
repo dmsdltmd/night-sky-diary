@@ -33,13 +33,15 @@ def _stars(entries, X, xy=None, sims=None):
     return out
 
 
-def map_html(entries: list[dict], height: int = 680) -> str:
-    """탐험 화면: 감정이 비슷한 날은 가까이, 비슷한 날끼리 선으로 연결"""
+def map_html(entries: list[dict], height: int = 880, extra: dict | None = None) -> str:
+    """탐험 화면: 감정이 비슷한 날은 가까이, 비슷한 날끼리 선으로 연결
+    extra: 화면 위 숫자 카드에 쓸 값 (예: {"pos_delta": 12.0} = 긍정 감정이 지난달보다 12%p 늘었음)"""
     X = A.matrix(entries)
     dates = [e["date"] for e in entries]
     data = {"mode": "map", "emo": A.EMO, "colors": COLORS, "seed": 7,
             "stars": _stars(entries, X, A.layout(X), A.similar_days(X, dates)),
-            "links": A.links(X)}
+            # 지도에서는 별마다 가장 비슷한 날 2개까지 이어요 (유사도 0.6 이상)
+            "links": A.links(X, threshold=0.6, k=2), "extra": extra or {}}
     return _render(data, height, MAP_TEMPLATE)
 
 
