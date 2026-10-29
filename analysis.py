@@ -115,3 +115,17 @@ def positive_share(entries: list[dict]) -> float | None:
         return None
     m = month_mean(entries)
     return float(sum(m[EMO.index(e)] for e in POSITIVE) * 100)
+
+
+def layout3(X: np.ndarray, seed: int = 7) -> np.ndarray:
+    """3D 감정 지도용: 주성분 3개를 -1~1로 맞춘 좌표 (2D/3D 전환에서 3D에 씀)"""
+    n = len(X)
+    rng = np.random.default_rng(seed)
+    if n < 4:
+        return rng.uniform(-.4, .4, size=(n, 3))
+    Xc = X - X.mean(axis=0)
+    _, _, vt = np.linalg.svd(Xc, full_matrices=False)
+    P = Xc @ vt[:3].T
+    P = P + rng.normal(0, 0.04, size=P.shape) * (P.std(axis=0) + 1e-6)
+    m = np.abs(P).max(axis=0)
+    return P / np.where(m < 1e-9, 1, m)
