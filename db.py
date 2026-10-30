@@ -28,6 +28,9 @@ def _row_to_entry(r: dict) -> dict:
         "text": r["content"],
         "probs": [float(r[c] or 0) for c in COLS],
         "corrected": r.get("corrected"),
+        "kind": r.get("kind") or "diary",          # diary = 일기, quick = 10초 기록
+        "reply": r.get("reply"),                   # 타임캡슐 답장
+        "reply_at": str(r["reply_at"]) if r.get("reply_at") else None,
     }
 
 
@@ -41,14 +44,16 @@ def load_entries(nickname: str) -> list[dict]:
     return [_row_to_entry(r) for r in res.data]
 
 
-def save_entry(nickname: str, date: str, text: str, probs: list[float], corrected: str | None):
-    """같은 날짜에 이미 있으면 덮어써요"""
+def save_entry(nickname: str, date: str, text: str, probs: list[float], corrected: str | None, kind: str = "diary"):
+    """같은 날짜에 이미 있으면 덮어써요 (답장은 그대로 남겨요)"""
     c = _client()
     if c is None:
         box = st.session_state.setdefault("demo_db", {}).setdefault(nickname, {})
-        box[date] = {"date": date, "text": text, "probs": list(probs), "corrected": corrected}
+        prev = box.get(date, {})
+        box[date] = {"date": date, "text": text, "probs": list(probs), "corrected": corrected, "kind": kind,
+                     "reply": prev.get("reply"), "reply_at": prev.get("reply_at")}
         return
-    row = {"nickname": nickname, "entry_date": date, "content": text, "corrected": corrected}
+    row = {"nickname": nickname, "entry_date": date, "content": text, "corrected": corrected, "kind": kind}
     row.update({c_: round(float(p), 4) for c_, p in zip(COLS, probs)})
     c.table("diaries").upsert(row, on_conflict="nickname,entry_date").execute()
 
@@ -59,3 +64,14 @@ def delete_entry(nickname: str, date: str):
         st.session_state.setdefault("demo_db", {}).get(nickname, {}).pop(date, None)
         return
     c.table("diaries").delete().eq("nickname", nickname).eq("entry_date", date).execute()
+
+
+def save_reply(nickname: str, date: str, reply: str | None, reply_at: str | None):
+    """타임캡슐: 지난 기록에 지금의 내가 남긴 답장 저장 (None이면 지우기)"""
+    c = _client()
+    if c is None:
+        e = st.session_state.setdefault("demo_db", {}).get(nickname, {}).get(date)
+        if e is not None:
+            e["reply"], e["reply_at"] = reply, reply_at
+        return
+    c.table("diaries").update({"reply": reply, "reply_at": reply_at}).eq("nickname", nickname).eq("entry_date", date).execute()

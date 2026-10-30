@@ -91,6 +91,36 @@ header[data-testid="stHeader"] { background: transparent; }
 .welcome h2 { font-size:28px !important; margin:10px 0 4px !important; }
 .welcome p { color:var(--sub); font-size:13.5px; margin:0 0 6px; }
 /* 기록 보관함 */
+.streak { float:right; font-size:12px; font-weight:500; color:var(--gold); }
+.streak.off { color:var(--faint); }
+.st-key-mode [data-testid="stButtonGroup"] { justify-content:flex-end; }
+.st-key-quick [data-testid="stButtonGroup"] button { border-radius:999px; }
+.arrive { display:flex; align-items:center; gap:14px; padding:4px 2px; }
+.arrive .env { width:40px; height:40px; border-radius:12px; display:grid; place-items:center; flex:none; font-size:20px; background:radial-gradient(circle at 30% 30%, rgba(255,207,106,.35), rgba(255,207,106,.05)); border:1px solid rgba(255,207,106,.4); }
+.arrive b { display:block; font-size:14.5px; color:#fff3d6; }
+.arrive span { font-size:12.5px; color:var(--sub); }
+.kpi { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px; }
+.kpi b { display:block; font-size:24px; font-weight:700; color:var(--c,#eef0ff); font-variant-numeric:tabular-nums; }
+.kpi span { font-size:12px; color:var(--sub); }
+.letter { position:relative; border-radius:16px; padding:22px 24px 20px; background:linear-gradient(180deg, rgba(255,240,210,.06), rgba(255,240,210,.02)), rgba(14,16,40,.9); border:1px solid rgba(255,207,106,.28); }
+.letter::before { content:""; position:absolute; left:24px; right:24px; top:0; height:2px; background:linear-gradient(90deg, transparent, var(--c), transparent); }
+.letter .from { font-size:12px; letter-spacing:.14em; color:var(--gold); }
+.letter .when { font-size:13px; color:var(--sub); margin:4px 0 14px; }
+.letter .body { font-family:"Nanum Myeongjo",serif; font-size:17px; line-height:1.9; color:#f4f1ff; white-space:pre-wrap; }
+.letter .mix { display:flex; gap:2px; height:5px; margin:18px 0 6px; max-width:320px; }
+.letter .mix i { display:block; border-radius:3px; }
+.letter .tags { font-size:12px; color:var(--sub); }
+.then-now { display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:center; text-align:center; }
+.then-now .orb { width:42px; height:42px; border-radius:50%; margin:0 auto 6px; background:radial-gradient(circle at 34% 30%, #fff 0%, var(--c) 34%, var(--c2) 80%, #0a0c24 100%); box-shadow:0 0 16px var(--c); }
+.then-now b { display:block; font-size:14px; color:var(--c); }
+.then-now small { font-size:11.5px; color:var(--faint); }
+.then-now .arrow { color:var(--faint); font-size:18px; }
+.sim { text-align:center; font-size:13px; color:#d6d9f2; margin-top:12px; }
+.thread { display:grid; gap:10px; padding:16px 0; border-top:1px solid var(--line); }
+.bubble { max-width:78%; padding:12px 16px; border-radius:14px; font-size:13.5px; line-height:1.75; }
+.bubble small { display:block; font-size:11px; color:var(--faint); margin-bottom:4px; }
+.bubble.past { background:rgba(255,255,255,.04); border:1px solid var(--line); justify-self:start; border-top-left-radius:4px; }
+.bubble.now { background:linear-gradient(135deg, rgba(139,123,255,.28), rgba(111,94,240,.18)); border:1px solid rgba(165,155,255,.4); justify-self:end; border-top-right-radius:4px; }
 .rec2 { display:grid; grid-template-columns:62px minmax(0,1fr); gap:10px; padding:7px 0; font-size:12.5px; border-bottom:1px solid rgba(140,150,255,.08); }
 .rec2 b { font-weight:500; white-space:nowrap; font-variant-numeric:tabular-nums; }
 .rec2 span { color:#cfd2ec; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -111,6 +141,57 @@ LOGO = ('<svg viewBox="0 0 40 40" fill="none"><path d="M20 3l2.6 13.4L36 20l-13.
 # ---------- 공통 도우미 ----------
 def top_emotion(e: dict) -> str:
     return e["corrected"] if e.get("corrected") in EMO else EMO[max(range(len(EMO)), key=lambda i: e["probs"][i])]
+
+
+QUICK_WEIGHT = {"조금": 0.55, "보통": 0.7, "많이": 0.85}
+
+
+def quick_probs(picked: list[str], level: str) -> list[float]:
+    """10초 기록: 고른 감정(1~2개)과 세기로 7감정 비율 만들기
+    예) 불안 '많이' → 불안 85%, 나머지 6감정이 15%를 나눠 가짐
+        설렘+불안 '보통' → 설렘 42%, 불안 28%, 나머지가 30%를 나눠 가짐"""
+    w = QUICK_WEIGHT[level]
+    main = {picked[0]: w} if len(picked) == 1 else {picked[0]: w * .6, picked[1]: w * .4}
+    rest = (1 - w) / (len(EMO) - len(main))
+    return [main.get(e, rest) for e in EMO]
+
+
+def streak_days(dates: set[str], today: dt.date) -> int:
+    """오늘(오늘 기록이 없으면 어제)부터 거꾸로 며칠 연속 기록했는지"""
+    d = today if today.isoformat() in dates else today - dt.timedelta(days=1)
+    n = 0
+    while d.isoformat() in dates:
+        n += 1
+        d -= dt.timedelta(days=1)
+    return n
+
+
+MILESTONES = (7, 14, 30)
+
+
+def capsule_letters(entries: list[dict], today: dt.date, everything: bool = False):
+    """타임캡슐 편지함
+    - 기본: 7·14·30일째 되는 날 도착해서, 도착한 지 일주일이 안 된 편지 (아직 답장 안 한 것)
+    - everything=True: 7일이 지난 모든 기록 (지난 편지 모두 보기)
+    '오늘 도착'한 편지가 맨 앞"""
+    out = []
+    for e in entries:
+        age = (today - dt.date.fromisoformat(e["date"])).days
+        if e.get("reply") or age < MILESTONES[0]:
+            continue
+        fresh = any(0 <= age - m < 7 for m in MILESTONES)
+        if fresh or everything:
+            out.append({**e, "age": age, "today": age in MILESTONES})
+    return sorted(out, key=lambda x: (not x["today"], -dt.date.fromisoformat(x["date"]).toordinal()))
+
+
+def next_arrival(entries: list[dict], today: dt.date) -> int | None:
+    """다음 편지가 며칠 뒤에 도착하는지"""
+    waits = []
+    for e in entries:
+        age = (today - dt.date.fromisoformat(e["date"])).days
+        waits += [m - age for m in MILESTONES if m > age]
+    return min(waits) if waits else None
 
 
 def month_options(entries):
@@ -188,44 +269,78 @@ def page_home():
     sub = "당신의 감정이 모여 오늘도 특별한 궤적을 만들었어요." if old else "오늘의 감정을 기록하고, 나만의 궤도를 이어가 보세요."
     components.html(sky.hero_html(f"{day.year}년 {day.month}월 {day.day}일 {WEEK[day.weekday()]}요일", q, by, sub, probs, user=nick), height=320)
 
+    # 타임캡슐: 지난 나의 편지가 도착했으면 알려 주기
+    letters = capsule_letters(list(entries.values()), today)
+    if letters:
+        fresh = [x for x in letters if x["today"]]
+        lead = fresh[0] if fresh else letters[0]
+        with st.container(border=True):
+            l, r = st.columns([3, 1], vertical_alignment="center")
+            title = f"{lead['age']}일 전의 내가 보낸 편지가 도착했어요" if fresh else f"아직 읽지 않은 편지가 {len(letters)}통 있어요"
+            l.markdown(f'<div class="arrive"><div class="env">✉</div><div><b>{title}</b>'
+                       f'<span>{int(lead["date"][5:7])}월 {int(lead["date"][8:])}일의 나에게 지금의 마음으로 답장해 보세요.</span></div></div>', unsafe_allow_html=True)
+            r.page_link(PAGES["capsule"], label="편지 열어 보기 →")
+
     c1, c2 = st.columns([1, 1.25], gap="medium")
     with c1:
-        with st.container(border=True, height=245):
+        with st.container(border=True, height=350):
             st.markdown('<div class="ctitle">오늘의 감정 비율</div>', unsafe_allow_html=True)
-            components.html(sky.donut_html(probs), height=172)
+            components.html(sky.donut_html(probs), height=240)
     with c2:
-        with st.container(border=True, height=245):
-            st.markdown('<div class="ctitle">오늘의 일기</div>', unsafe_allow_html=True)
-            text = st.text_area("일기", key="draft_text", height=110, max_chars=500, label_visibility="collapsed",
-                                placeholder="오늘 있었던 일과 그때의 마음을 편하게 적어 보세요.")
-            l, r = st.columns([1, 1], vertical_alignment="center")
-            with l.container(key="more"):
-                with st.popover("⋯", help="다른 날짜, 감정 수정, 지우기"):
-                    new_day = st.date_input("날짜", value=day, max_value=today)
-                    if new_day != day:
-                        st.session_state["day"] = new_day; st.rerun()
-                    fix = st.session_state.get("draft_fix")
-                    pick = st.radio("내 느낌과 가장 가까운 감정", ["AI 결과 그대로"] + EMO, index=(EMO.index(fix) + 1) if fix in EMO else 0)
-                    new_fix = None if pick == "AI 결과 그대로" else pick
-                    if new_fix != fix:
-                        st.session_state["draft_fix"] = new_fix
-                        if old:
-                            db.save_entry(nick, key, old["text"], old["probs"], new_fix)
-                        st.rerun()
-                    if old and st.button("이 날 기록 지우기"):
-                        db.delete_entry(nick, key)
-                        st.session_state["draft_date"] = None
-                        st.rerun()
-            with r.container(key="save"):
-                if st.button("저장하기", type="primary"):
-                    if not text.strip():
-                        st.warning("일기를 먼저 적어 주세요.")
-                    else:
-                        with st.spinner("AI가 감정을 읽는 중..."):
-                            p = old["probs"] if old and old["text"] == text.strip() else predict(text.strip())
-                        db.save_entry(nick, key, text.strip(), p, st.session_state.get("draft_fix"))
-                        st.toast(f"{day.month}월 {day.day}일의 행성이 생겼어요", icon="✨")
-                        st.rerun()
+        with st.container(border=True, height=350):
+            t, m = st.columns([1, 1.3], vertical_alignment="center")
+            t.markdown('<div class="ctitle" style="margin:0">오늘의 기록</div>', unsafe_allow_html=True)
+            with m.container(key="mode"):
+                mode = st.segmented_control("기록 방식", ["일기 쓰기", "10초 기록"], default="일기 쓰기",
+                                            key="rec_mode", label_visibility="collapsed")
+            if mode == "10초 기록":
+                with st.container(key="quick"):
+                    picked = st.pills("지금 마음에 가장 가까운 감정 (최대 2개)", EMO, selection_mode="multi", key="q_pick")
+                    level = st.select_slider("얼마나?", options=list(QUICK_WEIGHT), value="보통", key="q_level")
+                    line = st.text_input("한 줄 (선택)", max_chars=60, key="q_line", placeholder="한 줄만 남겨도 좋아요 (안 써도 돼요)")
+                    if st.button("오늘의 별 만들기 ✨", type="primary", key="q_save"):
+                        if not picked:
+                            st.warning("감정을 하나 이상 골라 주세요.")
+                        elif len(picked) > 2:
+                            st.warning("감정은 2개까지 고를 수 있어요.")
+                        else:
+                            p = quick_probs(picked, level)
+                            text = line.strip() or f"10초 기록 · {' + '.join(picked)} ({level})"
+                            # 직접 고른 감정이라 '내가 고친 감정'으로도 남겨 둬요 (모델 재학습 데이터)
+                            db.save_entry(nick, key, text, p, picked[0], kind="quick")
+                            st.toast(f"{day.month}월 {day.day}일, {' + '.join(picked)}의 별이 떴어요", icon="✨")
+                            st.rerun()
+            else:
+                text = st.text_area("일기", key="draft_text", height=190, max_chars=500, label_visibility="collapsed",
+                                    placeholder="오늘 있었던 일과 그때의 마음을 편하게 적어 보세요.")
+                l, r = st.columns([1, 1], vertical_alignment="center")
+                with l.container(key="more"):
+                    with st.popover("⋯", help="다른 날짜, 감정 수정, 지우기"):
+                        new_day = st.date_input("날짜", value=day, max_value=today)
+                        if new_day != day:
+                            st.session_state["day"] = new_day; st.rerun()
+                        fix = st.session_state.get("draft_fix")
+                        pick = st.radio("내 느낌과 가장 가까운 감정", ["AI 결과 그대로"] + EMO, index=(EMO.index(fix) + 1) if fix in EMO else 0)
+                        new_fix = None if pick == "AI 결과 그대로" else pick
+                        if new_fix != fix:
+                            st.session_state["draft_fix"] = new_fix
+                            if old:
+                                db.save_entry(nick, key, old["text"], old["probs"], new_fix, kind=old.get("kind", "diary"))
+                            st.rerun()
+                        if old and st.button("이 날 기록 지우기"):
+                            db.delete_entry(nick, key)
+                            st.session_state["draft_date"] = None
+                            st.rerun()
+                with r.container(key="save"):
+                    if st.button("저장하기", type="primary"):
+                        if not text.strip():
+                            st.warning("일기를 먼저 적어 주세요.")
+                        else:
+                            with st.spinner("AI가 감정을 읽는 중..."):
+                                p = old["probs"] if old and old["text"] == text.strip() else predict(text.strip())
+                            db.save_entry(nick, key, text.strip(), p, st.session_state.get("draft_fix"))
+                            st.toast(f"{day.month}월 {day.day}일의 행성이 생겼어요", icon="✨")
+                            st.rerun()
 
     # 최근 감정 기록 (최근 7일)
     cells = []
@@ -240,7 +355,11 @@ def page_home():
         else:
             cells.append(f'<div style="--c:#6b7099"><i class="off"></i>{d.month}.{d.day:02d}<b>-</b></div>')
     with st.container(border=True):
-        st.markdown('<div class="ctitle">오늘의 감정 기록</div><div class="trail">' + "".join(cells) + "</div>", unsafe_allow_html=True)
+        n = streak_days(set(entries), today)
+        badge = (f'<span class="streak">🔥 {n}일 연속 기록 중</span>' if n >= 2 else
+                 '<span class="streak off">오늘 기록하면 연속 기록이 시작돼요</span>' if today.isoformat() not in entries else
+                 '<span class="streak">✦ 오늘의 별이 떴어요</span>')
+        st.markdown(f'<div class="ctitle">오늘의 감정 기록{badge}</div><div class="trail">' + "".join(cells) + "</div>", unsafe_allow_html=True)
 
 
 # ---------- 화면 2: 감정 태양계 ----------
@@ -315,12 +434,102 @@ def page_archive():
         st.markdown("".join(out) or '<p class="note">찾는 기록이 없어요.</p>', unsafe_allow_html=True)
 
 
+# ---------- 화면 5: 감정 타임캡슐 ----------
+def page_capsule():
+    nick = nick_or_login()
+    entries = db.load_entries(nick)
+    today = dt.date.today()
+    header("감정 타임캡슐", "7일, 14일, 30일 전의 내가 보낸 편지가 도착해요. 지금의 마음으로 그때의 나에게 답장해 보세요.")
+    allmode = st.session_state.get("cap_all", False)
+    letters = capsule_letters(entries, today, everything=allmode)
+    fresh_n = len(capsule_letters(entries, today))
+    replied = sorted([e for e in entries if e.get("reply")], key=lambda e: e.get("reply_at") or "", reverse=True)
+    wait = next_arrival(entries, today)
+    nxt = (today + dt.timedelta(days=wait)) if wait else None
+    k1, k2, k3 = st.columns(3)
+    k1.markdown(f'<div class="kpi" style="--c:#ffcf6a"><b>{fresh_n}통</b><span>이번 주 도착한 편지</span></div>', unsafe_allow_html=True)
+    k2.markdown(f'<div class="kpi" style="--c:#b3a6ff"><b>{len(replied)}통</b><span>주고받은 편지</span></div>', unsafe_allow_html=True)
+    k3.markdown(f'<div class="kpi"><b>{f"{nxt.month}월 {nxt.day}일" if nxt else "-"}</b><span>{"다음 편지 도착" + (f" (D-{wait})" if wait else "") if nxt else "기록을 남기면 7일 뒤 편지가 도착해요"}</span></div>', unsafe_allow_html=True)
+    st.markdown('<div style="height:14px"></div>', unsafe_allow_html=True)
+
+    t1, t2 = st.tabs([f"도착한 편지 {fresh_n}", f"주고받은 편지 {len(replied)}"])
+    with t1:
+        st.toggle("지난 기록 모두 보기 (7일이 지난 모든 기록에 답장할 수 있어요)", key="cap_all")
+        if not letters:
+            first = f"{nxt.month}월 {nxt.day}일" if nxt else "7일 뒤"
+            st.markdown(f'<div class="empty" style="min-height:280px"><div><b>✉</b>아직 도착한 편지가 없어요.<br>'
+                        f'오늘 남긴 기록은 7일, 14일, 30일 뒤에 편지가 되어 돌아와요.<br>다음 편지는 <u>{first}</u>에 도착해요.</div></div>',
+                        unsafe_allow_html=True)
+        else:
+            def label(x):
+                d = dt.date.fromisoformat(x["date"])
+                return f"{'✦ 오늘 도착 · ' if x['today'] else ''}{d.month}월 {d.day}일 · {x['age']}일 전 · {top_emotion(x)}"
+            pick = st.selectbox("열어 볼 편지", range(len(letters)), format_func=lambda i: label(letters[i]), label_visibility="collapsed")
+            x = letters[pick]
+            d = dt.date.fromisoformat(x["date"])
+            t = top_emotion(x)
+            order = sorted(range(len(EMO)), key=lambda i: -x["probs"][i])
+            mix = "".join(f'<i style="flex:{x["probs"][i]:.3f};background:{COL[EMO[i]]}"></i>' for i in order if x["probs"][i] >= .01)
+            left, right = st.columns([1.5, 1], gap="large")
+            with left:
+                st.markdown(f'<div class="letter" style="--c:{COL[t]}"><div class="from">{x["age"]}일 전의 내가 보낸 편지</div>'
+                            f'<div class="when">{d.year}년 {d.month}월 {d.day}일 {WEEK[d.weekday()]}요일</div>'
+                            f'<div class="body">{html.escape(x["text"])}</div><div class="mix">{mix}</div>'
+                            f'<div class="tags">{" · ".join(f"{EMO[i]} {round(x["probs"][i]*100)}%" for i in order[:3])}</div></div>',
+                            unsafe_allow_html=True)
+                st.markdown('<div style="height:14px"></div>', unsafe_allow_html=True)
+                reply = st.text_area("지금의 내가 그때의 나에게", key=f"reply_{x['date']}", height=130, max_chars=500,
+                                     placeholder="그때의 나에게 하고 싶은 말을 적어 보세요.")
+                st.caption("이렇게 시작해도 좋아요 · “그때 걱정했던 일은…” · “지금의 나는…” · “그때의 나에게 고마운 건…”")
+                if st.button("답장 보내기 ✉", type="primary", key=f"send_{x['date']}"):
+                    if not reply.strip():
+                        st.warning("답장을 먼저 적어 주세요.")
+                    else:
+                        db.save_reply(nick, x["date"], reply.strip(), today.isoformat())
+                        st.toast("답장이 그때의 나에게 닿았어요", icon="💌")
+                        st.rerun()
+            with right:
+                with st.container(border=True):
+                    st.markdown('<div class="ctitle">그때와 지금</div>', unsafe_allow_html=True)
+                    now = next((e for e in entries if e["date"] == today.isoformat()), None)
+                    then_c2 = COL[EMO[order[1]]]
+                    if now:
+                        nt = top_emotion(now)
+                        no = sorted(range(len(EMO)), key=lambda i: -now["probs"][i])
+                        sim = float(A.cosine_matrix(A.matrix([x, now]))[0, 1])
+                        st.markdown(f'<div class="then-now"><div style="--c:{COL[t]};--c2:{then_c2}"><div class="orb"></div><b>{t}</b><small>{d.month}월 {d.day}일</small></div>'
+                                    f'<div class="arrow">→</div>'
+                                    f'<div style="--c:{COL[nt]};--c2:{COL[EMO[no[1]]]}"><div class="orb"></div><b>{nt}</b><small>오늘</small></div></div>'
+                                    f'<div class="sim">그때와 지금의 감정은 <b>{round(sim*100)}%</b> 닮았어요.</div>', unsafe_allow_html=True)
+                    else:
+                        st.markdown(f'<div class="then-now"><div style="--c:{COL[t]};--c2:{then_c2}"><div class="orb"></div><b>{t}</b><small>{d.month}월 {d.day}일</small></div>'
+                                    f'<div class="arrow">→</div><div style="--c:#6b7099;--c2:#2a2f55"><div class="orb" style="box-shadow:none;opacity:.5"></div><b>?</b><small>오늘</small></div></div>'
+                                    '<div class="sim">오늘의 감정을 기록하면 그때와 얼마나 달라졌는지 보여 줄게요.</div>', unsafe_allow_html=True)
+                        st.page_link(PAGES["home"], label="오늘 기록하러 가기 →")
+                    same = [e for e in entries if top_emotion(e) == t and e["date"] > x["date"]]
+                    st.markdown(f'<div class="note" style="margin:14px 0 6px;padding-top:12px;border-top:1px solid var(--line)">'
+                                f'{"그 뒤로 " + t + "이(가) 가장 컸던 날이 " + str(len(same)) + "번 더 있었어요." if same else "그 뒤로는 " + t + "이(가) 가장 큰 날이 없었어요."}</div>',
+                                unsafe_allow_html=True)
+    with t2:
+        if not replied:
+            st.markdown('<div class="empty" style="min-height:220px"><div><b>💌</b>아직 주고받은 편지가 없어요.<br>도착한 편지에 답장하면 여기에 쌓여요.</div></div>',
+                        unsafe_allow_html=True)
+        for e in replied:
+            d = dt.date.fromisoformat(e["date"])
+            r = dt.date.fromisoformat(e["reply_at"]) if e.get("reply_at") else None
+            t = top_emotion(e)
+            st.markdown(f'<div class="thread"><div class="bubble past"><small>{d.month}월 {d.day}일의 나 · <span style="color:{COL[t]}">{t}</span></small>{html.escape(e["text"])}</div>'
+                        f'<div class="bubble now"><small>{f"{r.month}월 {r.day}일의 나" if r else "지금의 나"}</small>{html.escape(e["reply"])}</div></div>',
+                        unsafe_allow_html=True)
+
+
 # ---------- 화면 목록 (기본 메뉴는 숨기고 사이드바에 직접 그려요) ----------
 PAGES = {
     "home": st.Page(page_home, title="홈", icon=":material/home:", url_path="home", default=True),
     "solar": st.Page(page_solar, title="감정 태양계", icon=":material/trip_origin:", url_path="solar"),
     "universe": st.Page(page_universe, title="감정 유니버스", icon=":material/hub:", url_path="universe"),
     "archive": st.Page(page_archive, title="우주의 기록", icon=":material/article:", url_path="archive"),
+    "capsule": st.Page(page_capsule, title="감정 타임캡슐", icon=":material/mail:", url_path="capsule"),
 }
 nav = st.navigation(list(PAGES.values()), position="hidden")
 current = next(k for k, p in PAGES.items() if p.title == nav.title)
