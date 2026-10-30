@@ -28,7 +28,9 @@ st.markdown("""
 :root { --night:#070a1d; --card:rgba(16,20,46,.82); --line:rgba(140,150,255,.15); --line-hi:rgba(165,155,255,.42); --ink:#eef0ff; --sub:#a3a8cf; --faint:#6b7099; --violet:#8b7bff; --gold:#ffcf6a; }
 html, body, .stApp, .stMarkdown, button, input, textarea, [data-testid="stSidebar"] { font-family:"Gothic A1","Apple SD Gothic Neo","Malgun Gothic",sans-serif !important; }
 .stApp { background: radial-gradient(1100px 520px at 75% -12%, #18205a 0%, transparent 60%), radial-gradient(900px 480px at 5% 108%, #170f44 0%, transparent 60%), var(--night); }
-header[data-testid="stHeader"] { background: transparent; }
+header[data-testid="stHeader"] { background: transparent; pointer-events:none; }
+header[data-testid="stHeader"] button, header[data-testid="stHeader"] a { pointer-events:auto; }
+[data-testid="stToolbar"] { display:none !important; }
 [data-testid="stAppDeployButton"], footer, #MainMenu { display:none !important; }
 .block-container { max-width: 1380px; padding-top: 1.3rem; padding-bottom: 3rem; }
 /* ----- 사이드바 ----- */
@@ -60,6 +62,7 @@ header[data-testid="stHeader"] { background: transparent; }
 .st-key-all_rec, .st-key-all_rec [data-testid="stButton"], .st-key-all_rec button { width:100% !important; }
 .month-pill { display:flex; align-items:center; justify-content:center; height:36px; font-size:13px; font-weight:500; font-variant-numeric:tabular-nums; white-space:nowrap; }
 .month-pill span { color:var(--faint); margin-left:8px; font-size:11px; }
+.st-key-calpick [data-testid="stPopover"] button { height:38px; border-radius:10px; background:var(--card); border:1px solid var(--line); padding:0 6px; width:100%; }
 .cal { display:grid; place-items:center; height:38px; border:1px solid var(--line); border-radius:10px; background:var(--card); font-size:15px; }
 .st-key-more [data-testid="stPopover"] button { border:0 !important; background:transparent !important; color:var(--sub); width:auto; padding:.3rem .6rem; }
 .st-key-save .stButton > button { width:auto; padding:.4rem 1.6rem; float:right; }
@@ -207,6 +210,9 @@ def header(title: str, desc: str, months=None, pill=None, small: str = ""):
     ym = None
     if months:
         ym = st.session_state.get("ym")
+        # 달력에서 기록이 없는 달을 골랐어도 (오늘 이전이면) 그 달로 이동해요
+        if ym and ym not in months and ym <= dt.date.today().strftime("%Y-%m"):
+            months = sorted(set(months) | {ym}, reverse=True)
         if ym not in months:
             ym = months[0]
         i = months.index(ym)
@@ -219,7 +225,12 @@ def header(title: str, desc: str, months=None, pill=None, small: str = ""):
                 b.markdown(f'<div class="month-pill">{(pill or (lambda s: f"{s[:4]}년 {int(s[5:])}월"))(ym)}<span>▾</span></div>', unsafe_allow_html=True)
                 if c.button("›", key="m_next", disabled=i == 0, help="다음 달"):
                     st.session_state["ym"] = months[i - 1]; st.rerun()
-            cal.markdown('<div class="cal">📅</div>', unsafe_allow_html=True)
+            with cal.container(key="calpick"):
+                with st.popover("📅", help="달력에서 날짜를 골라 그 달로 이동"):
+                    picked = st.date_input("이동할 날짜", value=dt.date(int(ym[:4]), int(ym[5:]), 1),
+                                           max_value=dt.date.today(), key=f"cal_{ym}")
+                    if picked.strftime("%Y-%m") != ym:
+                        st.session_state["ym"] = picked.strftime("%Y-%m"); st.rerun()
         st.session_state["ym"] = ym
     elif nick:
         right.markdown(f'<div class="user-chip">{html.escape(nick)}님 <i>{html.escape(nick[:1])}</i></div>', unsafe_allow_html=True)
