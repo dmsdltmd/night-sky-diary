@@ -30,11 +30,14 @@ html, body, .stApp, .stMarkdown, button, input, textarea, [data-testid="stSideba
 .stApp { background: radial-gradient(1100px 520px at 75% -12%, #18205a 0%, transparent 60%), radial-gradient(900px 480px at 5% 108%, #170f44 0%, transparent 60%), var(--night); }
 header[data-testid="stHeader"] { background: transparent; pointer-events:none; }
 header[data-testid="stHeader"] button, header[data-testid="stHeader"] a { pointer-events:auto; }
-[data-testid="stToolbar"] { display:none !important; }
+[data-testid="stToolbarActions"], [data-testid="stMainMenu"], [data-testid="stStatusWidget"] { display:none !important; }
+[data-testid="stSidebarCollapseButton"], [data-testid="stExpandSidebarButton"], [data-testid="stSidebarCollapsedControl"] { display:flex !important; visibility:visible !important; opacity:1 !important; pointer-events:auto !important; z-index:1000; }
+[data-testid="stSidebarCollapseButton"] button, [data-testid="stExpandSidebarButton"], [data-testid="stSidebarCollapsedControl"] button { color:#cfd2ff !important; background:rgba(139,123,255,.14) !important; border:1px solid var(--line-hi) !important; border-radius:10px !important; }
 [data-testid="stAppDeployButton"], footer, #MainMenu { display:none !important; }
 .block-container { max-width: 1380px; padding-top: 1.3rem; padding-bottom: 3rem; }
 /* ----- 사이드바 ----- */
-[data-testid="stSidebar"] { background: linear-gradient(180deg, #0b0e2a 0%, #070919 100%); border-right: 1px solid var(--line); min-width: 250px !important; max-width: 260px !important; }
+[data-testid="stSidebar"] { background: linear-gradient(180deg, #0b0e2a 0%, #070919 100%); border-right: 1px solid var(--line); }
+[data-testid="stSidebar"][aria-expanded="true"] { min-width: 250px !important; max-width: 260px !important; }
 .brand { display:flex; gap:12px; align-items:center; padding:2px 2px 22px; }
 .brand svg { width:34px; height:34px; flex:none; }
 .brand b { display:block; font-size:18px; font-weight:700; color:#ecebff; }
@@ -89,6 +92,10 @@ header[data-testid="stHeader"] button, header[data-testid="stHeader"] a { pointe
 .week i.off { background:rgba(255,255,255,.05); box-shadow:none; border:1px dashed rgba(165,155,255,.25); }
 .week b { font-weight:500; color:var(--c); font-size:12px; }
 /* 로그인 */
+.st-key-login_box label { width:100%; justify-content:center; } .st-key-login_box label p { text-align:center; width:100%; font-size:14px !important; color:var(--sub) !important; }
+.st-key-login_box input { text-align:center; font-size:15px !important; }
+.st-key-login_box [data-testid="stElementContainer"]:has([data-testid="stFormSubmitButton"]), .st-key-login_box [data-testid="stFormSubmitButton"], .st-key-login_box [data-testid="stFormSubmitButton"] > div, .st-key-login_box [data-testid="stFormSubmitButton"] button { width:100% !important; }
+.welcome [data-testid="stHeaderActionElements"] { display:none !important; } .st-key-login_box .note { font-size:12.5px !important; }
 .welcome { text-align:center; padding:26px 10px 8px; }
 .welcome svg { width:54px; height:54px; }
 .welcome h2 { font-size:28px !important; margin:10px 0 4px !important; }
@@ -240,16 +247,17 @@ def header(title: str, desc: str, months=None, pill=None, small: str = ""):
 
 def login_card():
     """닉네임이 없으면 시작 화면"""
-    _, mid, _ = st.columns([1, 1.2, 1])
+    st.markdown('<div style="height:9vh"></div>', unsafe_allow_html=True)
+    _, mid, _ = st.columns([1, 1.1, 1])
     with mid:
-        with st.container(border=True):
+        with st.container(border=True, key="login_box"):
             st.markdown(f'<div class="welcome">{LOGO}<h2>감정의 궤적</h2><p>나의 감정이 모여, 나만의 궤도가 되다.</p></div>', unsafe_allow_html=True)
             with st.form("login", border=False):
-                name = st.text_input("내 하늘 이름", max_chars=20, placeholder="닉네임을 적어 주세요")
+                name = st.text_input("내 우주 이름", max_chars=20, placeholder="닉네임을 적어 주세요")
                 if st.form_submit_button("시작하기") and name.strip():
                     st.session_state["nickname"] = name.strip()
                     st.rerun()
-            st.markdown('<p class="note" style="text-align:center">이름으로 내 기록을 구분해요. 다음에도 같은 이름으로 들어오면 돼요.</p>', unsafe_allow_html=True)
+            st.markdown('<p class="note" style="text-align:center">이름으로 내 기록을 구분해요.<br>다음에도 같은 이름으로 들어오면 돼요.</p>', unsafe_allow_html=True)
     st.stop()
 
 
