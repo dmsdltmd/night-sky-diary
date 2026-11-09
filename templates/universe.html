@@ -121,6 +121,24 @@ button:focus-visible{outline:2px solid #e4d4ff;outline-offset:3px}
 @media(max-width:900px){#app{grid-template-columns:minmax(0,1fr) 270px;gap:10px}.side{padding:18px 14px}}
 @media(max-width:710px){#app{height:__HEIGHT__px;grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) 302px;gap:10px}#eyebrow{top:15px;left:14px}#legend{top:71px;left:10px}.lg{min-height:26px;width:auto;padding:3px 7px;font-size:10.5px}#toolbar{left:10px;bottom:10px}.side{padding:14px 16px}.side h3{font-size:22px}.hero{min-height:100px;margin:7px 0 12px;padding:9px 12px}.hero .orb{width:62px;height:62px}#note{margin:7px 0 11px;max-height:82px;padding:11px}}
 
+
+#stage{border-color:rgba(183,171,249,.27);box-shadow:0 24px 60px rgba(2,4,23,.18)}
+#stage::after{box-shadow:inset 0 0 132px rgba(3,5,19,.57)}
+#eyebrow strong{letter-spacing:.24em;color:#e2c5ff}
+#eyebrow span{color:#cdd1e6}
+.lg{border-radius:99px;padding:5px 10px 5px 7px;background:rgba(12,15,39,.18)}
+.lg:hover,.lg:focus-visible{border-color:rgba(176,170,242,.32);background:rgba(27,29,68,.58)}
+.lg[aria-pressed="false"]{opacity:.23}
+.segment,.switch{background:rgba(11,14,36,.79);border-color:rgba(202,188,255,.26)}
+.side{background:linear-gradient(154deg,rgba(41,32,88,.97),rgba(17,23,53,.98) 48%,rgba(10,14,36,.98));border:1px solid rgba(169,156,249,.31);box-shadow:inset 0 1px 0 rgba(255,255,255,.075),0 15px 40px rgba(0,0,0,.15)}
+.side::before{background:radial-gradient(circle,rgba(166,111,251,.18),transparent 70%)}
+.hero{border:1px solid rgba(182,173,242,.24);background:linear-gradient(130deg,rgba(47,46,93,.5),rgba(11,15,34,.7))}
+#orb{background:radial-gradient(circle at 30% 24%,#fff7f7 0%,color-mix(in srgb,var(--c) 76%,#fff) 23%,var(--c) 48%,#101733 90%);box-shadow:0 0 29px color-mix(in srgb,var(--c) 40%,transparent),inset -7px -12px 20px rgba(2,4,20,.59)}
+#note{background:rgba(22,26,57,.46);border:1px solid rgba(174,169,244,.16);border-left:3px solid rgba(179,161,255,.74);border-radius:12px;padding:12px 13px;margin:0 0 15px;color:#f0edff}
+#relations .rel{border-color:rgba(169,164,247,.19);background:linear-gradient(130deg,rgba(37,44,83,.63),rgba(18,23,50,.7))}
+.ratio-track{height:7px;border-radius:99px}
+@media(max-width:710px){#eyebrow{max-width:60%}#legend{top:82px}}
+
 </style>
 </head>
 <body>
@@ -272,7 +290,7 @@ function pointOnCurve(a,b,t){
 }
 function line(a,b,col1,col2,alpha,width,dashed=false){
  const c=curveControl(a,b),gradient=ctx.createLinearGradient(a.x,a.y,b.x,b.y);
- gradient.addColorStop(0,rgba(col1,alpha*.90));gradient.addColorStop(.52,rgba('#d6e9ff',alpha*.66));gradient.addColorStop(1,rgba(col2,alpha*.90));
+ gradient.addColorStop(0,rgba(col1,alpha*.90));gradient.addColorStop(.52,rgba('#e7ddff',alpha*.78));gradient.addColorStop(1,rgba(col2,alpha*.90));
  ctx.save();ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle=gradient;
  // One curved filament with a halo, not a rigid geometry-like graph.
  ctx.globalAlpha=.21;ctx.lineWidth=width*5.5;
@@ -331,9 +349,9 @@ function paint(){
   if(active){ctx.strokeStyle=rgba(c2,.43);ctx.lineWidth=.9;ctx.beginPath();ctx.arc(p.x,p.y,ringB,.2,Math.PI*1.37);ctx.stroke();}
   // A glossy, circular light drop: recognizable, not a five-pointed star/planet.
   const body=ctx.createRadialGradient(p.x-radius*.27,p.y-radius*.33,radius*.02,p.x,p.y,radius*1.14);
-  body.addColorStop(0,rgba('#ffffff',.82));
+  body.addColorStop(0,rgba('#ffffff',.65));
   body.addColorStop(.25,rgba(c1,1));body.addColorStop(.61,rgba(c1,.93));
-  body.addColorStop(.84,rgba(c1,.54));body.addColorStop(1,rgba('#0c1635',.87));
+  body.addColorStop(.84,rgba(c2,.24));body.addColorStop(1,rgba('#0c1635',.87));
   ctx.fillStyle=body;ctx.beginPath();ctx.arc(p.x,p.y,radius,0,Math.PI*2);ctx.fill();
   ctx.lineWidth=1;ctx.strokeStyle=rgba('#ffffff',active?.58:.22);ctx.stroke();
   // Secondary feeling reads as a *single arc*, not a whole second planet color.
