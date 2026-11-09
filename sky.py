@@ -144,7 +144,9 @@ def universe_html(entries: list[dict], height: int = 640) -> str:
     for s, p in zip(stars, A.layout3(X)):
         s["x3"], s["y3"], s["z3"] = (round(float(v), 4) for v in p)
     data = {"emo": A.EMO, "colors": COLORS, "stars": stars, "links": A.links(X, threshold=0.6, k=2)}
-    return _render(data, height, UNIVERSE_TEMPLATE)
+    # 유니버스 HTML은 화면을 만들 때마다 다시 읽습니다.
+    # 웹앱 실행 중 templates/universe.html만 교체해도 이전 템플릿이 남지 않도록 합니다.
+    return _render(data, height, _tpl("universe.html"))
 
 
 def report_html(cur: list[dict], year: int, month: int, part: str = "top", height: int = 330) -> str:
