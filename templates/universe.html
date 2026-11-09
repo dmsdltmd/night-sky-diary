@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Gothic+A1:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
 :root{--ink:#f4f2ff;--muted:#abb4d4;--soft:#7987b1;--violet:#b5a0ff;--line:rgba(183,197,255,.17);--card:#0d1532}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-html,body{margin:0;width:100%;min-height:100%;background:transparent;color:var(--ink);font:12px/1.6 'Gothic A1','Malgun Gothic',sans-serif}
+html,body{margin:0;width:100%;min-height:100%;background:transparent;color:var(--ink);font:12px/1.6 'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif}
 button{font:inherit;color:inherit}
 button:focus-visible{outline:2px solid #d5c8ff;outline-offset:3px}
 #app{height:__HEIGHT__px;display:grid;grid-template-columns:minmax(0,1fr) 306px;gap:13px;min-width:0}
@@ -18,10 +18,10 @@ button:focus-visible{outline:2px solid #d5c8ff;outline-offset:3px}
 #cv{position:absolute;inset:0;display:block;width:100%;height:100%;z-index:1;cursor:grab;touch-action:none}
 #cv.drag{cursor:grabbing}
 #topbar{position:absolute;z-index:3;top:21px;left:23px;right:22px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;pointer-events:none}
-.kicker{font:700 10px/1.2 'DM Sans',sans-serif;letter-spacing:.28em;color:#e0d6ff;text-shadow:0 2px 10px #0b1028}
+.kicker{font:700 10px/1.2 'Inter','Segoe UI',sans-serif;letter-spacing:.28em;color:#e0d6ff;text-shadow:0 2px 10px #0b1028}
 #topbar h2{margin:6px 0 0;font-size:18px;line-height:1.3;letter-spacing:-.06em;font-weight:700;color:#f7f4ff}
 #topbar p{margin:5px 0 0;font-size:11px;color:#c3c9e6}
-#starCount{padding:6px 9px 6px 10px;font:600 10px 'DM Sans',sans-serif;letter-spacing:.09em;color:#c7d0ec;border:1px solid rgba(194,197,250,.25);border-radius:30px;background:rgba(13,20,50,.62);backdrop-filter:blur(12px);white-space:nowrap}
+#starCount{padding:6px 9px 6px 10px;font:600 10px 'Inter','Segoe UI',sans-serif;letter-spacing:.09em;color:#c7d0ec;border:1px solid rgba(194,197,250,.25);border-radius:30px;background:rgba(13,20,50,.62);backdrop-filter:blur(12px);white-space:nowrap}
 #starCount i{display:inline-block;width:6px;height:6px;background:#a7e8dc;border-radius:50%;box-shadow:0 0 11px #70dbd1;margin-right:8px;vertical-align:1px}
 #filterbar{position:absolute;z-index:3;top:108px;left:22px;right:22px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;max-width:530px}
 .filter{cursor:pointer;min-width:0;padding:7px 10px 7px 9px;border:1px solid rgba(195,204,255,.13);border-radius:999px;background:rgba(15,23,53,.64);color:#cdd3ed;display:inline-flex;align-items:center;gap:7px;font-size:10.5px;line-height:1;white-space:nowrap;transition:background .2s,border-color .2s,opacity .2s,transform .2s;backdrop-filter:blur(9px)}
@@ -44,7 +44,7 @@ button:focus-visible{outline:2px solid #d5c8ff;outline-offset:3px}
 /* The companion panel is deliberately an editorial journal, not another dashboard. */
 #side{position:relative;display:flex;min-width:0;min-height:0;flex-direction:column;overflow:hidden;padding:25px 21px 20px;border:1px solid rgba(160,174,236,.22);border-radius:24px;background:radial-gradient(ellipse at 95% -5%,rgba(113,93,183,.23),transparent 49%),radial-gradient(ellipse at -20% 87%,rgba(45,78,139,.13),transparent 50%),linear-gradient(156deg,#161b3c,#101830 56%,#0c132a);box-shadow:inset 0 1px rgba(255,255,255,.065),0 16px 37px rgba(0,0,0,.07)}
 #side::before{content:"";position:absolute;top:0;left:23px;right:23px;height:1px;background:linear-gradient(90deg,transparent,rgba(214,202,255,.46),transparent);pointer-events:none}
-.side-kicker{font:700 10px 'DM Sans',sans-serif;letter-spacing:.24em;color:#b7a8ee}
+.side-kicker{font:700 10px 'Inter','Segoe UI',sans-serif;letter-spacing:.24em;color:#b7a8ee}
 #dateTitle{margin:12px 0 2px;font-size:34px;font-weight:800;letter-spacing:-.08em;line-height:1.23;color:#fff}
 #summary{color:#9eaad2;font-size:11px;margin:0 0 18px}
 #hero{position:relative;min-height:125px;flex:none;display:flex;align-items:center;gap:14px;padding:15px 14px;margin-bottom:17px;border:1px solid rgba(192,185,248,.20);border-radius:18px;background:radial-gradient(ellipse at 24% 48%,rgba(137,122,231,.19),transparent 60%),linear-gradient(140deg,rgba(45,48,92,.8),rgba(16,21,47,.88));overflow:hidden}
@@ -82,28 +82,77 @@ button:focus-visible{outline:2px solid #d5c8ff;outline-offset:3px}
 @media(max-width:420px){#topbar p,#hint,#starCount{display:none}#filterbar{top:71px}.filter{padding:6px}#relations{grid-template-columns:1fr}}
 @media(max-width:740px){#side{display:flex;overflow-y:auto;overflow-x:hidden}#quote-label{display:block}#note{max-height:92px;flex:none}#relationSection{flex:none;min-height:130px;overflow:visible}#relations{display:grid;grid-template-columns:1fr;overflow:visible}#hero{min-height:86px;flex:none}#ratio{margin-bottom:10px}}
 @media(prefers-reduced-motion:reduce){.filter,.rel,.control button{transition:none!important}}
+
+/* NEBULA ATLAS V3 — immersive, luminous visual language */
+:root{--ink:#f7f6ff;--muted:#b4bad8;--soft:#8e9aba;--violet:#b6a8ff;--line:rgba(185,206,255,.17)}
+#app{gap:14px;grid-template-columns:minmax(0,1fr) 322px}
+#stage{border-radius:27px;border-color:rgba(189,211,255,.19);box-shadow:inset 0 1px 1px rgba(255,255,255,.09),0 22px 58px rgba(2,5,22,.23)}
+#stage::before{background:radial-gradient(ellipse at 70% 50%,rgba(88,66,172,.13),transparent 68%);z-index:0}
+#stage::after{box-shadow:inset 0 0 90px rgba(3,5,21,.23), inset 0 -45px 80px rgba(3,5,20,.32)}
+#topbar{top:28px;left:30px;right:26px}
+.kicker{font-size:10px;letter-spacing:.37em;color:#c9d8ff}
+#topbar h2{font-size:27px;letter-spacing:-.065em;margin:12px 0 0;font-weight:800;text-shadow:0 0 40px rgba(105,127,255,.25)}
+#topbar p{font-size:11.5px;color:#bac6ea;margin-top:8px}
+#starCount{border-radius:11px;padding:10px 12px;background:rgba(10,19,43,.38);border-color:rgba(165,196,246,.28);font-size:10.5px;color:#dfecff;box-shadow:inset 0 1px rgba(255,255,255,.1)}
+#starCount i{background:#80f7d1;box-shadow:0 0 10px #80f7d1}
+#filterbar{top:auto;bottom:81px;left:29px;right:24px;max-width:none;gap:5px}
+.filter{padding:8px 10px 8px 9px;font-size:10px;color:#d7def6;background:rgba(8,15,36,.43);border:1px solid rgba(185,208,245,.17);box-shadow:inset 0 1px rgba(255,255,255,.05);backdrop-filter:blur(13px)}
+.filter[aria-pressed="true"]{border-color:rgba(195,218,255,.23)}
+.filter i{width:6px;height:6px;box-shadow:0 0 10px var(--c),0 0 20px var(--c)}
+#toolbar{bottom:22px;left:29px;gap:7px}
+.control{border-radius:13px;background:rgba(8,15,34,.67);border-color:rgba(177,202,255,.20);padding:4px}
+.control button{font-size:11px;padding:8px 13px;letter-spacing:.015em}
+.control button[aria-pressed="true"]{background:linear-gradient(135deg,rgba(111,136,228,.52),rgba(170,112,211,.46))}
+#hint{bottom:34px;right:25px;color:#aebee2;letter-spacing:.02em;font-size:10px}
+#hint span{font-size:13px;color:#a1f6ec;padding-left:6px}
+#tip{background:rgba(8,15,36,.88);border-color:rgba(180,223,255,.45);border-radius:13px;backdrop-filter:blur(20px)}
+#side{border-radius:27px;border:1px solid rgba(191,210,255,.19);padding:28px 24px 22px;background:radial-gradient(ellipse at 80% 7%,rgba(86,109,196,.21),transparent 53%),radial-gradient(ellipse at 15% 57%,rgba(49,138,158,.1),transparent 58%),linear-gradient(156deg,#131c39 0%,#11152d 57%,#0b122b 100%);box-shadow:inset 0 1px rgba(255,255,255,.065),0 20px 48px rgba(3,6,23,.17)}
+#side::before{left:25px;right:25px;background:linear-gradient(90deg,transparent,rgba(138,235,238,.53),rgba(217,190,255,.41),transparent)}
+.side-kicker{font-size:9px;letter-spacing:.3em;color:#9ec9df}
+#dateTitle{font-size:36px;letter-spacing:-.085em;margin:14px 0 3px;font-weight:800;text-shadow:0 0 24px rgba(155,184,255,.12)}
+#summary{font-size:11px;color:#9aafcc;margin-bottom:20px}
+#hero{min-height:152px;gap:18px;border:1px solid rgba(177,222,238,.23);border-radius:20px;padding:19px 14px 19px 16px;margin-bottom:23px;background:radial-gradient(ellipse at 22% 46%,color-mix(in srgb,var(--c,#a89fff) 24%,transparent),transparent 65%),linear-gradient(130deg,rgba(39,65,91,.47),rgba(19,24,52,.69));box-shadow:inset 0 1px rgba(255,255,255,.09)}
+#hero::after{right:-31px;top:-40px;width:155px;height:155px;border-color:rgba(142,206,223,.11)}
+#orb{width:110px;height:110px;--c:#8cddec;--c2:#b39cff;flex:none;border:none;background:radial-gradient(ellipse at 30% 28%,rgba(255,255,255,.58),transparent 14%),radial-gradient(ellipse at 44% 44%,color-mix(in srgb,var(--c) 85%,white),color-mix(in srgb,var(--c) 36%,#202a52) 43%,rgba(10,18,46,.23) 70%,transparent 77%);filter:drop-shadow(0 0 16px color-mix(in srgb,var(--c) 41%,transparent));box-shadow:none}
+#orb::before{inset:1px;top:17px;bottom:17px;border:1.6px solid color-mix(in srgb,var(--c2) 83%,#e8efff);border-radius:50%;transform:rotate(-37deg) scaleX(1.35);opacity:.77;box-shadow:0 0 20px color-mix(in srgb,var(--c2) 38%,transparent)}
+#orb::after{left:11px;top:30px;width:91px;height:44px;border:2px solid rgba(223,246,255,.39);border-radius:50%;transform:rotate(36deg);filter:none;background:transparent;opacity:.8;box-shadow:0 0 16px color-mix(in srgb,var(--c) 42%,transparent)}
+#emotionName{font-size:25px;font-weight:800;color:#f8faff}
+#emotionSub{font-size:10.5px;color:#b6c6e5}
+#ratio{margin-bottom:22px}
+.ratio-head{font-size:10.5px;color:#b5c3df}
+.ratio-track{height:8px;gap:3px}
+#quote-label{font-size:10px;color:#9fc8de;letter-spacing:.05em}
+#note{border:1px solid rgba(172,203,245,.23);border-left:2px solid rgba(142,222,233,.78);background:rgba(14,27,52,.63);padding:15px 15px;max-height:107px;font-size:12px;line-height:1.95}
+#relationSection{border-top-color:rgba(175,213,245,.15);margin-top:20px;padding-top:19px}
+#relationsTitle{font-size:12px}
+.rel{padding:12px 11px;border:1px solid rgba(161,202,244,.18);background:linear-gradient(120deg,rgba(29,50,83,.59),rgba(22,29,60,.5));border-radius:13px}
+.rel:hover{background:rgba(47,79,117,.48);border-color:rgba(154,230,236,.43)}
+.rel em{color:#a5d8e7}
+@media(max-width:1020px){#app{grid-template-columns:minmax(0,1fr) 290px}#side{padding:23px 17px}#topbar{left:19px;top:22px}#topbar h2{font-size:23px}#filterbar{left:18px;bottom:81px}#toolbar{left:18px}}
+@media(max-width:740px){#app{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) 275px}#side{padding:17px 17px;overflow:auto}#topbar h2{font-size:19px}#topbar p{font-size:10px}#filterbar{left:11px;right:8px;bottom:69px}.filter{padding:5px 7px;font-size:9px}#toolbar{left:11px;bottom:11px}#hint{right:12px;bottom:22px;font-size:9px}#hero{min-height:105px;padding:12px}#orb{width:64px;height:64px}#dateTitle{font-size:25px}}
+
 </style>
 </head>
 <body>
 <div id="app">
  <section id="stage" aria-label="감정이 비슷한 날을 연결한 우주 지도">
   <canvas id="cv" aria-label="감정 기록의 빛점을 선택하고 드래그해 탐색하는 지도"></canvas>
-  <div id="topbar"><div><div class="kicker">THE UNIVERSE WITHIN</div><h2>감정이 머문 자리</h2><p>닮은 마음들이 가까운 곳에 빛나요</p></div><div id="starCount"><i></i><span id="countValue">0 DAYS</span></div></div>
+  <div id="topbar"><div><div class="kicker">EMOTION · NEBULA ATLAS</div><h2>나의 감정이 만든 우주</h2><p>한 달의 마음이 빛과 궤도가 되는 공간</p></div><div id="starCount"><i></i><span id="countValue">0 DAYS</span></div></div>
   <div id="filterbar" aria-label="감정 색상 필터"></div>
   <div id="toolbar"><div class="control" aria-label="지도 보기 방식"><button id="m2" type="button" aria-pressed="true" title="감정 비율로 가까운 날을 평면에 표시">2D</button><button id="m3" type="button" aria-pressed="false" title="감정 비율을 입체 공간에 표시">3D</button></div><div class="control"><button id="timeMode" type="button" aria-pressed="false" title="닮은 마음의 연결과 기록 날짜순 궤적을 전환">시간의 궤적</button></div></div>
-  <div id="hint">드래그하여 탐색 · 휠로 확대</div>
+  <div id="hint">빛을 선택하면 그날의 마음이 펼쳐집니다 <span>✦</span></div>
   <div id="tip" hidden></div>
   <div id="empty" hidden><b>아직 빛이 모이지 않았어요</b>감정 기록을 남기면<br>이곳에 나만의 우주가 펼쳐집니다.</div>
  </section>
  <aside id="side" aria-label="선택한 감정 기록">
-  <div class="side-kicker">A PAGE OF YOUR SKY</div>
+  <div class="side-kicker">A MOMENT, HELD IN LIGHT</div>
   <h3 id="dateTitle">나의 하루</h3>
   <p id="summary">빛점을 선택하면 그날의 감정이 펼쳐져요</p>
   <div id="hero" hidden><div id="orb"></div><div id="hero-text"><b id="emotionName"></b><span id="emotionSub"></span></div></div>
   <div id="ratio" hidden></div>
-  <div id="quote-label">그날 남긴 기록</div>
+  <div id="quote-label">그날의 한 문장</div>
   <div id="note"></div>
-  <section id="relationSection"><div class="section-head"><b id="relationsTitle">감정이 닮은 날</b><small id="relationsMeta"></small></div><div id="relations"></div></section>
+  <section id="relationSection"><div class="section-head"><b id="relationsTitle">비슷한 마음의 기억</b><small id="relationsMeta"></small></div><div id="relations"></div></section>
  </aside>
 </div>
 <script>
@@ -136,7 +185,7 @@ const order=stars.map(s=>s.i).sort((a,b)=>String(stars[a].date).localeCompare(St
 const dateIndex=new Map(stars.map(s=>[s.date,s.i]));
 const neighbors=new Map(order.map((j,k)=>[j,[order[k-1],order[k+1]].filter(v=>v!==undefined)]));
 const enabled=new Set(EMO.map((_,i)=>i));
-const state={view:2,time:N>=2&&N<=3,selected:-1,hover:-1,zoom:1,panX:0,panY:0,rotA:.4,rotB:.22};
+const state={view:2,time:false,selected:-1,hover:-1,zoom:1,panX:0,panY:0,rotA:.4,rotB:.22};
 $('countValue').textContent=`${String(N).padStart(2,'0')} DAYS`;
 $('filterbar').innerHTML=EMO.map((name,i)=>`<button class="filter" type="button" data-k="${i}" aria-pressed="true" style="--c:${col(i)}"><i></i>${safe(name)}</button>`).join('');
 const show=s=>enabled.has(s.top);
@@ -148,50 +197,144 @@ else if(N===3){const p=[[.36,.39],[.72,.48],[.53,.70]];order.forEach((id,j)=>{st
 else if(N>3){const random=randGen(46);for(let t=0;t<110;t++){for(const a of stars){let dx=0,dy=0;for(const b of stars){if(a===b)continue;let vx=a.x-b.x,vy=a.y-b.y,d=Math.hypot(vx,vy);if(d<.106){if(d<.0001){vx=random()-.5;vy=random()-.5;d=Math.hypot(vx,vy)||1;}const f=(.106-d)*.11/d;dx+=vx*f;dy+=vy*f;}}a.x=clamp(a.x+dx+(a.ax-a.x)*.014,.065,.93);a.y=clamp(a.y+dy+(a.ay-a.y)*.014,.06,.94);}}}
 let W=1,H=1,elapsed=0,background=null,projected=[],hitAreas=[];
 function projectedPoint(s){
- if(state.view===2){const left=W<550?40:54,top=173,right=42,bottom=78;const spaceX=Math.max(25,W-left-right),spaceY=Math.max(25,H-top-bottom);return {x:(left+s.x*spaceX)*state.zoom+state.panX,y:(top+s.y*spaceY)*state.zoom+state.panY,z:0,scale:1};}
+ if(state.view===2){
+  // Preserve relative PCA geometry, but give the map enough room for an art-directed composition.
+  const left=W<550?47:72,top=169,right=W<550?41:76,bottom=143;
+  const spaceX=Math.max(30,W-left-right),spaceY=Math.max(24,H-top-bottom);
+  return {x:(left+s.x*spaceX)*state.zoom+state.panX,y:(top+s.y*spaceY)*state.zoom+state.panY,z:0,scale:1};
+ }
  const a=Math.cos(state.rotA),b=Math.sin(state.rotA),c=Math.cos(state.rotB),d=Math.sin(state.rotB);
  const rx=s.x3*a+s.z3*b,rz=-s.x3*b+s.z3*a,ry=s.y3*c-rz*d,depth=s.y3*d+rz*c;
- const perspective=3.25/(3.25+depth);const size=Math.min(W*.37,H*.35)*state.zoom;
- return {x:W*.52+rx*size*perspective+state.panX,y:H*.55+ry*size*perspective+state.panY,z:depth,scale:perspective};
+ const perspective=3.25/(3.25+depth);
+ const size=Math.min(W*.34,H*.30)*state.zoom;
+ return {x:W*.53+rx*size*perspective+state.panX,y:H*.51+ry*size*perspective+state.panY,z:depth,scale:perspective};
 }
 function createBackground(){
- const paper=document.createElement('canvas');paper.width=Math.round(W*DPR);paper.height=Math.round(H*DPR);const g=paper.getContext('2d');g.setTransform(DPR,0,0,DPR,0,0);
- const grad=g.createLinearGradient(0,0,W,H);grad.addColorStop(0,'#070f27');grad.addColorStop(.44,'#131638');grad.addColorStop(1,'#090e25');g.fillStyle=grad;g.fillRect(0,0,W,H);
- // Broad velvet nebulae, not false data points.
- const clouds=[[.62,.58,.49,'#9957c9',.37],[.31,.58,.39,'#3047c4',.36],[.73,.33,.41,'#7046c1',.21],[.55,.77,.32,'#c55ca5',.22],[.15,.79,.34,'#2276b1',.18]];
- for(const [x,y,r,color,alpha] of clouds){const R=Math.max(W,H)*r,gl=g.createRadialGradient(W*x,H*y,0,W*x,H*y,R);gl.addColorStop(0,rgba(color,alpha));gl.addColorStop(.40,rgba(color,alpha*.42));gl.addColorStop(1,rgba(color,0));g.fillStyle=gl;g.fillRect(0,0,W,H);}
- const rand=randGen(99);
- // Milky Way stream, deliberately faint so real data is always recognizable.
+ const paper=document.createElement('canvas'); paper.width=Math.round(W*DPR); paper.height=Math.round(H*DPR);
+ const g=paper.getContext('2d');g.setTransform(DPR,0,0,DPR,0,0);
+ // A deep, clear midnight field rather than the old muddy purple wash.
+ const base=g.createLinearGradient(0,0,W,H);base.addColorStop(0,'#050c22');base.addColorStop(.36,'#0c1734');base.addColorStop(.68,'#0e1134');base.addColorStop(1,'#050b20');g.fillStyle=base;g.fillRect(0,0,W,H);
+ const clouds=[
+  [.64,.51,.50,'#a243d6',.26],[.30,.70,.42,'#216bc8',.29],[.75,.73,.38,'#c44ba9',.20],
+  [.56,.37,.38,'#3858e7',.26],[.21,.46,.38,'#1ab3c3',.17],[.92,.38,.27,'#7347df',.13]
+ ];
+ g.globalCompositeOperation='screen';
+ for(const [x,y,r,color,alpha] of clouds){const R=Math.max(W,H)*r,gl=g.createRadialGradient(W*x,H*y,0,W*x,H*y,R);gl.addColorStop(0,rgba(color,alpha));gl.addColorStop(.36,rgba(color,alpha*.37));gl.addColorStop(1,rgba(color,0));g.fillStyle=gl;g.fillRect(0,0,W,H);}
+ // Distinctive layered aurora silk, flowing through the middle of the sky.
+ const layers=[
+  {a:[-.18,.79],b:[.23,.67],c:[.50,.28],d:[1.15,.42],color:'#45a9e9',width:.11,alpha:.105},
+  {a:[-.16,.85],b:[.29,.70],c:[.46,.31],d:[1.19,.42],color:'#729aff',width:.14,alpha:.12},
+  {a:[-.15,.82],b:[.26,.86],c:[.63,.22],d:[1.12,.33],color:'#b177f3',width:.18,alpha:.1},
+  {a:[-.18,.96],b:[.37,.75],c:[.57,.31],d:[1.18,.34],color:'#e58bc7',width:.11,alpha:.08},
+  {a:[-.13,.73],b:[.20,.52],c:[.45,.18],d:[1.13,.31],color:'#64e2de',width:.052,alpha:.11}
+ ];
+ const bezierPath=(l,shift=0)=>{g.beginPath();g.moveTo(l.a[0]*W,(l.a[1]+shift)*H);g.bezierCurveTo(l.b[0]*W,(l.b[1]+shift)*H,l.c[0]*W,(l.c[1]+shift)*H,l.d[0]*W,(l.d[1]+shift)*H);};
  g.save();g.globalCompositeOperation='screen';
- for(let k=0;k<1050;k++){const t=rand(),curve=.78-.63*t+.082*Math.sin(t*7+.2);const x=(t*1.19-.07+(rand()-.5)*.15)*W,y=(curve+(rand()-.5)*.20)*H;const radius=.18+rand()*.92;g.fillStyle=rgba(rand()<.4?'#a4b3ff':'#d6b9eb',.04+rand()*.25);g.beginPath();g.arc(x,y,radius,0,6.283);g.fill();}
- for(let i=0;i<Math.round(W*H/650);i++){const x=rand()*W,y=rand()*H,rr=.2+rand()*.69;g.fillStyle=`rgba(220,230,255,${.08+rand()*.36})`;g.beginPath();g.arc(x,y,rr,0,6.283);g.fill();}
- for(let i=0;i<20;i++){const x=rand()*W,y=rand()*H,rr=1+rand()*2;g.strokeStyle=`rgba(228,217,255,${.07+rand()*.19})`;g.lineWidth=.65;g.beginPath();g.moveTo(x-rr,y);g.lineTo(x+rr,y);g.moveTo(x,y-rr*1.5);g.lineTo(x,y+rr*1.5);g.stroke();}
+ layers.forEach((l,i)=>{
+  for(let j=0;j<5;j++){
+   const shift=(j-2)*.015,weight=Math.max(.01,1-Math.abs(j-2)/3);
+   bezierPath(l,shift);g.strokeStyle=rgba(l.color,l.alpha*weight*.26);g.lineWidth=H*(l.width*.50)+j*.7;
+   g.shadowBlur=0;g.stroke();
+  }
+  for(let j=0;j<1;j++){
+   bezierPath(l,0);g.shadowBlur=0;
+   g.lineWidth=j===0?2.1:.8;g.strokeStyle=rgba(l.color,j===0?.055:.09);g.stroke();
+  }
+ });g.restore();
+ // Continuous star dust stream, not additional diary entries.
+ const rand=randGen(5511);
+ g.save();g.globalCompositeOperation='screen';
+ for(let k=0;k<1450;k++){
+  const t=rand(),which=rand(),center=.78-.53*t+.10*Math.sin(t*7.5+1.1);
+  const x=(t*1.12-.06+(rand()-.5)*.19)*W;
+  const y=(center+(rand()-.5)*(which<.65?.19:.42))*H;
+  const r=.18+Math.pow(rand(),3)*1.35;
+  g.fillStyle=rgba(rand()<.33?'#a6e3fb':rand()<.57?'#eda7ed':'#e4e6ff',.055+rand()*.25);
+  g.beginPath();g.arc(x,y,r,0,6.283);g.fill();
+ }
+ for(let i=0;i<Math.round(W*H/960);i++){
+  const x=rand()*W,y=rand()*H,r=.15+rand()*.68;
+  g.fillStyle=`rgba(218,236,255,${.08+rand()*.34})`;
+  g.beginPath();g.arc(x,y,r,0,6.283);g.fill();
+ }
+ for(let i=0;i<28;i++){
+  const x=rand()*W,y=rand()*H,r=1.8+rand()*2.3;
+  g.strokeStyle=`rgba(205,224,255,${.06+rand()*.12})`;g.lineWidth=.55;
+  g.beginPath();g.moveTo(x-r,y);g.lineTo(x+r,y);g.moveTo(x,y-r*1.5);g.lineTo(x,y+r*1.5);g.stroke();
+ }
  g.restore();
- const shade=g.createRadialGradient(W*.55,H*.52,Math.min(W,H)*.1,W*.55,H*.52,Math.max(W,H)*.74);shade.addColorStop(0,'rgba(1,3,17,0)');shade.addColorStop(1,'rgba(1,4,18,.62)');g.fillStyle=shade;g.fillRect(0,0,W,H);
+ // Transparent concentric observatory arcs. Merely a map backdrop, not false records.
+ g.save();g.translate(W*.55,H*.53);g.rotate(-.36);
+ for(const [rx,ry,offset] of [[W*.50,H*.42,.17],[W*.39,H*.30,1.65],[W*.25,H*.19,3.02]]){
+  g.beginPath();g.ellipse(0,0,rx,ry,0,offset,offset+2.0);
+  g.strokeStyle='rgba(170,213,255,.075)';g.lineWidth=.8;g.stroke();
+ }
+ g.restore();
+ const vignette=g.createRadialGradient(W*.52,H*.56,Math.min(W,H)*.18,W*.52,H*.54,Math.max(W,H)*.73);
+ vignette.addColorStop(0,'rgba(1,4,16,0)');vignette.addColorStop(1,'rgba(1,4,17,.52)');g.fillStyle=vignette;g.fillRect(0,0,W,H);
  background=paper;
 }
 function glow(p,color,r,strength){const R=Math.min(150,Math.max(35,r));const light=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,R);light.addColorStop(0,rgba(color,strength));light.addColorStop(.28,rgba(color,strength*.32));light.addColorStop(1,rgba(color,0));ctx.fillStyle=light;ctx.beginPath();ctx.arc(p.x,p.y,R,0,6.283);ctx.fill();}
 const midpoint=(a,b,offset=0)=>{const vx=b.x-a.x,vy=b.y-a.y,d=Math.hypot(vx,vy)||1;const bend=Math.min(38,d*.12)+offset;return {x:(a.x+b.x)/2-vy/d*bend,y:(a.y+b.y)/2+vx/d*bend};};
 const onCurve=(a,b,t)=>{const c=midpoint(a,b),u=1-t;return {x:u*u*a.x+2*u*t*c.x+t*t*b.x,y:u*u*a.y+2*u*t*c.y+t*t*b.y};};
 function thread(a,b,c1,c2,active,dotted){
- const ctrl=midpoint(a,b),gradient=ctx.createLinearGradient(a.x,a.y,b.x,b.y);gradient.addColorStop(0,rgba(c1,active?.7:.23));gradient.addColorStop(.5,rgba('#d4c9ff',active?.8:.34));gradient.addColorStop(1,rgba(c2,active?.7:.23));
- ctx.save();ctx.lineCap='round';ctx.strokeStyle=gradient;ctx.lineWidth=active?1.85:1.1;ctx.setLineDash(dotted?[3,7]:[]);if(dotted&&!reduced)ctx.lineDashOffset=-elapsed*.01;
- ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.quadraticCurveTo(ctrl.x,ctrl.y,b.x,b.y);ctx.stroke();
- ctx.setLineDash([]);if(active){const glowC=ctx.createLinearGradient(a.x,a.y,b.x,b.y);glowC.addColorStop(0,rgba(c1,.08));glowC.addColorStop(1,rgba(c2,.08));ctx.strokeStyle=glowC;ctx.lineWidth=7;ctx.stroke();}
- if(!reduced&&(active||N<=3)){const t=(elapsed*.00018)%1,q=onCurve(a,b,t);glow(q,c2,12,.45);ctx.beginPath();ctx.fillStyle='#f4f1ff';ctx.arc(q.x,q.y,1.4,0,6.283);ctx.fill();}ctx.restore();
+ const ctrl=midpoint(a,b),gradient=ctx.createLinearGradient(a.x,a.y,b.x,b.y);
+ gradient.addColorStop(0,rgba(c1,active?.74:.27));gradient.addColorStop(.52,rgba('#d8d9ff',active?.76:.30));gradient.addColorStop(1,rgba(c2,active?.74:.27));
+ ctx.save();ctx.lineCap='round';ctx.lineJoin='round';
+ ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.quadraticCurveTo(ctrl.x,ctrl.y,b.x,b.y);
+ if(active){ctx.lineWidth=13;ctx.strokeStyle=rgba(c1,.075);ctx.shadowBlur=20;ctx.shadowColor=c1;ctx.stroke();}
+ ctx.strokeStyle=gradient;ctx.lineWidth=active?1.7:.9;ctx.setLineDash(dotted?[2,8]:[]);
+ if(dotted&&!reduced)ctx.lineDashOffset=-elapsed*.003;
+ ctx.shadowBlur=active?13:3;ctx.shadowColor=c1;ctx.stroke();ctx.setLineDash([]);
+ if(!reduced&&(active||N<=3)){const t=(elapsed*.00014)%1,q=onCurve(a,b,t);glow(q,c2,16,.49);ctx.fillStyle='#f8fbff';ctx.beginPath();ctx.arc(q.x,q.y,1.5,0,6.283);ctx.fill();}
+ ctx.restore();
 }
 function drawOrb(s,p,focus){
- const chosen=s.i===state.selected,over=s.i===state.hover,related=focus<0||s.i===focus||neighbors.get(focus)?.includes(s.i)||links.some(([a,b])=>(a===focus&&b===s.i)||(b===focus&&a===s.i));
- const primary=col(s.top),secondary=col(s.secondary);const R=clamp((N<=3?16.5:12.2)+(s.conf*8),10,26)*p.scale*Math.sqrt(state.zoom)*(chosen?1.21:1);
- const breathe=reduced?1:1+.035*Math.sin(elapsed*.0014+s.i*1.9);ctx.save();ctx.globalAlpha=related?1:.38;
- ctx.globalCompositeOperation='screen';glow(p,primary,R*(chosen?5.8:4.5)*breathe,chosen?.29:.20);glow(p,secondary,R*3.8,.065);
- ctx.globalCompositeOperation='source-over';ctx.strokeStyle=rgba(primary,chosen?.62:.18);ctx.lineWidth=chosen?1.2:.75;ctx.beginPath();ctx.arc(p.x,p.y,R*(chosen?1.9:1.68),0,6.283);ctx.stroke();
- if(chosen){ctx.strokeStyle=rgba(secondary,.48);ctx.beginPath();ctx.arc(p.x,p.y,R*2.32,-1.35,1.52);ctx.stroke();}
- // Pearlescent light-seed, not a five-pointed star or an imitation planet.
- const orb=ctx.createRadialGradient(p.x-R*.34,p.y-R*.40,R*.04,p.x,p.y,R*1.13);orb.addColorStop(0,'rgba(255,255,255,.97)');orb.addColorStop(.18,rgba(primary,.96));orb.addColorStop(.58,rgba(primary,.84));orb.addColorStop(.82,rgba(secondary,.29));orb.addColorStop(1,rgba('#08122e',.94));ctx.fillStyle=orb;ctx.beginPath();ctx.arc(p.x,p.y,R,0,6.283);ctx.fill();
- ctx.strokeStyle=rgba('#ffffff',chosen?.59:.20);ctx.lineWidth=.9;ctx.stroke();ctx.strokeStyle=rgba(secondary,.85);ctx.lineWidth=2;ctx.beginPath();ctx.arc(p.x,p.y,R+2.7,-.7,.55);ctx.stroke();
- const label=chosen||over||N<=4;if(label){ctx.font=(chosen?'700':'500')+' 11px "Gothic A1",sans-serif';ctx.textAlign='center';ctx.shadowColor='#060b23';ctx.shadowBlur=10;ctx.fillStyle=chosen?'#ffffff':'rgba(237,241,255,.87)';ctx.fillText(fmtDay(s.date),p.x,p.y+R+27);ctx.shadowBlur=0;}
- hitAreas.push({i:s.i,x:p.x,y:p.y,r:Math.max(17,R+7)});ctx.restore();
+ const chosen=s.i===state.selected,over=s.i===state.hover;
+ const related=focus<0||s.i===focus||neighbors.get(focus)?.includes(s.i)||links.some(([a,b])=>(a===focus&&b===s.i)||(b===focus&&a===s.i));
+ const primary=col(s.top),secondary=col(s.secondary);
+ const R=clamp((N<=3?14:11)+(s.conf*6),10,22)*p.scale*Math.sqrt(state.zoom)*(chosen?1.88:1);
+ const breathe=reduced?1:1+.032*Math.sin(elapsed*.00125+s.i*1.7);
+ ctx.save();ctx.globalAlpha=related?1:.38;
+ ctx.globalCompositeOperation='screen';
+ glow(p,primary,R*(chosen?6.2:6)*breathe,chosen?.31:.20);glow(p,secondary,R*(chosen?5.5:4.2),chosen?.14:.055);
+ if(chosen){
+  // Organic, refracted aurora around the actual selected data point.
+  const slow=reduced?0:elapsed*.000075;
+  for(let j=0;j<7;j++){
+   const ang=j*(Math.PI*2/7)+slow*.22;
+   ctx.save();ctx.translate(p.x,p.y);ctx.rotate(ang);
+   const far=R*(3.1+(j%3)*.14),ww=R*(.62+(j%2)*.20);
+   const cg=ctx.createLinearGradient(0,0,far,0);
+   cg.addColorStop(0,rgba(primary,.24));cg.addColorStop(.44,rgba(j%2?secondary:primary,.095));cg.addColorStop(1,rgba(secondary,0));
+   ctx.fillStyle=cg;ctx.beginPath();ctx.moveTo(0,0);ctx.bezierCurveTo(far*.18,-ww*1.5,far*.65,-ww*.75,far,0);ctx.bezierCurveTo(far*.64,ww*.65,far*.20,ww*1.25,0,0);ctx.fill();ctx.restore();
+  }
+ }
+ ctx.globalCompositeOperation='source-over';
+ if(chosen){
+  ctx.save();ctx.translate(p.x,p.y);ctx.rotate(-.48);
+  for(const item of [[R*3.05,R*1.78,.11,4.1,rgba(primary,.43),1.1],[R*3.9,R*2.55,2.7,5.35,rgba(secondary,.30),.7],[R*2.48,R*1.40,4.1,6.05,'rgba(230,242,255,.34)',.7]]){
+   ctx.beginPath();ctx.ellipse(0,0,item[0],item[1],0,item[2],item[3]);ctx.strokeStyle=item[4];ctx.lineWidth=item[5];ctx.shadowColor=primary;ctx.shadowBlur=10;ctx.stroke();
+  }
+  ctx.restore();
+ }
+ // Sculpted light fragment: soft glass, not a planetary ball or a five-point star.
+ ctx.save();ctx.translate(p.x,p.y);ctx.rotate(-.30);
+ const core=ctx.createRadialGradient(-R*.24,-R*.31,1,0,0,R*1.20);
+ core.addColorStop(0,'rgba(255,255,255,.98)');core.addColorStop(.17,rgba(primary,.96));core.addColorStop(.57,rgba(primary,.77));core.addColorStop(.82,rgba(secondary,.27));core.addColorStop(1,rgba(primary,.02));
+ ctx.fillStyle=core;ctx.beginPath();ctx.ellipse(0,0,R*.81,R*1.12,0,0,Math.PI*2);ctx.fill();
+ ctx.strokeStyle=rgba('#ffffff',chosen?.62:.22);ctx.lineWidth=.7;ctx.stroke();
+ ctx.beginPath();ctx.ellipse(-R*.18,-R*.35,R*.22,R*.34,-.6,0,6.283);ctx.fillStyle='rgba(255,255,255,.21)';ctx.fill();
+ ctx.restore();
+ if(chosen){
+  const tw=reduced?1:1+.14*Math.sin(elapsed*.0015);
+  ctx.save();ctx.globalCompositeOperation='screen';glow(p,'#ffffff',R*2.7,.11*tw);ctx.restore();
+  ctx.textAlign='center';ctx.font='700 11px "Malgun Gothic",sans-serif';ctx.fillStyle='rgba(248,250,255,.95)';ctx.shadowColor='#040719';ctx.shadowBlur=12;ctx.fillText(fmtDay(s.date),p.x,p.y+R*3.0+18);ctx.shadowBlur=0;
+ }else if(over||N<=3){
+  ctx.fillStyle='rgba(224,235,255,.74)';ctx.font='500 10px "Malgun Gothic",sans-serif';ctx.textAlign='center';ctx.shadowColor='#03071c';ctx.shadowBlur=9;ctx.fillText(fmtDay(s.date),p.x,p.y+R*1.9+16);ctx.shadowBlur=0;
+ }
+ hitAreas.push({i:s.i,x:p.x,y:p.y,r:Math.max(17,R*1.5+8)});
+ ctx.restore();
 }
 function draw(){if(!ctx)return;ctx.setTransform(DPR,0,0,DPR,0,0);ctx.clearRect(0,0,W,H);if(background)ctx.drawImage(background,0,0,W,H);if(!N)return;
  projected=stars.map(projectedPoint);hitAreas=[];
@@ -206,7 +349,7 @@ function draw(){if(!ctx)return;ctx.setTransform(DPR,0,0,DPR,0,0);ctx.clearRect(0
 function panel(i){state.selected=i;const title=$('dateTitle'),summary=$('summary'),hero=$('hero'),ratio=$('ratio'),note=$('note'),rel=$('relations');
  if(i<0){title.textContent='나의 하루';summary.textContent='빛점을 선택하면 그날의 감정이 펼쳐져요';hero.hidden=true;ratio.hidden=true;note.textContent='';$('relationSection').hidden=true;draw();return;}
  $('relationSection').hidden=false;const s=stars[i],rank=s.p.map((_,j)=>j).sort((a,b)=>s.p[b]-s.p[a]);title.textContent=fmtDay(s.date);summary.textContent='그날의 마음을 다시 펼쳐볼까요';hero.hidden=false;
- $('orb').style.setProperty('--c',col(s.top));$('orb').style.setProperty('--c2',col(s.secondary));$('emotionName').textContent=EMO[s.top];$('emotionSub').textContent=`${Math.round(s.conf*100)}% · ${EMO[s.secondary]} ${Math.round(s.p[s.secondary]*100)}%`;
+ $('hero').style.setProperty('--c',col(s.top));$('orb').style.setProperty('--c',col(s.top));$('orb').style.setProperty('--c2',col(s.secondary));$('emotionName').textContent=EMO[s.top];$('emotionSub').textContent=`${Math.round(s.conf*100)}% · ${EMO[s.secondary]} ${Math.round(s.p[s.secondary]*100)}%`;
  ratio.hidden=false;ratio.innerHTML=`<div class="ratio-head"><span>그날의 감정</span><span>7가지 감정의 비율</span></div><div class="ratio-track">${s.p.map((n,j)=>`<span title="${safe(EMO[j])} ${Math.round(n*100)}%" style="width:${Math.max(0,Number(n))*100}%;background:${col(j)}"></span>`).join('')}</div>`;
  note.textContent=s.text||'기록된 내용이 없어요.';let candidates=[];
  if(state.time){$('relationsTitle').textContent='시간을 따라간 기록';$('relationsMeta').textContent='이전 · 다음';candidates=(neighbors.get(i)||[]).map(j=>({i:j,detail:stars[j].date<s.date?'이전':'다음'}));}
@@ -215,7 +358,7 @@ function panel(i){state.selected=i;const title=$('dateTitle'),summary=$('summary
  draw();
 }
 $('relations').addEventListener('click',e=>{const b=e.target.closest('button[data-i]');if(!b)return;const i=+b.dataset.i;if(!show(stars[i])){EMO.forEach((_,j)=>enabled.add(j));syncFilters();}panel(i);});
-function view(v){state.view=v;state.zoom=1;state.panX=0;state.panY=0;$('m2').setAttribute('aria-pressed',String(v===2));$('m3').setAttribute('aria-pressed',String(v===3));$('hint').textContent=v===3?'드래그하여 회전 · 휠로 확대':'드래그하여 탐색 · 휠로 확대';draw();}
+function view(v){state.view=v;state.zoom=1;state.panX=0;state.panY=0;$('m2').setAttribute('aria-pressed',String(v===2));$('m3').setAttribute('aria-pressed',String(v===3));$('hint').innerHTML=v===3?'마우스로 천천히 회전하고 감정을 탐색하세요 <span>✦</span>':'빛을 선택하면 그날의 마음이 펼쳐집니다 <span>✦</span>';draw();}
 $('m2').onclick=()=>view(2);$('m3').onclick=()=>view(3);
 $('timeMode').setAttribute('aria-pressed',String(state.time));$('timeMode').onclick=()=>{state.time=!state.time;$('timeMode').setAttribute('aria-pressed',String(state.time));panel(state.selected);};
 const pos=e=>{const rect=canvas.getBoundingClientRect();return {x:e.clientX-rect.left,y:e.clientY-rect.top};};
@@ -231,7 +374,7 @@ let oldW=0,oldH=0;
 function resize(){const w=Math.max(1,stage.clientWidth),h=Math.max(1,stage.clientHeight);if(w===oldW&&h===oldH)return;oldW=w;oldH=h;W=w;H=h;canvas.width=Math.round(w*DPR);canvas.height=Math.round(h*DPR);createBackground();draw();}
 new ResizeObserver(()=>requestAnimationFrame(resize)).observe(stage);
 resize();if(N){panel(order[order.length-1]);}else{$('empty').hidden=false;panel(-1);}
-if(!reduced){let last=performance.now();function animate(now){const delta=Math.min(now-last,80);if(delta>=29){last=now;elapsed+=delta;if(state.view===3&&!drag)state.rotA+=delta*.000075;draw();}requestAnimationFrame(animate);}requestAnimationFrame(animate);}
+if(!reduced){let last=performance.now();function animate(now){const delta=Math.min(now-last,80);if(delta>=(state.view===3?55:85)){last=now;elapsed+=delta;if(state.view===3&&!drag)state.rotA+=delta*.000075;draw();}requestAnimationFrame(animate);}requestAnimationFrame(animate);}
 </script>
 </body>
 </html>
