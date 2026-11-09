@@ -16,6 +16,7 @@ import quotes
 import sky
 from solar_calendar_picker import render_solar_calendar
 from emotion_home import render_home_extras
+from emotion_visual_theme import render_home_theme, render_capsule_theme
 from emotion_guides import render_home_side, render_explainer
 from model import EMO, predict
 from samples import SAMPLES
@@ -418,6 +419,7 @@ def show_quick_result_card(result):
 
 def page_home():
     nick = nick_or_login()
+    render_home_theme()
     entries = {e["date"]: e for e in db.load_entries(nick)}
     today = dt.date.today()
 
@@ -587,7 +589,6 @@ def page_solar():
         "감정 태양계", "일곱 개의 감정 행성이 만들어 가는 나만의 우주를 탐험해 보세요",
         month_options(entries), solar_entries=entries, on_solar_date=open_solar_date,
     )
-    render_explainer("solar")
     cur = [e for e in entries if e["date"].startswith(ym)]
     components.html(sky.solar_html(cur, f"{ym[:4]}년 {int(ym[5:])}월", height=600), height=610)
 
@@ -687,10 +688,10 @@ def page_archive():
 # ---------- 화면 5: 감정 타임캡슐 ----------
 def page_capsule():
     nick = nick_or_login()
+    render_capsule_theme()
     entries = db.load_entries(nick)
     today = dt.date.today()
     header("감정 타임캡슐", "7일, 14일, 30일 전의 내가 보낸 편지가 도착해요. 지금의 마음으로 그때의 나에게 답장해 보세요.")
-    render_explainer("capsule")
     allmode = st.session_state.get("cap_all", False)
     letters = capsule_letters(entries, today, everything=allmode)
     fresh_n = len(capsule_letters(entries, today))
@@ -705,7 +706,7 @@ def page_capsule():
 
     t1, t2 = st.tabs([f"도착한 편지 {fresh_n}", f"주고받은 편지 {len(replied)}"])
     with t1:
-        st.toggle("지난 기록 모두 보기 (7일이 지난 모든 기록에 답장할 수 있어요)", key="cap_all")
+        st.toggle("지난 편지 더 보기", key="cap_all")
         if not letters:
             first = f"{nxt.month}월 {nxt.day}일" if nxt else "7일 뒤"
             st.markdown(f'<div class="empty" style="min-height:280px"><div><b>✉</b>아직 도착한 편지가 없어요.<br>'
@@ -732,7 +733,6 @@ def page_capsule():
                 st.markdown('<div style="height:14px"></div>', unsafe_allow_html=True)
                 reply = st.text_area("지금의 내가 그때의 나에게", key=f"reply_{x['date']}", height=130, max_chars=500,
                                      placeholder="그때의 나에게 하고 싶은 말을 적어 보세요.")
-                st.caption("이렇게 시작해도 좋아요 · “그때 걱정했던 일은…” · “지금의 나는…” · “그때의 나에게 고마운 건…”")
                 if st.button("답장 보내기 ✉", type="primary", key=f"send_{x['date']}"):
                     if not reply.strip():
                         st.warning("답장을 먼저 적어 주세요.")

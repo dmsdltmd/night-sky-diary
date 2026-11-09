@@ -49,24 +49,24 @@ def _calendar_css(ym: str, by_date: dict[str, dict], selected: str, today: dt.da
         "<style>",
         # 넓은 그리드를 팝업 안에 표시하되 모바일 뷰포트를 벗어나지 않게 합니다.
         'div[data-testid="stPopoverBody"]:has([class*="st-key-solar_picker_root"])'
-        '{width:min(440px,calc(100vw - 24px))!important;max-width:calc(100vw - 24px)!important;}',
+        '{width:min(450px,calc(100vw - 24px))!important;max-width:calc(100vw - 24px)!important;background:linear-gradient(145deg,#1b2147,#10152e 72%)!important;border:1px solid rgba(169,168,252,.28)!important;border-radius:18px!important;box-shadow:0 18px 58px rgba(1,4,22,.57)!important;}',
         '[class*="st-key-solar_picker_root"] [data-testid="stHorizontalBlock"]:has([class*="st-key-solar_cal_day_"])'
         '{flex-wrap:nowrap!important;gap:4px!important;}',
         '[class*="st-key-solar_picker_root"] [data-testid="stHorizontalBlock"]:has([class*="st-key-solar_cal_day_"]) [data-testid="stColumn"]'
         '{min-width:0!important;width:0!important;flex:1 1 0!important;}',
         '[class*="st-key-solar_cal_day_"] button'
-        '{width:100%!important;min-height:39px!important;min-width:0!important;'
+        '{width:100%!important;min-height:43px!important;min-width:0!important;'
         'padding:4px 0!important;border-radius:10px!important;'
         'font-size:12px!important;font-weight:650!important;'
-        'background:#171c38!important;color:#e8eaff!important;'
-        'border:1px solid rgba(155,159,224,.22)!important;}',
+        'background:linear-gradient(150deg,#1c2449,#131a36)!important;color:#e9edff!important;'
+        'border:1px solid rgba(159,178,240,.12)!important;transition:transform .12s ease,filter .12s ease!important;}',
         '[class*="st-key-solar_cal_day_"] button:hover:not(:disabled)'
         '{filter:brightness(1.22)!important;transform:translateY(-1px)!important;}',
         '[class*="st-key-solar_cal_day_"] button:disabled'
         '{opacity:.35!important;}',
         '.solar-picker-weekdays{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));'
         'gap:4px;text-align:center;margin:7px 0 9px;font-size:11px;'
-        'font-weight:700;color:#bfc2e9;}',
+        'font-weight:700;color:#bfc7e9;letter-spacing:.05em;}',
         '.solar-picker-legend{display:flex;flex-wrap:wrap;gap:7px 13px;'
         'color:#cdd2f2;font-size:11px;margin:12px 0 3px;}',
         '.solar-picker-legend i{display:inline-block;width:8px;height:8px;'
@@ -78,12 +78,12 @@ def _calendar_css(ym: str, by_date: dict[str, dict], selected: str, today: dt.da
         border = color if date == selected else color + "90"
         css.append(
             f"div.{class_name} button{{background:linear-gradient(145deg,{color}45,#171c38)!important;"
-            f"border:1px solid {border}!important;color:#fff!important;}}"
+            f"border:1px solid {border}!important;color:#fff!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.10)!important;}}"
         )
     if selected.startswith(ym + "-"):
         css.append(
             f"div.st-key-solar_cal_day_{selected.replace('-', '')} button"
-            "{outline:2px solid #e4d7ff!important;outline-offset:-3px!important;}"
+            "{outline:2px solid #e8ddff!important;outline-offset:-3px!important;box-shadow:0 0 18px rgba(184,151,255,.24)!important;}"
         )
     if today.strftime("%Y-%m") == ym:
         css.append(
@@ -157,7 +157,7 @@ def render_solar_calendar(ym: str, entries: list[dict], on_date_open=None) -> No
         st.markdown(f'<div class="solar-picker-legend">{legend}</div>',
                     unsafe_allow_html=True)
         if not selected:
-            st.caption("✦ 날짜를 눌러 그날의 기록을 확인하세요. 색깔이 있는 날에는 기록이 있어요.")
+            st.caption("날짜를 누르면 그날의 기록이 보여요.")
             return
 
         st.divider()
