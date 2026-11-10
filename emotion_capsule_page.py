@@ -24,9 +24,9 @@ MILESTONES = (7, 14, 30)
 # styling is restricted to the capsule container so other pages are unaffected.
 STYLES = r"""<style>
 .et-cap-shell{font-family:'Gothic A1','Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#f5f4ff}
-.et-cap-intro{position:relative;overflow:hidden;min-height:168px;padding:26px 34px 24px;border-radius:22px;border:1px solid rgba(173,183,243,.22);background:radial-gradient(ellipse at 79% 17%,rgba(130,99,209,.19),transparent 48%),linear-gradient(122deg,#151a34,#11172f 54%,#121330);box-shadow:0 16px 45px rgba(2,5,24,.18);margin-bottom:18px}
+.et-cap-intro{position:relative;overflow:hidden;min-height:148px;padding:25px 32px 24px;border-radius:22px;border:1px solid rgba(173,183,243,.22);background:radial-gradient(ellipse at 79% 17%,rgba(130,99,209,.19),transparent 48%),linear-gradient(122deg,#151a34,#11172f 54%,#121330);box-shadow:0 16px 45px rgba(2,5,24,.18);margin-bottom:15px}
 .et-cap-intro::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.32;background-image:radial-gradient(1px 1px at 16% 26%,#fff 95%,transparent),radial-gradient(1px 1px at 69% 78%,#e1c9ff 95%,transparent),radial-gradient(1px 1px at 92% 24%,#fff 95%,transparent);background-size:151px 123px,213px 179px,269px 211px}
-.et-cap-intro-content{position:relative;z-index:2;max-width:77%}
+.et-cap-intro-content{position:relative;z-index:2;max-width:84%}
 .et-cap-overline{display:flex;align-items:center;gap:8px;font-size:9.5px;letter-spacing:.21em;font-weight:700;color:#c1b2f2}
 .et-cap-overline i{font-size:13px;color:#ffd6ab;font-style:normal}
 .et-cap-intro h1{font-size:clamp(24px,2.35vw,31px);font-weight:800;letter-spacing:-.06em;line-height:1.47;color:#fff;margin:11px 0 7px}
@@ -35,13 +35,13 @@ STYLES = r"""<style>
 .et-cap-next{display:inline-flex;align-items:center;gap:9px;padding:7px 11px;margin-top:13px;background:rgba(195,174,244,.085);border:1px solid rgba(190,175,240,.16);border-radius:99px;font-size:11.5px;color:#c3c9e1;max-width:100%;flex-wrap:wrap}
 .et-cap-next b{color:#f2e3ff;font-weight:700}
 .et-cap-next-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#ffd0b1;box-shadow:0 0 10px rgba(255,194,154,.55)}
-.et-cap-art{position:absolute;right:5%;top:50%;transform:translateY(-50%);width:170px;height:148px;z-index:1;pointer-events:none}
+.et-cap-art{position:absolute;right:5%;top:50%;transform:translateY(-50%);width:116px;height:108px;z-index:1;pointer-events:none}
 .et-cap-art svg{width:100%;height:100%;filter:drop-shadow(0 10px 24px rgba(178,114,201,.12))}
 .et-cap-eyebrow{font-size:10px;letter-spacing:.14em;font-weight:700;color:#b3bde2}
 .et-cap-section{display:flex;align-items:center;gap:9px;margin:16px 0 13px}
 .et-cap-section strong{font-size:17px;letter-spacing:-.045em;color:#f9f5ff}
 .et-cap-section span{font-size:11px;color:#a3aecf}
-.et-cap-empty{min-height:205px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:9px;text-align:center;background:linear-gradient(140deg,rgba(30,34,70,.58),rgba(16,22,47,.67));border:1px solid rgba(171,177,233,.16);border-radius:20px;padding:30px 18px;margin:5px 0 12px}
+.et-cap-empty{min-height:210px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:9px;text-align:center;background:linear-gradient(140deg,rgba(30,34,70,.58),rgba(16,22,47,.67));border:1px solid rgba(171,177,233,.16);border-radius:20px;padding:30px 18px;margin:5px 0 12px}
 .et-cap-empty-icon{display:grid;place-items:center;height:56px;width:66px;margin-bottom:5px}
 .et-cap-empty-icon svg{height:49px;width:60px}
 .et-cap-empty strong{font-size:15px;color:#fff;font-weight:700;letter-spacing:-.02em}
@@ -91,6 +91,54 @@ STYLES = r"""<style>
 .st-key-et_cap_root [data-testid='stForm']{border:1px solid rgba(187,174,240,.16)!important;border-radius:15px!important;background:rgba(31,34,67,.36)!important}
 @media(max-width:780px){.et-cap-intro{padding:22px 20px;min-height:164px}.et-cap-intro-content{max-width:84%}.et-cap-art{width:130px;right:1%;opacity:.58}.et-cap-letter{padding:21px 20px}.et-cap-intro h1{font-size:25px}}
 @media(max-width:530px){.et-cap-intro-content{max-width:100%}.et-cap-art{right:-32px;width:125px;opacity:.23}.et-cap-intro h1{font-size:23px}.et-cap-intro p{font-size:11px;max-width:85%}.et-cap-next{font-size:10.5px}.et-cap-upcoming{padding:11px}.et-cap-days{font-size:10px}.st-key-et_cap_root [data-testid='stTabs'] button[data-baseweb='tab']{font-size:11px!important;padding:8px 9px!important}}
+
+/* Quiet celestial stationery | v5 visual polish */
+.et-cap-shell{--ivory:#f6f0e9;--paper-ink:#30314a;--lavender:#b8a6f3;--rose:#dcb4bd;--subtle:#aeb9d8}
+.et-cap-intro{border-color:rgba(168,174,227,.23);border-radius:18px;background:linear-gradient(115deg,rgba(24,30,58,.97) 0%,rgba(18,23,47,.97) 60%,rgba(26,23,54,.97) 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 18px 38px rgba(1,5,22,.13)}
+.et-cap-intro::before{opacity:.17}
+.et-cap-overline{font-size:9px;color:#aeb2dc;letter-spacing:.22em}
+.et-cap-intro h1{font-size:clamp(24px,2.1vw,30px);margin:9px 0 8px;letter-spacing:-.055em}
+.et-cap-intro h1 em{color:#e9c6cb}
+.et-cap-intro p{font-size:12.4px;line-height:1.8;max-width:620px;color:#b9c2dd}
+.et-cap-art{right:3%;opacity:.66;transform:translateY(-50%) rotate(-7deg)}
+.et-cap-art svg{filter:drop-shadow(0 7px 19px rgba(218,153,182,.14))}
+.et-cap-art-star{display:grid;place-items:center;width:100%;height:100%;font-size:52px;color:#bdb0e6;text-shadow:0 0 35px rgba(190,173,243,.29);opacity:.75}
+.et-cap-next{margin-top:11px;padding:7px 11px;background:rgba(175,158,224,.105);border-color:rgba(182,169,231,.20)}
+.et-cap-next b{color:#e8dbea}
+.et-cap-next-dot{background:#eac4ba;box-shadow:0 0 8px rgba(234,196,186,.35)}
+.et-cap-empty{min-height:216px;display:grid;grid-template-columns:128px minmax(0,440px);grid-template-rows:1fr;gap:28px;text-align:left;align-items:center;justify-content:center;padding:29px 44px;margin-top:6px;margin-bottom:12px;border-radius:19px;background:radial-gradient(circle at 11% 50%,rgba(146,116,201,.15),transparent 28%),linear-gradient(110deg,rgba(28,32,62,.83),rgba(17,22,46,.89));border:1px solid rgba(174,171,225,.19);box-shadow:inset 0 1px 0 rgba(255,255,255,.045)}
+.et-cap-empty-icon{height:110px;width:118px;grid-row:1;grid-column:1;display:grid;place-items:center;margin:0;border-radius:50%;border:1px solid rgba(201,174,224,.22);box-shadow:0 0 0 18px rgba(161,130,205,.025),0 0 65px rgba(179,140,210,.055);background:radial-gradient(circle at 34% 30%,rgba(126,89,163,.21),rgba(33,34,70,.48) 73%)}
+.et-cap-empty-icon svg{width:95px;height:78px;filter:drop-shadow(0 7px 14px rgba(222,167,193,.12))}
+.et-cap-empty-copy{grid-column:2;grid-row:1;min-width:0}
+.et-cap-empty-label{font-size:9px;color:#d3b8cf;letter-spacing:.2em;font-weight:700;margin-bottom:8px}
+.et-cap-empty strong{font-size:19px;line-height:1.45;letter-spacing:-.04em}
+.et-cap-empty p{margin-top:9px;font-size:12.5px;color:#adbad9;max-width:520px;line-height:1.8}
+.et-cap-section{margin:22px 0 14px}
+.et-cap-letter{border-radius:19px;background:linear-gradient(147deg,#f8f2ed 0%,#f1e8e6 56%,#eae1e7 100%);border:1px solid rgba(255,249,242,.85);box-shadow:0 20px 44px rgba(3,6,22,.26),inset 0 1px 0 rgba(255,255,255,.77);padding:30px 30px 26px}
+.et-cap-letter::before{height:3px;opacity:.77;background:linear-gradient(90deg,transparent,var(--accent),#c5a4c8,transparent)}
+.et-cap-letter-top b{color:#84748c;font-weight:800;letter-spacing:.19em;font-size:10px}
+.et-cap-letter-top span{color:#7b718a;background:rgba(124,99,137,.09);border:1px solid rgba(124,99,137,.12);padding:5px 9px;border-radius:99px;font-weight:700}
+.et-cap-letter-date{color:#877b8e;font-size:11px;margin:13px 0 17px}
+.et-cap-letter-body{color:#353249;font-size:16px;line-height:2.15;min-height:118px;padding:22px 0;border-top:1px solid rgba(82,67,95,.14);border-bottom:1px solid rgba(82,67,95,.14);font-weight:500}
+.et-cap-bar-label{color:#77718e;margin-top:20px;font-weight:700}
+.et-cap-bar{background:rgba(71,56,82,.12);height:6px}
+.et-cap-tags span{border:1px solid rgba(92,79,110,.13);background:rgba(255,255,255,.45);color:#58516c;font-weight:700}
+.et-cap-compare{border-color:rgba(186,180,233,.20);background:linear-gradient(155deg,rgba(31,37,72,.86),rgba(18,24,48,.92));box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+.et-cap-reply-label{margin-top:25px}
+.et-cap-reply-label b{font-size:15px}
+.et-cap-upcoming{border-color:rgba(178,172,220,.16);transition:border-color .15s,background .15s}
+.et-cap-upcoming:hover{border-color:rgba(198,182,237,.34);background:rgba(38,42,81,.75)}
+.et-cap-days{background:rgba(200,178,237,.07)}
+.st-key-et_cap_root [data-testid='stTabs'] [data-baseweb='tab-list']{border:0!important;border-bottom:1px solid rgba(177,173,231,.22)!important;border-radius:0!important;background:transparent!important;padding:2px 0 6px!important;gap:8px!important}
+.st-key-et_cap_root [data-testid='stTabs'] button[data-baseweb='tab']{border-radius:9px!important;padding:10px 16px!important;color:#b6bdd7!important;font-weight:650!important}
+.st-key-et_cap_root [data-testid='stTabs'] button[data-baseweb='tab'][aria-selected='true']{background:rgba(167,145,219,.18)!important;color:#f6e9f4!important}
+.st-key-et_cap_root [data-testid='stFormSubmitButton'] button[kind='primary'],.st-key-et_cap_root [data-testid='stFormSubmitButton'] button[data-testid='stBaseButton-primary']{background:linear-gradient(115deg,#b49ad6,#9b87c9)!important;color:#17132a!important;border:none!important;box-shadow:0 8px 22px rgba(130,100,199,.20)!important;font-weight:800!important}
+.st-key-et_cap_root [data-testid='stFormSubmitButton'] button[kind='primary']:hover,.st-key-et_cap_root [data-testid='stFormSubmitButton'] button[data-testid='stBaseButton-primary']:hover{filter:brightness(1.08)!important}
+.st-key-et_cap_root textarea{font-size:13px!important;line-height:1.7!important;border-color:rgba(188,179,228,.3)!important}
+.st-key-et_cap_root [data-testid='stPageLink'] a{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:39px!important;padding:9px 17px!important;border:1px solid rgba(203,183,236,.36)!important;border-radius:11px!important;background:rgba(146,118,196,.13)!important;color:#f1e2fc!important;font-weight:700!important}
+.st-key-et_cap_root [data-testid='stPageLink'] a:hover{background:rgba(146,118,196,.25)!important}
+@media(max-width:740px){.et-cap-empty{grid-template-columns:90px minmax(0,1fr);gap:15px;padding:25px 21px}.et-cap-empty-icon{height:80px;width:80px}.et-cap-empty-icon svg{width:72px;height:61px}.et-cap-empty strong{font-size:16px}.et-cap-intro-content{max-width:91%}}
+@media(max-width:520px){.et-cap-intro{padding:22px 18px}.et-cap-art{right:-28px;opacity:.17}.et-cap-intro-content{max-width:100%}.et-cap-empty{grid-template-columns:1fr;text-align:center;justify-items:center;gap:14px;padding:23px 16px}.et-cap-empty-icon{grid-column:1;grid-row:1}.et-cap-empty-copy{grid-row:2;grid-column:1}.et-cap-empty-label{margin-bottom:5px}.et-cap-empty p{font-size:12px}.et-cap-letter{padding:22px 17px}.et-cap-letter-body{font-size:15px}}
 </style>"""
 
 
@@ -123,10 +171,25 @@ def _due_entries(entries: list[dict], today: dt.date) -> list[dict]:
         except (KeyError, ValueError, TypeError):
             continue
         age = (today - date).days
-        if age < 7 or entry.get('reply'):
+        if age < 7:
             continue
         fresh = any(0 <= age - m < 7 for m in MILESTONES)
-        out.append({**entry, 'age': age, 'fresh': fresh, 'today': age in MILESTONES})
+        revisit = bool(entry.get('reply'))
+        if revisit:
+            # The DB stores one reply per source date, so we preserve it and
+            # allow read-only reunions at the later 14-/30-day milestones.
+            recent = [m for m in (14, 30) if 0 <= age - m < 7]
+            if not recent:
+                continue
+            milestone_date = date + dt.timedelta(days=recent[-1])
+            try:
+                reply_date = dt.date.fromisoformat(str(entry.get('reply_at') or '')[:10])
+            except ValueError:
+                reply_date = None
+            if reply_date is not None and reply_date >= milestone_date:
+                continue  # already reviewed or edited during this milestone
+        out.append({**entry, 'age': age, 'fresh': fresh, 'today': age in MILESTONES,
+                    'revisit': revisit})
     return sorted(out, key=lambda x: (not x['today'], not x['fresh'], -dt.date.fromisoformat(str(x['date'])[:10]).toordinal()))
 
 
@@ -134,8 +197,6 @@ def _upcoming_entries(entries: list[dict], today: dt.date) -> list[dict]:
     """Future 7, 14 and 30-day arrivals for un-replied source entries."""
     out = []
     for entry in entries:
-        if entry.get('reply'):
-            continue
         try:
             recorded = dt.date.fromisoformat(str(entry['date'])[:10])
         except (KeyError, ValueError, TypeError):
@@ -162,13 +223,13 @@ def _header(next_item: dict | None) -> None:
     st.markdown(f'''<div class="et-cap-shell"><section class="et-cap-intro">
 <div class="et-cap-intro-content"><div class="et-cap-overline"><i>✦</i> EMOTION TRACE · TIME CAPSULE</div>
 <h1>과거의 마음이, <em>오늘의 나에게.</em></h1>
-<p>오늘 남긴 기록이 7·14·30일 뒤 편지가 되어 돌아와요. 그때의 나를 읽고, 지금의 마음으로 답장해 보세요.</p>
+<p>오늘 남긴 기록이 7·14·30일 뒤 편지가 되어 돌아와요. 그때의 마음을 다시 읽고, 지금의 나에게서 답장을 보내 보세요.</p>
 <div class="et-cap-next"><span class="et-cap-next-dot"></span><b>{_esc(upcoming_text)}</b></div></div>
-<div class="et-cap-art">{_envelope_svg()}</div></section></div>''', unsafe_allow_html=True)
+<div class="et-cap-art"><span class="et-cap-art-star">✦</span></div></section></div>''', unsafe_allow_html=True)
 
 
 def _empty(title: str, description: str) -> None:
-    st.markdown(f'''<div class="et-cap-empty"><div class="et-cap-empty-icon">{_envelope_svg()}</div><strong>{_esc(title)}</strong><p>{_esc(description)}</p></div>''', unsafe_allow_html=True)
+    st.markdown(f'''<div class="et-cap-empty"><div class="et-cap-empty-icon">{_envelope_svg()}</div><div class="et-cap-empty-copy"><div class="et-cap-empty-label">A LETTER IN TRANSIT</div><strong>{_esc(title)}</strong><p>{_esc(description)}</p></div></div>''', unsafe_allow_html=True)
 
 
 def _home_link(label: str) -> None:
@@ -194,7 +255,7 @@ def _letter_card(entry: dict) -> None:
     tags = ''.join(f'<span><i style="--tone:{COLORS[i]}"></i>{_esc(EMOTIONS[i])} {round(probs[i] * 100)}%</span>' for i in ranked[:3])
     age = entry['age']
     label = f'{age}일 전의 편지'
-    arrival_note = '오늘 도착' if entry['today'] else '도착한 편지'
+    arrival_note = '다시 도착한 편지' if entry.get('revisit') else ('오늘 도착' if entry['today'] else '도착한 편지')
     st.markdown(f'''<article class="et-cap-letter" style="--accent:{COLORS[dominant]}">
 <div class="et-cap-letter-top"><b>LETTER FROM THE PAST</b><span>{arrival_note}</span></div>
 <div class="et-cap-letter-date">{_esc(label)} · {recorded.year}년 {recorded.month}월 {recorded.day}일</div>
@@ -258,20 +319,23 @@ def _inbox(nickname: str, entries: list[dict], today: dt.date, due: list[dict], 
     with left:
         _letter_card(entry)
         st.markdown('<div class="et-cap-reply-label"><b>지금의 내가, 그때의 나에게</b><small>답장은 보관함에서 다시 읽고 수정할 수 있어요.</small></div>', unsafe_allow_html=True)
-        with st.form(key=f'et_cap_reply_form_{entry["date"]}', border=True):
-            answer = st.text_area('답장', placeholder='그때의 나에게 전하고 싶은 말을 적어 보세요.', max_chars=500, height=112, key=f'et_cap_reply_input_{entry["date"]}')
-            sent = st.form_submit_button('답장 보내기 ✉', type='primary', use_container_width=True)
-            if sent:
-                if not answer.strip():
-                    st.warning('답장 내용을 먼저 적어 주세요.')
-                else:
-                    try:
-                        db.save_reply(nickname, entry['date'], answer.strip(), today.isoformat())
-                    except Exception:
-                        st.error('답장을 저장하지 못했어요. 다시 시도해 주세요.')
+        if entry.get('revisit'):
+            st.info('이 기록은 시간이 지나 다시 도착했어요. 이전에 남긴 답장은 보관함에서 읽거나 수정할 수 있어요.')
+        else:
+            with st.form(key=f'et_cap_reply_form_{entry["date"]}', border=True):
+                answer = st.text_area('답장', placeholder='그때의 나에게 전하고 싶은 말을 적어 보세요.', max_chars=500, height=112, key=f'et_cap_reply_input_{entry["date"]}')
+                sent = st.form_submit_button('답장 보내기 ✉', type='primary', use_container_width=True)
+                if sent:
+                    if not answer.strip():
+                        st.warning('답장 내용을 먼저 적어 주세요.')
                     else:
-                        st.toast('답장이 보관함에 저장됐어요.', icon='💌')
-                        st.rerun()
+                        try:
+                            db.save_reply(nickname, entry['date'], answer.strip(), today.isoformat())
+                        except Exception:
+                            st.error('답장을 저장하지 못했어요. 다시 시도해 주세요.')
+                        else:
+                            st.toast('답장이 보관함에 저장됐어요.', icon='💌')
+                            st.rerun()
     with right:
         _comparison(entry, entries, today)
 
@@ -293,7 +357,7 @@ def _scheduled(upcoming: list[dict]) -> None:
 <small>{_short_date(date)}에 남긴 { _esc(mood) }의 마음</small></div><span class="et-cap-days">D-{item['days']}</span></div>''', unsafe_allow_html=True)
     if len(shown) > 12:
         st.caption(f'가까운 12건만 표시하고 있어요. 외에 {len(shown) - 12}건이 더 예정돼 있어요.')
-    st.caption('한 기록은 7·14·30일 뒤에 차례로 돌아옵니다. 별도 편지를 저장하지는 않아요.')
+    st.caption('7·14·30일 뒤 기록을 다시 만날 수 있어요. 이미 답장한 기록은 이후 도착 시 다시 읽을 수 있고, 답장은 보관함에 그대로 남습니다.')
 
 
 def _history(nickname: str, entries: list[dict], today: dt.date) -> None:
