@@ -1,4 +1,4 @@
-"""EMOTION TRACE | Time Capsule — focused, single-file redesign.
+"""EMOTION TRACE | Time Capsule V5 — grouped milestones, refined UI.
 
 Drop-in replacement for emotion_capsule_page.py. The existing
 emotion_visual_theme.render_capsule_theme() calls render_capsule_page().
@@ -139,6 +139,52 @@ STYLES = r"""<style>
 .st-key-et_cap_root [data-testid='stPageLink'] a:hover{background:rgba(146,118,196,.25)!important}
 @media(max-width:740px){.et-cap-empty{grid-template-columns:90px minmax(0,1fr);gap:15px;padding:25px 21px}.et-cap-empty-icon{height:80px;width:80px}.et-cap-empty-icon svg{width:72px;height:61px}.et-cap-empty strong{font-size:16px}.et-cap-intro-content{max-width:91%}}
 @media(max-width:520px){.et-cap-intro{padding:22px 18px}.et-cap-art{right:-28px;opacity:.17}.et-cap-intro-content{max-width:100%}.et-cap-empty{grid-template-columns:1fr;text-align:center;justify-items:center;gap:14px;padding:23px 16px}.et-cap-empty-icon{grid-column:1;grid-row:1}.et-cap-empty-copy{grid-row:2;grid-column:1}.et-cap-empty-label{margin-bottom:5px}.et-cap-empty p{font-size:12px}.et-cap-letter{padding:22px 17px}.et-cap-letter-body{font-size:15px}}
+
+/* FINAL EDITION · quiet premium visual language */
+.et-cap-intro{padding:23px 30px 20px;min-height:136px;border-radius:19px;background:radial-gradient(ellipse at 87% 22%,rgba(161,116,177,.13),transparent 40%),linear-gradient(112deg,#171d39,#111932 64%,#17142f);border-color:rgba(189,179,228,.23)}
+.et-cap-intro p{color:#bfc8e0}
+.et-cap-next{margin-top:10px;background:rgba(204,173,221,.09);border-color:rgba(229,180,207,.18)}
+.et-cap-intro h1 em{color:#efd0d7}
+.et-cap-letter{background:linear-gradient(151deg,#f8f3ec 0%,#eee7ec 68%,#e8ddec);border:1px solid rgba(244,226,240,.62);box-shadow:0 15px 36px rgba(2,3,14,.17)}
+.et-cap-letter-top b{color:#76536e}.et-cap-letter-top span,.et-cap-letter-date{color:#6d637c}
+.et-cap-letter-body{color:#312d3c;font-weight:500}
+.et-cap-bar-label{color:#71687b}
+.et-cap-tags span{background:rgba(255,255,255,.5)}
+.et-cap-plan-head{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;margin:21px 0 17px}
+.et-cap-plan-head h2{margin:6px 0 5px;font-size:21px;letter-spacing:-.055em;color:#f8f6ff;font-weight:800}
+.et-cap-plan-head p{font-size:12px;margin:0;color:#aeb9d8;line-height:1.8}
+.et-cap-plan-head strong{color:#e3d4f2}
+.et-cap-plan-legend{font-size:10.5px;color:#aeb8d3;white-space:nowrap;border:1px solid rgba(166,169,225,.16);padding:7px 10px;border-radius:99px;background:rgba(20,26,53,.5)}
+.et-cap-plan{padding:19px 22px 17px;margin-bottom:12px;background:linear-gradient(130deg,rgba(29,35,68,.87),rgba(17,24,48,.91));border:1px solid rgba(172,181,234,.20);border-radius:18px;box-shadow:0 9px 25px rgba(0,2,17,.08),inset 0 1px 0 rgba(255,255,255,.035)}
+.et-cap-plan:first-of-type{border-color:rgba(208,188,240,.32)}
+.et-cap-plan-top{display:flex;align-items:center;gap:14px;min-width:0}
+.et-cap-plan-icon{width:45px;height:45px;border-radius:14px;flex:0 0 45px;display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--mood) 34%,transparent);background:radial-gradient(circle at 50% 35%,color-mix(in srgb,var(--mood) 19%,transparent),rgba(17,24,48,.52))}
+.et-cap-plan-icon span{color:var(--mood);font-size:21px;filter:drop-shadow(0 0 8px color-mix(in srgb,var(--mood) 55%,transparent))}
+.et-cap-plan-detail{flex:1;min-width:0}
+.et-cap-plan-eyebrow{font-size:10px;color:#a7b6d5;letter-spacing:.01em}
+.et-cap-plan-detail h3{font-size:15px;margin:3px 0;letter-spacing:-.045em;color:#f5f4ff}
+.et-cap-plan-detail p{font-size:10.5px;margin:0;color:#9ca9ca;line-height:1.7}
+.et-cap-plan-eta{text-align:right;flex:0 0 auto}
+.et-cap-plan-eta b{display:block;font-size:19px;color:#f2cbd6;letter-spacing:-.035em}
+.et-cap-plan-eta span{display:block;font-size:10px;color:#b2bcd9;margin-top:4px}
+.et-cap-stages{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(172,173,218,.13)}
+.et-cap-stage{padding:10px 11px 9px;border-radius:10px;background:rgba(14,21,44,.42);border:1px solid rgba(163,178,228,.11);min-width:0}
+.et-cap-stage-top{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.et-cap-stage-top i{width:6px;height:6px;border-radius:50%;background:#65738e;flex:none}
+.et-cap-stage-top b{font-size:10.5px;color:#b7c1db;font-weight:700}
+.et-cap-stage-top em{margin-left:auto;font-size:9.5px;font-style:normal;color:#a6b0cd}
+.et-cap-stage>span{display:block;margin:6px 0 0 12px;font-size:10px;color:#8899bd}
+.et-cap-stage.next{background:linear-gradient(125deg,rgba(171,124,202,.17),rgba(172,132,194,.055));border-color:rgba(220,165,217,.39)}
+.et-cap-stage.next i{background:#f0c2cf;box-shadow:0 0 10px #df9bcb}
+.et-cap-stage.next b,.et-cap-stage.next em{color:#f0d8e8}
+.et-cap-stage.next>span{color:#c4c4e2}
+.et-cap-stage.past{opacity:.59}
+.et-cap-stage.past i{background:#8291ad}
+.et-cap-stage.past b{color:#9faac5}
+.et-cap-empty{background:radial-gradient(circle at 13% 50%,rgba(162,118,178,.08),transparent 28%),linear-gradient(112deg,rgba(29,34,65,.86),rgba(18,24,48,.91))}
+@media(max-width:830px){.et-cap-plan-head{flex-direction:column;align-items:flex-start}.et-cap-plan-legend{white-space:normal}}
+@media(max-width:550px){.et-cap-intro{padding:21px 18px}.et-cap-plan{padding:15px 12px}.et-cap-plan-eta b{font-size:15px}.et-cap-plan-eta span{font-size:9px}.et-cap-plan-detail p{font-size:10px}.et-cap-stages{gap:5px}.et-cap-stage{padding:8px 6px}.et-cap-stage-top{flex-wrap:wrap;gap:3px}.et-cap-stage-top b{font-size:9px}.et-cap-stage-top em{margin-left:0;width:100%;padding-left:9px}.et-cap-stage>span{font-size:9px;margin-left:8px}.et-cap-plan-head h2{font-size:19px}}
+
 </style>"""
 
 
@@ -313,8 +359,12 @@ def _inbox(nickname: str, entries: list[dict], today: dt.date, due: list[dict], 
         status = '오늘 도착 · ' if e['today'] else ''
         return f'{status}{_short_date(e["date"])} · {e["age"]}일 전 · {mood}'
     # Selection is indexed by each file's unique date; the field is only a UI switch.
-    pick = st.selectbox('열어볼 편지', options=list(range(len(letters))), format_func=label, key='et_cap_letter_pick', label_visibility='collapsed')
-    entry = letters[pick]
+    index_by_date = {str(entry['date'])[:10]: entry for entry in letters}
+    dates = list(index_by_date)
+    pick = st.selectbox('열어볼 편지', options=dates,
+                        format_func=lambda date: label(dates.index(date)),
+                        key='et_cap_letter_date_v5', label_visibility='collapsed')
+    entry = index_by_date[pick]
     left, right = st.columns([1.42, 1], gap='medium')
     with left:
         _letter_card(entry)
@@ -340,25 +390,67 @@ def _inbox(nickname: str, entries: list[dict], today: dt.date, due: list[dict], 
         _comparison(entry, entries, today)
 
 
-def _scheduled(upcoming: list[dict]) -> None:
-    if not upcoming:
-        _empty('기다리는 편지가 없어요', '새 기록을 남기면 7일·14일·30일 뒤에 다시 만나볼 수 있어요.')
+def _group_upcoming(upcoming: list[dict]) -> list[dict]:
+    '''Collapse 7/14/30 return dates into one card per original diary date.
+
+    A single diary is one memory, not three different letters. The inner
+    timeline retains all future milestones and their exact arrival dates.
+    '''
+    groups: dict[str, dict] = {}
+    for item in upcoming:
+        entry = item['entry']
+        key = str(entry['date'])[:10]
+        if key not in groups:
+            groups[key] = {'entry': entry, 'steps': []}
+        groups[key]['steps'].append(item)
+    result = list(groups.values())
+    for group in result:
+        group['steps'].sort(key=lambda x: x['milestone'])
+        group['next'] = min(group['steps'], key=lambda x: (x['days'], x['milestone']))
+    return sorted(result, key=lambda x: (x['next']['days'], x['entry']['date']))
+
+
+def _scheduled(upcoming: list[dict], today: dt.date) -> None:
+    groups = _group_upcoming(upcoming)
+    if not groups:
+        _empty('기다리는 편지가 없어요', '오늘의 감정을 기록하면 7일 뒤부터 편지가 돌아와요.')
         _home_link('오늘의 마음 기록하기')
         return
-    st.markdown('<div class="et-cap-section"><strong>기다리는 편지</strong><span>기록한 날을 기준으로 도착일을 계산해요.</span></div>', unsafe_allow_html=True)
-    # Filter only when it materially helps; keep short lists free of extra controls.
-    selected = '전체' if len(upcoming) <= 8 else st.selectbox('도착 시점', ('전체','7일','14일','30일'), key='et_cap_upcoming_filter')
-    shown = upcoming if selected == '전체' else [x for x in upcoming if x['milestone'] == int(selected[:-1])]
-    for item in shown[:12]:
-        date = item['entry']['date']
-        mood = EMOTIONS[_dominant(item['entry'])]
-        st.markdown(f'''<div class="et-cap-upcoming"><span class="et-cap-upcoming-icon">✉</span>
-<div class="et-cap-upcoming-body"><b>{_short_date(item['arrival'])} 도착 · {item['milestone']}일의 편지</b>
-<small>{_short_date(date)}에 남긴 { _esc(mood) }의 마음</small></div><span class="et-cap-days">D-{item['days']}</span></div>''', unsafe_allow_html=True)
-    if len(shown) > 12:
-        st.caption(f'가까운 12건만 표시하고 있어요. 외에 {len(shown) - 12}건이 더 예정돼 있어요.')
-    st.caption('7·14·30일 뒤 기록을 다시 만날 수 있어요. 이미 답장한 기록은 이후 도착 시 다시 읽을 수 있고, 답장은 보관함에 그대로 남습니다.')
-
+    total_returns = len(upcoming)
+    st.markdown(f'''<div class="et-cap-plan-head"><div><div class="et-cap-overline"><i>✦</i> LETTERS IN TRANSIT</div>
+    <h2>조금 뒤, 다시 만날 마음들</h2><p>기록 <strong>{len(groups)}개</strong>가 앞으로 <strong>{total_returns}번</strong> 편지로 찾아올 예정이에요.</p></div>
+    <div class="et-cap-plan-legend">기록 하나 · 7일 / 14일 / 30일의 세 번의 만남</div></div>''', unsafe_allow_html=True)
+    for group in groups:
+        entry = group['entry']
+        mood_index = _dominant(entry)
+        mood = EMOTIONS[mood_index]
+        accent = COLORS[mood_index]
+        source = dt.date.fromisoformat(str(entry['date'])[:10])
+        next_item = group['next']
+        day_gap = next_item['days']
+        next_milestone = next_item['milestone']
+        step_map = {x['milestone']: x for x in group['steps']}
+        days_since = (today - source).days
+        steps = []
+        for milestone in MILESTONES:
+            due_date = source + dt.timedelta(days=milestone)
+            if milestone <= days_since:
+                cls, top = 'past', '지남'
+            elif milestone == next_milestone:
+                cls, top = 'next', f'D-{(due_date - today).days}'
+            else:
+                cls, top = 'future', f'D-{(due_date - today).days}'
+            steps.append(f'''<div class="et-cap-stage {cls}" aria-label="{milestone}일 후: {_short_date(due_date)} · {top}">
+            <div class="et-cap-stage-top"><i></i><b>{milestone}일 후</b><em>{_esc(top)}</em></div>
+            <span>{_short_date(due_date)}</span></div>''')
+        note = '이미 답장한 편지예요. 다음 시점에 다시 읽을 수 있어요.' if entry.get('reply') else '기록한 마음이 도착일에 편지로 돌아와요.'
+        st.markdown(f'''<article class="et-cap-plan" style="--mood:{accent}">
+        <div class="et-cap-plan-top"><div class="et-cap-plan-icon"><span>✦</span></div>
+        <div class="et-cap-plan-detail"><div class="et-cap-plan-eyebrow">{_short_date(source)}에 남긴 마음</div>
+        <h3>{_esc(mood)}의 기록</h3><p>{_esc(note)}</p></div>
+        <div class="et-cap-plan-eta"><b>D-{day_gap}</b><span>{_short_date(next_item['arrival'])} 도착</span></div></div>
+        <div class="et-cap-stages" aria-label="세 번의 편지 도착 시점">{''.join(steps)}</div></article>''', unsafe_allow_html=True)
+    st.caption('도착 일정은 기록한 날짜를 기준으로 계산됩니다. 이미 답장을 남겼다면 기존 답장은 유지되고, 14일·30일째 다시 읽을 수 있습니다.')
 
 def _history(nickname: str, entries: list[dict], today: dt.date) -> None:
     replied = sorted([e for e in entries if e.get('reply')], key=lambda e: e.get('reply_at') or '', reverse=True)
@@ -408,12 +500,12 @@ def render_capsule_page() -> None:
         _header(upcoming[0] if upcoming else None)
         inbox, scheduled, history = st.tabs([
             f'✉ 도착한 편지 {fresh_count}',
-            f'◷ 기다리는 편지 {len(upcoming)}',
+            f'◷ 기다리는 편지 {len(_group_upcoming(upcoming))}',
             f'↗ 답장 보관함 {replies_count}',
         ])
         with inbox:
             _inbox(nickname, entries, today, due, upcoming)
         with scheduled:
-            _scheduled(upcoming)
+            _scheduled(upcoming, today)
         with history:
             _history(nickname, entries, today)
