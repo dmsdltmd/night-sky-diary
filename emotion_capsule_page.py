@@ -150,41 +150,42 @@ STYLES = r"""<style>
 .et-cap-letter-body{color:#312d3c;font-weight:500}
 .et-cap-bar-label{color:#71687b}
 .et-cap-tags span{background:rgba(255,255,255,.5)}
-.et-cap-plan-head{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;margin:21px 0 17px}
-.et-cap-plan-head h2{margin:6px 0 5px;font-size:21px;letter-spacing:-.055em;color:#f8f6ff;font-weight:800}
-.et-cap-plan-head p{font-size:12px;margin:0;color:#aeb9d8;line-height:1.8}
-.et-cap-plan-head strong{color:#e3d4f2}
-.et-cap-plan-legend{font-size:10.5px;color:#aeb8d3;white-space:nowrap;border:1px solid rgba(166,169,225,.16);padding:7px 10px;border-radius:99px;background:rgba(20,26,53,.5)}
-.et-cap-plan{padding:19px 22px 17px;margin-bottom:12px;background:linear-gradient(130deg,rgba(29,35,68,.87),rgba(17,24,48,.91));border:1px solid rgba(172,181,234,.20);border-radius:18px;box-shadow:0 9px 25px rgba(0,2,17,.08),inset 0 1px 0 rgba(255,255,255,.035)}
-.et-cap-plan:first-of-type{border-color:rgba(208,188,240,.32)}
-.et-cap-plan-top{display:flex;align-items:center;gap:14px;min-width:0}
-.et-cap-plan-icon{width:45px;height:45px;border-radius:14px;flex:0 0 45px;display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--mood) 34%,transparent);background:radial-gradient(circle at 50% 35%,color-mix(in srgb,var(--mood) 19%,transparent),rgba(17,24,48,.52))}
-.et-cap-plan-icon span{color:var(--mood);font-size:21px;filter:drop-shadow(0 0 8px color-mix(in srgb,var(--mood) 55%,transparent))}
+.et-cap-plan-head{display:flex;justify-content:space-between;align-items:end;gap:14px;margin:17px 0 12px}
+.et-cap-plan-head h2{margin:5px 0 4px;font-size:19px;letter-spacing:-.045em;color:#f8f6ff;font-weight:800}
+.et-cap-plan-head p{font-size:12px;margin:0;color:#aeb9d8;line-height:1.7}
+.et-cap-plan-head strong{color:#e5d6f2}
+.et-cap-plan-legend{font-size:11px;color:#b6c4de;white-space:nowrap;border:1px solid rgba(166,169,225,.16);padding:7px 10px;border-radius:99px;background:rgba(20,26,53,.5)}
+/* One compact card per diary entry, with readable milestone chips. */
+.et-cap-plan{padding:14px 18px 12px;margin-bottom:9px;background:linear-gradient(130deg,rgba(29,35,68,.91),rgba(17,24,48,.93));border:1px solid rgba(172,181,234,.21);border-radius:16px;box-shadow:0 9px 24px rgba(0,2,17,.06),inset 0 1px 0 rgba(255,255,255,.04)}
+.et-cap-plan:first-of-type{border-color:rgba(208,188,240,.34)}
+.et-cap-plan-top{display:flex;align-items:center;gap:12px;min-width:0}
+.et-cap-plan-icon{width:39px;height:39px;border-radius:12px;flex:0 0 39px;display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--mood) 34%,transparent);background:radial-gradient(circle at 50% 35%,color-mix(in srgb,var(--mood) 19%,transparent),rgba(17,24,48,.52))}
+.et-cap-plan-icon span{color:var(--mood);font-size:19px;filter:drop-shadow(0 0 8px color-mix(in srgb,var(--mood) 48%,transparent))}
 .et-cap-plan-detail{flex:1;min-width:0}
-.et-cap-plan-eyebrow{font-size:10px;color:#a7b6d5;letter-spacing:.01em}
-.et-cap-plan-detail h3{font-size:15px;margin:3px 0;letter-spacing:-.045em;color:#f5f4ff}
-.et-cap-plan-detail p{font-size:10.5px;margin:0;color:#9ca9ca;line-height:1.7}
-.et-cap-plan-eta{text-align:right;flex:0 0 auto}
+.et-cap-plan-eyebrow{font-size:11px;color:#b6c5e3;letter-spacing:0}
+.et-cap-plan-detail h3{font-size:14px;margin:3px 0 3px;letter-spacing:-.035em;color:#f7f4ff}
+.et-cap-plan-detail p{font-size:12px;margin:0;color:#b6c3e0;line-height:1.55;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.et-cap-plan-eta{text-align:right;flex:0 0 86px}
 .et-cap-plan-eta b{display:block;font-size:19px;color:#f2cbd6;letter-spacing:-.035em}
-.et-cap-plan-eta span{display:block;font-size:10px;color:#b2bcd9;margin-top:4px}
-.et-cap-stages{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(172,173,218,.13)}
-.et-cap-stage{padding:10px 11px 9px;border-radius:10px;background:rgba(14,21,44,.42);border:1px solid rgba(163,178,228,.11);min-width:0}
-.et-cap-stage-top{display:flex;align-items:center;gap:6px;white-space:nowrap}
-.et-cap-stage-top i{width:6px;height:6px;border-radius:50%;background:#65738e;flex:none}
-.et-cap-stage-top b{font-size:10.5px;color:#b7c1db;font-weight:700}
-.et-cap-stage-top em{margin-left:auto;font-size:9.5px;font-style:normal;color:#a6b0cd}
-.et-cap-stage>span{display:block;margin:6px 0 0 12px;font-size:10px;color:#8899bd}
-.et-cap-stage.next{background:linear-gradient(125deg,rgba(171,124,202,.17),rgba(172,132,194,.055));border-color:rgba(220,165,217,.39)}
+.et-cap-plan-eta span{display:block;font-size:11px;color:#bdc9e6;margin-top:3px}
+.et-cap-stages{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:10px}
+.et-cap-stage{padding:8px 10px 7px;border-radius:9px;background:rgba(12,19,43,.40);border:1px solid rgba(163,178,228,.14);min-width:0}
+.et-cap-stage-top{display:flex;align-items:center;gap:6px;min-width:0}
+.et-cap-stage-top i{width:6px;height:6px;border-radius:50%;background:#7182a4;flex:none}
+.et-cap-stage-top b{font-size:11px;color:#c3cee9;font-weight:700}
+.et-cap-stage-top em{margin-left:auto;font-size:10px;font-style:normal;color:#aebbd9}
+.et-cap-stage>span{display:block;margin:3px 0 0 12px;font-size:11px;color:#aab9d9}
+.et-cap-stage.next{background:linear-gradient(125deg,rgba(177,131,204,.21),rgba(172,132,194,.08));border-color:rgba(220,165,217,.43)}
 .et-cap-stage.next i{background:#f0c2cf;box-shadow:0 0 10px #df9bcb}
-.et-cap-stage.next b,.et-cap-stage.next em{color:#f0d8e8}
-.et-cap-stage.next>span{color:#c4c4e2}
-.et-cap-stage.past{opacity:.59}
-.et-cap-stage.past i{background:#8291ad}
-.et-cap-stage.past b{color:#9faac5}
+.et-cap-stage.next b,.et-cap-stage.next em{color:#f6deef}
+.et-cap-stage.next>span{color:#e1d3ee}
+.et-cap-stage.past{opacity:.62}
+.et-cap-stage.past i{background:#8491b1}
+.et-cap-stage.past b{color:#b8c4dc}
+.et-cap-plan-toggle{margin:3px 0 13px;color:#bec8e6}
 .et-cap-empty{background:radial-gradient(circle at 13% 50%,rgba(162,118,178,.08),transparent 28%),linear-gradient(112deg,rgba(29,34,65,.86),rgba(18,24,48,.91))}
 @media(max-width:830px){.et-cap-plan-head{flex-direction:column;align-items:flex-start}.et-cap-plan-legend{white-space:normal}}
-@media(max-width:550px){.et-cap-intro{padding:21px 18px}.et-cap-plan{padding:15px 12px}.et-cap-plan-eta b{font-size:15px}.et-cap-plan-eta span{font-size:9px}.et-cap-plan-detail p{font-size:10px}.et-cap-stages{gap:5px}.et-cap-stage{padding:8px 6px}.et-cap-stage-top{flex-wrap:wrap;gap:3px}.et-cap-stage-top b{font-size:9px}.et-cap-stage-top em{margin-left:0;width:100%;padding-left:9px}.et-cap-stage>span{font-size:9px;margin-left:8px}.et-cap-plan-head h2{font-size:19px}}
-
+@media(max-width:550px){.et-cap-intro{padding:21px 18px}.et-cap-plan{padding:12px 11px}.et-cap-plan-icon{width:34px;height:34px;flex-basis:34px}.et-cap-plan-top{gap:9px}.et-cap-plan-eta{flex-basis:68px}.et-cap-plan-eta b{font-size:16px}.et-cap-plan-eta span{font-size:10px}.et-cap-plan-detail p{font-size:11px}.et-cap-plan-eyebrow{font-size:10px}.et-cap-stages{gap:5px;margin-top:9px}.et-cap-stage{padding:7px 6px}.et-cap-stage-top{gap:3px;flex-wrap:wrap}.et-cap-stage-top b{font-size:10px}.et-cap-stage-top em{margin-left:auto;font-size:9px}.et-cap-stage>span{font-size:10px;margin:4px 0 0 9px}.et-cap-plan-head h2{font-size:19px}}
 </style>"""
 
 
@@ -206,6 +207,14 @@ def _short_date(date: dt.date | str) -> str:
     if isinstance(date, str):
         date = dt.date.fromisoformat(date[:10])
     return f"{date.month}월 {date.day}일"
+
+
+def _entry_preview(entry: dict, limit: int = 64) -> str:
+    """Short text-only preview. Never embed user text as unescaped HTML."""
+    raw = " ".join(str(entry.get("text") or "").split())
+    if not raw:
+        return "10초 감정 기록" if entry.get("kind") == "quick" else "메모 없이 남긴 감정 기록"
+    return raw if len(raw) <= limit else raw[:limit].rstrip() + "…"
 
 
 def _due_entries(entries: list[dict], today: dt.date) -> list[dict]:
@@ -418,9 +427,12 @@ def _scheduled(upcoming: list[dict], today: dt.date) -> None:
         return
     total_returns = len(upcoming)
     st.markdown(f'''<div class="et-cap-plan-head"><div><div class="et-cap-overline"><i>✦</i> LETTERS IN TRANSIT</div>
-    <h2>조금 뒤, 다시 만날 마음들</h2><p>기록 <strong>{len(groups)}개</strong>가 앞으로 <strong>{total_returns}번</strong> 편지로 찾아올 예정이에요.</p></div>
-    <div class="et-cap-plan-legend">기록 하나 · 7일 / 14일 / 30일의 세 번의 만남</div></div>''', unsafe_allow_html=True)
-    for group in groups:
+    <h2>조금 뒤, 다시 만날 마음들</h2><p>기록 <strong>{len(groups)}개</strong> · 예정된 도착 <strong>{total_returns}번</strong></p></div>
+    <div class="et-cap-plan-legend">한 기록이 7일 · 14일 · 30일에 돌아와요</div></div>''', unsafe_allow_html=True)
+    # Keep the inbox short as diary counts grow. A user may reveal everything.
+    show_all = st.toggle(f'전체 {len(groups)}개 기록 보기', key='et_cap_plan_all_v6') if len(groups) > 5 else True
+    shown = groups if show_all else groups[:5]
+    for group in shown:
         entry = group['entry']
         mood_index = _dominant(entry)
         mood = EMOTIONS[mood_index]
@@ -429,7 +441,6 @@ def _scheduled(upcoming: list[dict], today: dt.date) -> None:
         next_item = group['next']
         day_gap = next_item['days']
         next_milestone = next_item['milestone']
-        step_map = {x['milestone']: x for x in group['steps']}
         days_since = (today - source).days
         steps = []
         for milestone in MILESTONES:
@@ -437,20 +448,23 @@ def _scheduled(upcoming: list[dict], today: dt.date) -> None:
             if milestone <= days_since:
                 cls, top = 'past', '지남'
             elif milestone == next_milestone:
-                cls, top = 'next', f'D-{(due_date - today).days}'
+                cls, top = 'next', '다음'
             else:
-                cls, top = 'future', f'D-{(due_date - today).days}'
+                cls, top = 'future', '예정'
             steps.append(f'''<div class="et-cap-stage {cls}" aria-label="{milestone}일 후: {_short_date(due_date)} · {top}">
             <div class="et-cap-stage-top"><i></i><b>{milestone}일 후</b><em>{_esc(top)}</em></div>
             <span>{_short_date(due_date)}</span></div>''')
-        note = '이미 답장한 편지예요. 다음 시점에 다시 읽을 수 있어요.' if entry.get('reply') else '기록한 마음이 도착일에 편지로 돌아와요.'
+        preview = _esc(_entry_preview(entry))
         st.markdown(f'''<article class="et-cap-plan" style="--mood:{accent}">
-        <div class="et-cap-plan-top"><div class="et-cap-plan-icon"><span>✦</span></div>
-        <div class="et-cap-plan-detail"><div class="et-cap-plan-eyebrow">{_short_date(source)}에 남긴 마음</div>
-        <h3>{_esc(mood)}의 기록</h3><p>{_esc(note)}</p></div>
+        <div class="et-cap-plan-top"><div class="et-cap-plan-icon" aria-hidden="true"><span>✦</span></div>
+        <div class="et-cap-plan-detail"><div class="et-cap-plan-eyebrow">{_short_date(source)} 기록</div>
+        <h3>{_esc(mood)}의 기록</h3><p title="{preview}">{preview}</p></div>
         <div class="et-cap-plan-eta"><b>D-{day_gap}</b><span>{_short_date(next_item['arrival'])} 도착</span></div></div>
-        <div class="et-cap-stages" aria-label="세 번의 편지 도착 시점">{''.join(steps)}</div></article>''', unsafe_allow_html=True)
-    st.caption('도착 일정은 기록한 날짜를 기준으로 계산됩니다. 이미 답장을 남겼다면 기존 답장은 유지되고, 14일·30일째 다시 읽을 수 있습니다.')
+        <div class="et-cap-stages" aria-label="7·14·30일 편지 도착 일정">{''.join(steps)}</div></article>''', unsafe_allow_html=True)
+    if len(groups)>5 and not show_all:
+        st.caption(f'가장 가까운 5개 기록을 표시하고 있어요. 나머지 {len(groups)-5}개는 전체 보기에서 확인할 수 있어요.')
+    st.caption('도착일은 기록 날짜 기준이며, 알림이 전송되지는 않아요. 날짜가 지나면 이 편지함에서 확인할 수 있습니다.')
+
 
 def _history(nickname: str, entries: list[dict], today: dt.date) -> None:
     replied = sorted([e for e in entries if e.get('reply')], key=lambda e: e.get('reply_at') or '', reverse=True)
