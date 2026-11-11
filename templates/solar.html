@@ -35,8 +35,15 @@ button{font:inherit;color:inherit;cursor:pointer}button:focus-visible{outline:2p
 #more{margin-top:12px;padding:10px;width:100%;border:1px solid rgba(160,179,242,.26);background:rgba(75,93,155,.19);border-radius:12px;color:#d5dfff;font-weight:700;font-size:11px}
 #more:hover{background:rgba(75,95,164,.34)}
 @media(max-width:720px){#app{grid-template-columns:1fr;grid-template-rows:390px 300px;gap:10px;height:__HEIGHT__px}#side{padding:15px 16px}#intro{top:14px;left:15px}#intro strong{font-size:14px}#help{bottom:12px;left:14px}#meta{right:11px;top:12px}}
+
+#save-png{position:absolute;right:18px;bottom:16px;z-index:4;display:inline-flex;align-items:center;gap:7px;padding:9px 13px;border-radius:11px;border:1px solid rgba(182,203,248,.35);background:rgba(12,20,46,.81);backdrop-filter:blur(12px);color:#e8ecff;font-size:11px;font-weight:700;box-shadow:0 6px 20px rgba(3,6,21,.19);transition:background .18s,transform .18s}
+#save-png:hover{background:rgba(58,70,130,.85);transform:translateY(-1px)}
+#save-png:disabled{opacity:.42;cursor:not-allowed;transform:none}
+#save-png:focus-visible{outline:2px solid #d5c8ff;outline-offset:3px}
+#save-png svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.75}
+@media(max-width:520px){#save-png{right:10px;bottom:9px;padding:7px 9px;font-size:10px}#save-png svg{width:13px;height:13px}}
 </style></head><body>
-<div id="app"><section id="stage" aria-label="감정 태양계 시각화"><canvas id="cv"></canvas><div id="intro"><div class="eyebrow">YOUR EMOTION ORBIT</div><strong>마음의 태양계</strong><span>감정 행성을 눌러 기록을 살펴보세요</span></div><div id="meta"><b id="nDays">0</b>일의 기록</div><div id="help"><i></i>행성 선택 · 휠로 확대 / 축소</div><div id="hint" hidden>이 달의 첫 감정을 기록하면<br>나만의 태양계가 나타나요.</div></section><aside id="side" aria-live="polite"></aside></div>
+<div id="app"><section id="stage" aria-label="감정 태양계 시각화"><canvas id="cv"></canvas><button id="save-png" type="button" aria-label="현재 태양계 PNG 이미지 저장"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 16v4h14v-4"/></svg>이미지 저장</button><div id="intro"><div class="eyebrow">YOUR EMOTION ORBIT</div><strong>마음의 태양계</strong><span>감정 행성을 눌러 기록을 살펴보세요</span></div><div id="meta"><b id="nDays">0</b>일의 기록</div><div id="help"><i></i>행성 선택 · 휠로 확대 / 축소</div><div id="hint" hidden>이 달의 첫 감정을 기록하면<br>나만의 태양계가 나타나요.</div></section><aside id="side" aria-live="polite"></aside></div>
 <script>__PLANET_JS__</script><script>
 const DATA=__DATA__,COL=DATA.colors,EMO=DATA.emo;
 const canvas=document.getElementById('cv'),ctx=canvas.getContext('2d'),stage=document.getElementById('stage'),side=document.getElementById('side');
@@ -72,4 +79,25 @@ canvas.addEventListener('wheel',e=>{e.preventDefault();zoom=clamp(zoom*(e.deltaY
 function resize(){W=stage.clientWidth;H=stage.clientHeight;canvas.width=Math.floor(W*dpr);canvas.height=Math.floor(H*dpr);makeBg();draw()};new ResizeObserver(resize).observe(stage);
 if(!DATA.total)document.getElementById('hint').hidden=false;document.getElementById('nDays').textContent=DATA.total;
 resize();detail(DATA.total?0:-1);if(!reduced){let last=performance.now();function animate(now){let d=Math.min(now-last,45);last=now;t+=d;draw();requestAnimationFrame(animate)}requestAnimationFrame(animate)}
+
+// Export exactly the solar visualization the visitor is currently viewing.
+// Runs directly from a click inside the Streamlit HTML iframe (allow-downloads policy).
+document.getElementById('save-png').addEventListener('click',()=>{
+  try{
+    draw(); // take the current animated frame, not a stale one
+    const snap=document.createElement('canvas');snap.width=canvas.width;snap.height=canvas.height;
+    const c=snap.getContext('2d');c.drawImage(canvas,0,0);
+    // Header information is a DOM overlay on the site, so compose it into the saved PNG.
+    const ratio=snap.width/Math.max(1,W);
+    c.save();c.scale(ratio,ratio);c.font='700 17px sans-serif';c.fillStyle='#f4f3ff';
+    c.shadowColor='rgba(0,0,0,.7)';c.shadowBlur=8;c.fillText('감정의 태양계',24,34);
+    c.shadowBlur=0;c.font='11px sans-serif';c.fillStyle='#adbce5';c.fillText(String(DATA.label||''),24,54);
+    c.restore();
+    const name=String(DATA.label||'emotion-trace').replace(/[^\p{L}\p{N}-]+/gu,'-').slice(0,60);
+    const a=document.createElement('a');a.href=snap.toDataURL('image/png');a.download=`emotion-trace-solar-${name}.png`;
+    document.body.appendChild(a);a.click();a.remove();
+  }catch(err){console.error('PNG export failed',err);window.alert('이미지를 저장하지 못했어요. 브라우저 설정을 확인해 주세요.');}
+});
+
+if(!DATA.total){document.getElementById("save-png").disabled=true;document.getElementById("save-png").title="일기를 기록하면 저장할 수 있어요";}
 </script></body></html>
