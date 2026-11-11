@@ -1,4 +1,4 @@
-"""감정 태양계 전용 날짜 선택 팝업. AI/DB 로직을 변경하지 않습니다."""
+"""태양계·유니버스·리포트 공통 날짜 선택 팝업. AI/DB 로직을 변경하지 않습니다."""
 from __future__ import annotations
 import calendar
 import datetime as dt
