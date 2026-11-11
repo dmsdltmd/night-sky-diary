@@ -15,6 +15,7 @@ button:focus-visible,select:focus-visible{outline:2px solid #d2beff;outline-offs
 #stage{position:relative;isolation:isolate;min-height:0;min-width:0;border:1px solid rgba(160,163,239,.23);border-radius:22px;overflow:hidden;background:radial-gradient(ellipse at 64% 55%,rgba(92,61,149,.26),transparent 55%),radial-gradient(ellipse at 14% 72%,rgba(17,110,149,.16),transparent 52%),#080d24}
 #stage:after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;border-radius:inherit;box-shadow:inset 0 0 88px rgba(1,4,17,.45)}
 #sky{display:block;width:100%;height:100%;touch-action:pan-y;cursor:default}
+#stage.galaxy-mode #sky{touch-action:none}
 .topline{position:absolute;z-index:3;top:23px;left:24px;max-width:calc(100% - 230px);pointer-events:none;text-shadow:0 2px 16px rgba(3,5,22,.80)}
 .kicker{color:#c5b4ff;text-transform:uppercase;font-size:10px;font-weight:800;letter-spacing:.20em}
 .topline h2{font-size:23px;letter-spacing:-.045em;margin:6px 0 3px;line-height:1.4;font-weight:800}
@@ -22,8 +23,16 @@ button:focus-visible,select:focus-visible{outline:2px solid #d2beff;outline-offs
 .mode{position:absolute;top:21px;right:19px;z-index:4;display:flex;gap:4px;padding:4px;border:1px solid rgba(181,186,243,.22);border-radius:13px;background:rgba(10,15,40,.82);backdrop-filter:blur(13px)}
 .mode button{padding:7px 14px;border:0;border-radius:9px;background:none;cursor:pointer;color:#bac2e5;font-size:12px;font-weight:700;white-space:nowrap}
 .mode button[aria-pressed="true"]{background:linear-gradient(135deg,#6259c9,#746cce);color:white;box-shadow:0 2px 12px rgba(58,49,143,.36)}
-.guide{position:absolute;left:24px;top:108px;z-index:3;font-size:11px;color:#a1b2d6;pointer-events:none}
+.guide{position:absolute;left:24px;top:108px;z-index:3;font-size:11px;color:#b9c5e6;pointer-events:none;max-width:calc(100% - 48px)}
 .guide b{color:#e6d9ff;font-weight:700}
+/* Galaxy navigation: intentionally hidden in the timeline view. */
+.nav-tools{position:absolute;z-index:5;top:70px;right:18px;display:flex;align-items:center;gap:2px;background:rgba(10,15,39,.84);border:1px solid rgba(169,178,239,.20);border-radius:11px;padding:4px;backdrop-filter:blur(10px);box-shadow:0 8px 18px rgba(3,5,23,.12)}
+.nav-tools button{border:0;background:transparent;color:#e2e7ff;cursor:pointer;border-radius:7px;width:27px;height:27px;display:grid;place-items:center;font-size:16px;font-weight:500;padding:0;line-height:1}
+.nav-tools button:hover{background:rgba(139,124,230,.27)}
+.nav-tools button:disabled{opacity:.32;cursor:default;background:transparent}
+.nav-tools .zoom-value{min-width:36px;text-align:center;font-size:10px;font-variant-numeric:tabular-nums;color:#bfc8e9}
+.nav-tools .reset{font-size:14px}
+.nav-tools button:focus-visible{outline:2px solid #d2beff;outline-offset:1px}
 .legend{position:absolute;z-index:4;left:17px;right:16px;bottom:17px;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
 .legend button{display:flex;align-items:center;gap:7px;border:1px solid rgba(174,181,242,.18);border-radius:999px;background:rgba(10,16,39,.80);color:#d9e0f4;font-size:11px;padding:6px 10px;cursor:pointer;backdrop-filter:blur(8px);white-space:nowrap;transition:background .15s,border-color .15s,opacity .15s}
 .legend button i{display:block;width:7px;height:7px;border-radius:50%;background:var(--c);box-shadow:0 0 9px var(--c)}
@@ -43,8 +52,8 @@ button:focus-visible,select:focus-visible{outline:2px solid #d2beff;outline-offs
 .date-select{width:100%;padding:8px 11px;background:#141b3d;border:1px solid rgba(180,182,243,.23);border-radius:10px;color:#e9ebff;font-size:11.5px;outline:0;cursor:pointer;margin:0 0 12px}
 .date-select:focus{border-color:#b19dff}
 .portrait{display:flex;align-items:center;gap:14px;border-radius:16px;border:1px solid rgba(190,185,242,.22);background:linear-gradient(124deg,rgba(105,98,180,.20),rgba(11,19,46,.53));padding:13px 12px;margin-bottom:15px;min-height:104px}
-.portrait-orb{width:72px;height:72px;flex:none;border-radius:50%;background:radial-gradient(circle at 31% 24%,rgba(255,255,255,.82),var(--c) 30%,color-mix(in srgb,var(--c) 64%,#202b56) 59%,#09142d 100%);box-shadow:inset -13px -10px 17px rgba(1,5,21,.52),0 0 28px color-mix(in srgb,var(--c) 29%,transparent);border:1px solid color-mix(in srgb,var(--c) 63%,white);position:relative}
-.portrait-orb:after{content:'';position:absolute;inset:-6px;border:1px solid color-mix(in srgb,var(--c) 46%,transparent);border-radius:50%}
+.portrait-orb{width:72px;height:72px;flex:none;border-radius:50%;position:relative;background:radial-gradient(circle at 32% 24%,rgba(255,255,255,.62) 0%,color-mix(in srgb,var(--c) 73%,white) 25%,var(--c) 74%,color-mix(in srgb,var(--c) 78%,#52469b) 100%);border:0;box-shadow:0 0 18px color-mix(in srgb,var(--c) 57%,transparent),0 0 45px color-mix(in srgb,var(--c) 20%,transparent),inset -5px -7px 16px rgba(20,11,63,.12)}
+.portrait-orb:after{content:'';position:absolute;inset:-5px;border:1px solid color-mix(in srgb,var(--c) 21%,transparent);border-radius:50%}
 .portrait-name{font-size:20px;font-weight:800;line-height:1.45;color:#fff}
 .portrait-note{font-size:11px;color:#b6c4e4;line-height:1.7}
 .side-label{color:#b8c3df;font-size:11px;font-weight:700;margin-bottom:8px}
@@ -64,7 +73,7 @@ button:focus-visible,select:focus-visible{outline:2px solid #d2beff;outline-offs
 .sim-missing{padding:14px 5px;font-size:11px;line-height:1.7;color:#aab5d4}
 .side-foot{font-size:10px;color:#8796bd;margin-top:10px;line-height:1.6;flex:none}
 @media(max-width:950px){#univ-app{grid-template-columns:minmax(0,1fr) 275px;gap:10px}.side{padding:16px 13px}.topline h2{font-size:20px}.portrait{gap:10px}.portrait-orb{width:62px;height:62px}.legend button{padding:5px 8px}}
-@media(max-width:680px){#univ-app{height:__HEIGHT__px;grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) 252px;gap:9px}#stage{border-radius:16px}.topline{top:12px;left:13px;max-width:calc(100% - 153px)}.topline .kicker{font-size:8px;letter-spacing:.12em}.topline h2{font-size:18px;margin:4px 0 2px}.topline p{font-size:10px}.mode{top:10px;right:9px;padding:3px;border-radius:10px}.mode button{padding:6px 9px;font-size:10.5px}.guide{left:13px;top:81px;font-size:9.5px}.legend{left:8px;right:7px;bottom:9px;gap:4px}.legend button{font-size:9px;padding:4px 6px;gap:4px}.legend button i{width:6px;height:6px}.side{border-radius:16px;padding:11px 13px;display:block;overflow-y:auto}.side h3{font-size:19px}.side .sub{font-size:10px}.side-head{margin-bottom:0}.date-select{margin-bottom:8px;padding:6px 9px}.portrait{min-height:0;margin-bottom:9px;padding:8px 10px}.portrait-orb{width:47px;height:47px}.portrait-name{font-size:17px}.portrait-note{font-size:10px}.ratio-names{margin-bottom:8px}.note-box{max-height:90px;margin-bottom:10px}.sim-list{overflow:visible}.side-foot{margin-top:8px}}
+@media(max-width:680px){#univ-app{height:__HEIGHT__px;grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) 252px;gap:9px}#stage{border-radius:16px}.topline{top:12px;left:13px;max-width:calc(100% - 153px)}.topline .kicker{font-size:8px;letter-spacing:.12em}.topline h2{font-size:18px;margin:4px 0 2px}.topline p{font-size:10px}.mode{top:10px;right:9px;padding:3px;border-radius:10px}.mode button{padding:6px 9px;font-size:10.5px}.guide{left:13px;top:81px;font-size:9.5px;max-width:calc(100% - 26px)}.nav-tools{top:105px;right:9px;padding:2px}.nav-tools button{width:25px;height:25px;font-size:14px}.nav-tools .zoom-value{min-width:30px;font-size:9px}.legend{left:8px;right:7px;bottom:9px;gap:4px}.legend button{font-size:9px;padding:4px 6px;gap:4px}.legend button i{width:6px;height:6px}.side{border-radius:16px;padding:11px 13px;display:block;overflow-y:auto}.side h3{font-size:19px}.side .sub{font-size:10px}.side-head{margin-bottom:0}.date-select{margin-bottom:8px;padding:6px 9px}.portrait{min-height:0;margin-bottom:9px;padding:8px 10px}.portrait-orb{width:47px;height:47px}.portrait-name{font-size:17px}.portrait-note{font-size:10px}.ratio-names{margin-bottom:8px}.note-box{max-height:90px;margin-bottom:10px}.sim-list{overflow:visible}.side-foot{margin-top:8px}}
 @media(prefers-reduced-motion:reduce){.legend button,.mode button{transition:none!important}}
 </style>
 </head>
@@ -74,7 +83,13 @@ button:focus-visible,select:focus-visible{outline:2px solid #d2beff;outline-offs
     <canvas id="sky" aria-label="날짜별 감정 기록이 빛나는 별로 표시됩니다. 오른쪽 날짜 선택 목록으로도 기록을 고를 수 있습니다."></canvas>
     <div class="topline"><div class="kicker">EMOTION / UNIVERSE</div><h2 id="viewTitle">감정의 흐름</h2><p id="viewDesc">하루의 감정이 이어지는 궤적을 살펴보세요</p></div>
     <div class="mode" role="group" aria-label="감정 지도 보기 방식"><button type="button" id="flowBtn" aria-pressed="true">흐름</button><button type="button" id="galaxyBtn" aria-pressed="false">은하</button></div>
-    <div class="guide" id="guide"><b>●</b> 별을 선택하면 그날의 기록을 볼 수 있어요.</div>
+    <div class="guide" id="guide"><b>●</b> 날짜별 감정의 움직임을 보여줘요.</div>
+    <div class="nav-tools" id="navTools" role="group" aria-label="은하 지도 확대와 이동" hidden>
+      <button type="button" id="zoomOut" aria-label="축소" title="축소">−</button>
+      <span class="zoom-value" id="zoomLabel" aria-live="off">100%</span>
+      <button type="button" id="zoomIn" aria-label="확대" title="확대">+</button>
+      <button type="button" class="reset" id="zoomReset" aria-label="원래 크기로" title="원래 크기로">↺</button>
+    </div>
     <div class="legend" id="legend" aria-label="감정별 기록 필터"></div>
     <div class="tooltip" id="tooltip" hidden></div>
     <div class="empty-overlay" id="empty" hidden><div><strong>아직 별이 없어요</strong><span>홈에서 오늘의 마음을 남기면<br>이곳에 첫 번째 별이 나타나요.</span></div></div>
@@ -116,11 +131,11 @@ const byDate = new Map(stars.map(s=>[s.date,s]));
 const linked = (Array.isArray(DATA.links) ? DATA.links : []).map(pair=>[ROWS[pair[0]],ROWS[pair[1]],Number(pair[2])]).filter(([a,b])=>a&&b).map(([a,b,score])=>[byDate.get(String(a.date)),byDate.get(String(b.date)),score]).filter(([a,b])=>a&&b);
 const monthDays=(()=>{if(!N)return 31;const d=stars[0].date;return new Date(Number(d.slice(0,4)),Number(d.slice(5,7)),0).getDate()||31;})();
 const monthLabel=N ? `${Number(stars[0].date.slice(0,4))}년 ${Number(stars[0].date.slice(5,7))}월` : '선택한 달';
-const state={view:'flow',mix:0,selected:N?stars[N-1]:null,hovered:null,filter:null};
+const state={view:'flow',mix:0,selected:N?stars[N-1]:null,hovered:null,filter:null,zoom:1,panX:0,panY:0};
 let W=1,H=1,DPR=1,elapsed=0,lastFrame=0;
 function random32(seed){let s=seed|0;return()=>{s+=0x6D2B79F5;let t=Math.imul(s^(s>>>15),1|s);t^=t+Math.imul(t^(t>>>7),61|t);return ((t^(t>>>14))>>>0)/4294967296;};}
 const rand=random32(317);
-const distant=Array.from({length:190},()=>({x:rand(),y:rand(),r:.28+rand()*1.08,a:.07+rand()*.39,tw:rand()*6.28}));
+const distant=Array.from({length:125},()=>({x:rand(),y:rand(),r:.28+rand()*1.08,a:.07+rand()*.39,tw:rand()*6.28}));
 const palette=emotions.map(e=>e.color);
 function visible(s){return state.filter===null || s.top===state.filter;}
 function syncLegend(){
@@ -178,25 +193,34 @@ function posFlow(s){
  const y=top + clamp((1.04-s.score)/2.03,0,1)*h;
  return {x,y};
 }
-function posGalaxy(s){const xpad=clamp(W*.15,35,120),ypad=116;return {x:xpad+s.gx*Math.max(20,W-2*xpad),y:ypad+s.gy*Math.max(55,H-ypad-95)};}
+function posGalaxy(s){
+ const xpad=clamp(W*.15,35,120),ypad=116;
+ const baseX=xpad+s.gx*Math.max(20,W-2*xpad),baseY=ypad+s.gy*Math.max(55,H-ypad-95);
+ return {x:W*.5+(baseX-W*.5)*state.zoom+state.panX,y:H*.5+(baseY-H*.5)*state.zoom+state.panY};
+}
 function pos(s){const a=posFlow(s),b=posGalaxy(s);return {x:a.x+(b.x-a.x)*state.mix,y:a.y+(b.y-a.y)*state.mix};}
-function starRadius(s){return clamp(6.8+Math.sqrt(Math.max(0,s.p[s.top]||0))*8,7,16)*(N<=3?1.13:1);}
+function starRadius(s){return clamp(5.5+Math.max(0,s.p[s.top]||0)*9,6,14.5)*(N<=3?1.15:1);}
 function drawBackdrop(t){
  let base=ctx.createLinearGradient(0,0,W,H);base.addColorStop(0,'#080e28');base.addColorStop(.56,'#121234');base.addColorStop(1,'#090d23');ctx.fillStyle=base;ctx.fillRect(0,0,W,H);
  const blooms=[{x:.71,y:.62,r:.62,c:'#8e4db9',a:.23},{x:.12,y:.66,r:.53,c:'#1983b2',a:.17},{x:.59,y:.31,r:.39,c:'#6159bd',a:.11}];
  for(const b of blooms){const rad=Math.max(W,H)*b.r;const grad=ctx.createRadialGradient(W*b.x,H*b.y,0,W*b.x,H*b.y,rad);grad.addColorStop(0,hexRgba(b.c,b.a));grad.addColorStop(1,hexRgba(b.c,0));ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);}
  for(const s of distant){const alpha=s.a*(reduceMotion?1:(.86+.14*Math.sin(t*.0015+s.tw)));ctx.fillStyle=`rgba(229,227,255,${alpha})`;ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r,0,6.283);ctx.fill();}
  // faint celestial arcs are atmosphere, not fabricated records
- ctx.save();ctx.strokeStyle='rgba(166,149,239,.065)';ctx.lineWidth=1;
+ ctx.save();ctx.strokeStyle='rgba(166,149,239,.035)';ctx.lineWidth=1;
  for(let i=0;i<3;i++){ctx.beginPath();ctx.ellipse(W*.76,H*.68,W*(.35+i*.14),H*(.21+i*.06),-.32,Math.PI*1.12,Math.PI*1.91);ctx.stroke();}ctx.restore();
 }
 function drawAxes(){
  const k=1-state.mix;if(k<=.01)return;
  ctx.save();ctx.globalAlpha=k;
  const top=125,bot=102,avail=H-top-bot;
- ctx.strokeStyle='rgba(190,205,255,.09)';ctx.lineWidth=.8;ctx.setLineDash([3,8]);
+ ctx.strokeStyle='rgba(190,205,255,.10)';ctx.lineWidth=.8;ctx.setLineDash([3,8]);
  for(const frac of [.18,.5,.82]){const y=top+frac*avail;ctx.beginPath();ctx.moveTo(28,y);ctx.lineTo(W-28,y);ctx.stroke();}
- ctx.setLineDash([]);ctx.fillStyle='rgba(188,200,238,.62)';ctx.font='10px sans-serif';ctx.textAlign='center';
+ ctx.setLineDash([]);
+ // Keep the vertical meaning visible without a numeric, diagnostic-looking scale.
+ ctx.font='10px sans-serif';ctx.textAlign='right';ctx.fillStyle='rgba(204,212,243,.78)';
+ ctx.fillText('밝은 감정 ↑',W-19,top+19);
+ ctx.fillText('무거운 감정 ↓',W-19,H-bot-12);
+ ctx.fillStyle='rgba(188,200,238,.64)';ctx.textAlign='center';
  const labels=N<=3?stars.map(s=>s.date):[1,Math.max(1,Math.round(monthDays/4)),Math.max(1,Math.round(monthDays/2)),Math.max(1,Math.round(monthDays*3/4)),monthDays];
  const uniq=[...new Set(labels)];
  for(const l of uniq){const ratio=N<=3?(N===1?.5:stars.findIndex(s=>s.date===l)/Math.max(1,N-1)):(Number(l)-1)/Math.max(1,monthDays-1);if(ratio<0)continue;const x=Math.min(47,W*.10)+ratio*(W-2*Math.min(47,W*.10));
@@ -221,16 +245,24 @@ function drawGraph(){
  if(state.mix>.01){
   ctx.save();ctx.globalAlpha=state.mix;
   for(const [sa,sb,score] of linked){if(!visible(sa)||!visible(sb))continue;const a={...mapped.get(sa),s:sa},b={...mapped.get(sb),s:sb};const active=focus===sa||focus===sb;
-   drawPath(a,b,active?.8:.20,active?2:1.1,true);}
+   drawPath(a,b,active?.73:.13,active?1.8:.9,true);}
   ctx.restore();
  }
  for(const s of stars){if(!visible(s))continue;const p=mapped.get(s),r=starRadius(s),active=state.selected===s,hovered=state.hovered===s,c=COL[s.top]||'#a99bff';
   ctx.save();ctx.globalAlpha=focus&&focus!==s?.74:1;
-  const halo=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,r*(active?4.7:3.1));halo.addColorStop(0,hexRgba(c,active?.32:.18));halo.addColorStop(1,hexRgba(c,0));ctx.fillStyle=halo;ctx.beginPath();ctx.arc(p.x,p.y,r*(active?4.7:3.1),0,6.283);ctx.fill();
-  const orb=ctx.createRadialGradient(p.x-r*.3,p.y-r*.34,r*.1,p.x,p.y,r*1.05);orb.addColorStop(0,'rgba(255,255,255,.92)');orb.addColorStop(.22,c);orb.addColorStop(.72,c);orb.addColorStop(1,hexRgba('#11172c',.91));ctx.fillStyle=orb;ctx.beginPath();ctx.arc(p.x,p.y,r,0,6.283);ctx.fill();
-  ctx.strokeStyle=hexRgba('#ffffff',active?.88:.30);ctx.lineWidth=active?1.5:.7;ctx.stroke();
-  if(s.p[s.second]>.16){ctx.strokeStyle=hexRgba(COL[s.second]||'#fff',.76);ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(p.x,p.y,r+3,-Math.PI*.45,Math.PI*.40);ctx.stroke();}
-  if(active){ctx.strokeStyle=hexRgba(c,.65);ctx.lineWidth=1.05;ctx.beginPath();ctx.arc(p.x,p.y,r+8,0,6.283);ctx.stroke();}
+  // Reference concept: a saturated, flat luminous star dot instead of a glossy 3D planet.
+  // Wide diffuse glow + bright, clean circular core, matching the original '흐름 + 은하' sample.
+  const glowR=r*(active?4.0:3.5);
+  const halo=ctx.createRadialGradient(p.x,p.y,r*.20,p.x,p.y,glowR);
+  halo.addColorStop(0,hexRgba(c,active?.60:.48));
+  halo.addColorStop(.28,hexRgba(c,active?.33:.27));
+  halo.addColorStop(.64,hexRgba(c,active?.10:.08));
+  halo.addColorStop(1,hexRgba(c,0));
+  ctx.fillStyle=halo;ctx.beginPath();ctx.arc(p.x,p.y,glowR,0,6.283);ctx.fill();
+  ctx.fillStyle=c;ctx.beginPath();ctx.arc(p.x,p.y,r,0,6.283);ctx.fill();
+  // The secondary emotion is only a subtle, thin accent; no thick sphere rim.
+  if((s.p[s.second]||0)>.18){ctx.strokeStyle=hexRgba(COL[s.second]||'#fff',.76);ctx.lineWidth=1.6;ctx.beginPath();ctx.arc(p.x,p.y,r+3,0,6.283);ctx.stroke();}
+  if(active){ctx.strokeStyle=hexRgba('#ffffff',.92);ctx.lineWidth=1.55;ctx.beginPath();ctx.arc(p.x,p.y,r+8,0,6.283);ctx.stroke();}
   if(active||hovered||(N<=3&&state.mix>.5)){ctx.fillStyle='#eef1ff';ctx.shadowColor='#080c24';ctx.shadowBlur=7;ctx.font=(active?'700 ':'500 ')+'11px sans-serif';ctx.textAlign='center';ctx.fillText(dateLabel(s.date),p.x,p.y-r-14);}
   ctx.restore();
  }
@@ -241,12 +273,44 @@ function render(){
  if(!ctx)return;ctx.setTransform(DPR,0,0,DPR,0,0);ctx.clearRect(0,0,W,H);drawBackdrop(elapsed);if(!N)return;drawAxes();drawGraph();
  const tip=ELEM('tooltip');if(state.hovered&&visible(state.hovered)&&state.hovered!==state.selected){const p=drawGraph.projected.get(state.hovered);tip.textContent=`${dateLabel(state.hovered.date)} · ${EMO[state.hovered.top]}`;tip.style.left=clamp(p.x,65,W-65)+'px';tip.style.top=p.y+'px';tip.hidden=false;}else tip.hidden=true;
 }
-function setView(view){state.view=view;ELEM('flowBtn').setAttribute('aria-pressed',String(view==='flow'));ELEM('galaxyBtn').setAttribute('aria-pressed',String(view==='galaxy'));
+function setView(view){
+ state.view=view;
+ ELEM('flowBtn').setAttribute('aria-pressed',String(view==='flow'));
+ ELEM('galaxyBtn').setAttribute('aria-pressed',String(view==='galaxy'));
  ELEM('viewTitle').textContent=view==='flow'?'감정의 흐름':'감정의 은하';
- ELEM('viewDesc').textContent=view==='flow'?`${monthLabel} · 기록이 이어지는 마음의 궤적`:`${monthLabel} · 비슷한 감정의 날들이 가까이 모여요`;
- ELEM('guide').innerHTML=view==='flow'?'<b>●</b> 높이는 감정 비율로 계산한 참고 위치예요.':'<b>●</b> 가까운 별은 감정 구성이 비슷한 날이에요.';
- if(reduceMotion)state.mix=view==='flow'?0:1;render();
+ ELEM('viewDesc').textContent=view==='flow'?`${monthLabel} · 날짜별 감정의 변화`:`${monthLabel} · 감정이 비슷한 날의 관계`;
+ ELEM('guide').innerHTML=view==='flow'?'<b>●</b> 왼쪽부터 날짜순 · 높이는 감정 비율을 바탕으로 한 참고 위치':'<b>●</b> 가까운 별은 감정이 비슷한 날이에요';
+ ELEM('navTools').hidden=view!=='galaxy';
+ stage.classList.toggle('galaxy-mode',view==='galaxy');
+ if(view==='flow')state.hovered=null;
+ syncZoom();
+ if(reduceMotion)state.mix=view==='flow'?0:1;
+ render();
 }
+function clampPan(){
+ // Panning is useful at high magnification; limit so the map cannot disappear.
+ const limitX=W*.43*state.zoom,limitY=H*.43*state.zoom;
+ state.panX=clamp(state.panX,-limitX,limitX);
+ state.panY=clamp(state.panY,-limitY,limitY);
+}
+function syncZoom(){
+ ELEM('zoomLabel').textContent=`${Math.round(state.zoom*100)}%`;
+ ELEM('zoomOut').disabled=state.zoom<=.851;
+ ELEM('zoomIn').disabled=state.zoom>=2.399;
+ ELEM('zoomReset').disabled=state.zoom===1&&state.panX===0&&state.panY===0;
+}
+function zoomTo(value,x=W/2,y=H/2){
+ const prev=state.zoom;
+ const next=clamp(value,.85,2.4);
+ if(Math.abs(next-prev)<.00001)return;
+ const factor=next/prev;
+ state.panX=(x-W*.5)-(x-W*.5-state.panX)*factor;
+ state.panY=(y-H*.5)-(y-H*.5-state.panY)*factor;
+ state.zoom=next;clampPan();syncZoom();render();
+}
+ELEM('zoomIn').addEventListener('click',()=>zoomTo(state.zoom*1.2));
+ELEM('zoomOut').addEventListener('click',()=>zoomTo(state.zoom/1.2));
+ELEM('zoomReset').addEventListener('click',()=>{state.zoom=1;state.panX=0;state.panY=0;syncZoom();render();});
 ELEM('flowBtn').addEventListener('click',()=>setView('flow'));
 ELEM('galaxyBtn').addEventListener('click',()=>setView('galaxy'));
 function pointerPos(e){const rect=canvas.getBoundingClientRect();return {x:e.clientX-rect.left,y:e.clientY-rect.top};}
@@ -254,10 +318,41 @@ function pickStar(e){const {x,y}=pointerPos(e);const mapped=drawGraph.projected|
  for(const s of stars){if(!visible(s))continue;const p=mapped.get(s);if(!p)continue;const d=Math.hypot(p.x-x,p.y-y);if(d<dist&&d<=starRadius(s)+11){candidate=s;dist=d;}}
  return candidate;
 }
-canvas.addEventListener('pointermove',e=>{const s=pickStar(e);if(s!==state.hovered){state.hovered=s;canvas.style.cursor=s?'pointer':'default';render();}});
-canvas.addEventListener('pointerleave',()=>{state.hovered=null;render();});
-canvas.addEventListener('click',e=>{const s=pickStar(e);if(s)selectStar(s);});
-function resize(){const w=Math.max(1,stage.clientWidth),h=Math.max(1,stage.clientHeight);W=w;H=h;DPR=Math.min(2,window.devicePixelRatio||1);canvas.width=Math.round(w*DPR);canvas.height=Math.round(h*DPR);canvas.style.width=w+'px';canvas.style.height=h+'px';render();}
+const gesture={id:null,startX:0,startY:0,prevX:0,prevY:0,moved:false,suppressClick:false};
+canvas.addEventListener('pointerdown',e=>{
+ if(state.view!=='galaxy'||e.button!==0)return;
+ const p=pointerPos(e);gesture.id=e.pointerId;gesture.startX=gesture.prevX=p.x;gesture.startY=gesture.prevY=p.y;gesture.moved=false;
+ canvas.setPointerCapture(e.pointerId);
+});
+canvas.addEventListener('pointermove',e=>{
+ if(gesture.id===e.pointerId&&state.view==='galaxy'){
+  const p=pointerPos(e),dx=p.x-gesture.prevX,dy=p.y-gesture.prevY;
+  if(Math.hypot(p.x-gesture.startX,p.y-gesture.startY)>5)gesture.moved=true;
+  gesture.prevX=p.x;gesture.prevY=p.y;
+  if(gesture.moved){state.panX+=dx;state.panY+=dy;clampPan();state.hovered=null;canvas.style.cursor='grabbing';syncZoom();render();return;}
+ }
+ const s=pickStar(e);
+ if(s!==state.hovered){state.hovered=s;canvas.style.cursor=s?'pointer':state.view==='galaxy'?'grab':'default';render();}
+});
+function finishDrag(e){
+ if(gesture.id!==e.pointerId)return;
+ if(gesture.moved)gesture.suppressClick=true;
+ gesture.id=null;gesture.moved=false;canvas.style.cursor=state.view==='galaxy'?'grab':'default';
+ if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);
+}
+canvas.addEventListener('pointerup',finishDrag);
+canvas.addEventListener('pointercancel',finishDrag);
+canvas.addEventListener('pointerleave',()=>{if(gesture.id===null){state.hovered=null;render();}});
+canvas.addEventListener('click',e=>{
+ if(gesture.suppressClick){gesture.suppressClick=false;return;}
+ const s=pickStar(e);if(s)selectStar(s);
+});
+canvas.addEventListener('wheel',e=>{
+ if(state.view!=='galaxy')return;
+ e.preventDefault();const p=pointerPos(e);
+ zoomTo(state.zoom*(e.deltaY<0?1.13:1/1.13),p.x,p.y);
+},{passive:false});
+function resize(){const w=Math.max(1,stage.clientWidth),h=Math.max(1,stage.clientHeight);W=w;H=h;clampPan();DPR=Math.min(2,window.devicePixelRatio||1);canvas.width=Math.round(w*DPR);canvas.height=Math.round(h*DPR);canvas.style.width=w+'px';canvas.style.height=h+'px';render();}
 new ResizeObserver(resize).observe(stage);
 window.addEventListener('resize',resize);
 let last=0;function tick(t){if(t-last>=32){const dt=Math.min(t-last,100);last=t;elapsed+=dt;if(!reduceMotion){const target=state.view==='flow'?0:1;const diff=target-state.mix;if(Math.abs(diff)>.002){state.mix+=diff*.16;if(Math.abs(target-state.mix)<.003)state.mix=target;render();}else if(state.hovered)render();}}requestAnimationFrame(tick);}
