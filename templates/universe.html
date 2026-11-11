@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>감정 유니버스 · 흐름과 은하</title>
+<title>감정 유니버스 · 흐름과 은하 (은은한 부유 애니메이션)</title>
 <style>
 :root{--ink:#f1f2ff;--muted:#a5afd4;--edge:rgba(161,174,239,.20);--violet:#a99bff;--bg:#080d24;--card:#101830}
 *{box-sizing:border-box}
@@ -73,7 +73,41 @@ button:focus-visible,select:focus-visible{outline:2px solid #d2beff;outline-offs
 .sim-missing{padding:14px 5px;font-size:11px;line-height:1.7;color:#aab5d4}
 .side-foot{font-size:10px;color:#8796bd;margin-top:10px;line-height:1.6;flex:none}
 @media(max-width:950px){#univ-app{grid-template-columns:minmax(0,1fr) 275px;gap:10px}.side{padding:16px 13px}.topline h2{font-size:20px}.portrait{gap:10px}.portrait-orb{width:62px;height:62px}.legend button{padding:5px 8px}}
-@media(max-width:680px){#univ-app{height:__HEIGHT__px;grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) 252px;gap:9px}#stage{border-radius:16px}.topline{top:12px;left:13px;max-width:calc(100% - 153px)}.topline .kicker{font-size:8px;letter-spacing:.12em}.topline h2{font-size:18px;margin:4px 0 2px}.topline p{font-size:10px}.mode{top:10px;right:9px;padding:3px;border-radius:10px}.mode button{padding:6px 9px;font-size:10.5px}.guide{left:13px;top:81px;font-size:9.5px;max-width:calc(100% - 26px)}.nav-tools{top:105px;right:9px;padding:2px}.nav-tools button{width:25px;height:25px;font-size:14px}.nav-tools .zoom-value{min-width:30px;font-size:9px}.legend{left:8px;right:7px;bottom:9px;gap:4px}.legend button{font-size:9px;padding:4px 6px;gap:4px}.legend button i{width:6px;height:6px}.side{border-radius:16px;padding:11px 13px;display:block;overflow-y:auto}.side h3{font-size:19px}.side .sub{font-size:10px}.side-head{margin-bottom:0}.date-select{margin-bottom:8px;padding:6px 9px}.portrait{min-height:0;margin-bottom:9px;padding:8px 10px}.portrait-orb{width:47px;height:47px}.portrait-name{font-size:17px}.portrait-note{font-size:10px}.ratio-names{margin-bottom:8px}.note-box{max-height:90px;margin-bottom:10px}.sim-list{overflow:visible}.side-foot{margin-top:8px}}
+
+/* Streamlit's iframe is narrower than the full browser: keep the atlas and journal side-by-side. */
+@media (min-width:551px) and (max-width:780px){
+ #univ-app{grid-template-columns:minmax(0,1fr) 235px;gap:9px}
+ .side{padding:13px 11px;border-radius:17px}
+ .side .eyebrow{font-size:8.5px;letter-spacing:.12em}
+ .side h3{font-size:21px;margin:5px 0 2px}
+ .side .sub{font-size:10px;margin-bottom:7px}
+ .date-select{padding:6px 8px;font-size:10.5px;margin-bottom:8px}
+ .portrait{gap:8px;padding:8px;min-height:66px;margin-bottom:9px;border-radius:12px}
+ .portrait-orb{width:48px;height:48px}
+ .portrait-name{font-size:16px}
+ .portrait-note{font-size:10px;line-height:1.5}
+ .side-label{font-size:10px;margin-bottom:5px}
+ .ratio-names{font-size:9.5px;margin:6px 0 9px}
+ .note-box{padding:9px 10px;max-height:138px;margin-bottom:9px;font-size:11px;line-height:1.65}
+ .sim-title{margin-bottom:5px}.sim-title strong{font-size:11px}.sim-title small{font-size:9px}
+ .sim-list{gap:5px}
+ .sim-list button{padding:6px 7px;gap:6px;grid-template-columns:7px minmax(0,1fr) auto}
+ .sim-list button b{font-size:10px}.sim-list button em{font-size:9px}
+ .side-foot{font-size:9px;line-height:1.45;margin-top:7px}
+ .topline{top:17px;left:15px;max-width:calc(100% - 158px)}
+ .topline .kicker{font-size:8.5px;letter-spacing:.12em}
+ .topline h2{font-size:18px;margin:3px 0 2px}
+ .topline p{font-size:10px}
+ .mode{top:13px;right:10px;padding:3px}
+ .mode button{font-size:10.5px;padding:6px 10px}
+ .guide{left:15px;top:86px;font-size:9.5px;max-width:calc(100% - 30px)}
+ .nav-tools{top:113px;right:11px}
+ .legend{left:9px;right:9px;bottom:10px;gap:4px}
+ .legend button{font-size:9px;padding:5px 7px;gap:4px}
+ .legend button i{width:6px;height:6px}
+}
+
+@media(max-width:550px){#univ-app{height:__HEIGHT__px;grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) 252px;gap:9px}#stage{border-radius:16px}.topline{top:12px;left:13px;max-width:calc(100% - 153px)}.topline .kicker{font-size:8px;letter-spacing:.12em}.topline h2{font-size:18px;margin:4px 0 2px}.topline p{font-size:10px}.mode{top:10px;right:9px;padding:3px;border-radius:10px}.mode button{padding:6px 9px;font-size:10.5px}.guide{left:13px;top:81px;font-size:9.5px;max-width:calc(100% - 26px)}.nav-tools{top:105px;right:9px;padding:2px}.nav-tools button{width:25px;height:25px;font-size:14px}.nav-tools .zoom-value{min-width:30px;font-size:9px}.legend{left:8px;right:7px;bottom:9px;gap:4px}.legend button{font-size:9px;padding:4px 6px;gap:4px}.legend button i{width:6px;height:6px}.side{border-radius:16px;padding:11px 13px;display:block;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(171,160,232,.48) transparent}.side h3{font-size:19px}.side .sub{font-size:10px}.side-head{margin-bottom:0}.date-select{margin-bottom:8px;padding:6px 9px}.portrait{min-height:0;margin-bottom:9px;padding:8px 10px}.portrait-orb{width:47px;height:47px}.portrait-name{font-size:17px}.portrait-note{font-size:10px}.ratio-names{margin-bottom:8px}.note-box{max-height:90px;margin-bottom:10px}.sim-list{overflow:visible}.side-foot{margin-top:8px}}
 @media(prefers-reduced-motion:reduce){.legend button,.mode button{transition:none!important}}
 </style>
 </head>
@@ -175,16 +209,32 @@ function selectStar(s){
  for(const item of related){const target=byDate.get(item.date);const btn=document.createElement('button');btn.type='button';const dot=document.createElement('span');dot.className='sim-dot';dot.style.setProperty('--c',COL[target.top]||'#a99bff');const name=document.createElement('b');name.textContent=`${dateLabel(target.date)} · ${EMO[target.top]||'기록'}`;const pct=document.createElement('em');pct.textContent=`${Math.round(clamp(Number(item.score)||0,0,1)*100)}% 닮음`;btn.append(dot,name,pct);btn.addEventListener('click',()=>{if(state.filter!==null&&!visible(target)){state.filter=null;syncLegend();}selectStar(target);});sim.appendChild(btn);}
  updateSelect();render();
 }
+// PCA coordinates still determine proximity; this only prevents separate days from hiding underneath each other.
 const xy3=[{x:.24,y:.50},{x:.79,y:.44},{x:.52,y:.75}];
 if(N===1){stars[0].gx=.52;stars[0].gy=.52;}
 else if(N<=3){stars.forEach((s,i)=>{s.gx=xy3[i].x;s.gy=xy3[i].y;});}
-else {
- // Gentle collision relaxation only; keep the original PCA relation as much as possible.
- for(let step=0;step<36;step++){for(let i=0;i<N;i++)for(let j=i+1;j<N;j++){
-  const a=stars[i],b=stars[j];let dx=a.gx-b.gx,dy=a.gy-b.gy,dist=Math.hypot(dx,dy);
-  if(dist<.075){if(dist<.0001){dx=(i%3-1)*.003+.005;dy=(j%3-1)*.003+.005;dist=Math.hypot(dx,dy);}
-   const f=(.075-dist)*.17/dist;a.gx=clamp(a.gx+dx*f,.04,.96);b.gx=clamp(b.gx-dx*f,.04,.96);a.gy=clamp(a.gy+dy*f,.05,.95);b.gy=clamp(b.gy-dy*f,.05,.95);}
- }}
+let galaxyLayout=new Map();
+function buildGalaxyLayout(){
+ const xpad=clamp(W*.15,35,120),ypad=116;
+ const usableW=Math.max(20,W-2*xpad),usableH=Math.max(55,H-ypad-95);
+ const points=stars.map((s,i)=>({s,i,x:xpad+s.gx*usableW,y:ypad+s.gy*usableH,ox:xpad+s.gx*usableW,oy:ypad+s.gy*usableH}));
+ if(N>3){
+  // Pixel-space spacing is what the user's eye and click hitboxes need.
+  for(let iter=0;iter<100;iter++){
+   for(let i=0;i<points.length;i++)for(let j=i+1;j<points.length;j++){
+    const a=points[i],b=points[j];let dx=b.x-a.x,dy=b.y-a.y,dist=Math.hypot(dx,dy);
+    if(dist<.0001){const angle=(i*73+j*37)*2.399963;dx=Math.cos(angle)*.01;dy=Math.sin(angle)*.01;dist=Math.hypot(dx,dy);}
+    const target=starRadius(a.s)+starRadius(b.s)+10;
+    if(dist<target){const push=(target-dist)*.36/dist;const px=dx*push,py=dy*push;a.x-=px;a.y-=py;b.x+=px;b.y+=py;}
+   }
+   for(const p of points){
+    // Light tether keeps the PCA/similarity structure interpretable, but lets packed points separate.
+    p.x=clamp(p.x+(p.ox-p.x)*.009,17,W-17);
+    p.y=clamp(p.y+(p.oy-p.y)*.009,164,H-88);
+   }
+  }
+ }
+ galaxyLayout=new Map(points.map(p=>[p.s,{x:p.x,y:p.y}]));
 }
 function posFlow(s){
  const padX=Math.min(47,W*.10), top=125, bot=102;
@@ -194,11 +244,15 @@ function posFlow(s){
  return {x,y};
 }
 function posGalaxy(s){
+ const origin=galaxyLayout.get(s);
  const xpad=clamp(W*.15,35,120),ypad=116;
- const baseX=xpad+s.gx*Math.max(20,W-2*xpad),baseY=ypad+s.gy*Math.max(55,H-ypad-95);
- // At most one screen pixel of motion: keep the layout and similarity meaning intact.
- const driftX=reduceMotion?0:.85*Math.sin(elapsed*.00048+s.index*1.37);
- const driftY=reduceMotion?0:.75*Math.cos(elapsed*.00055+s.index*1.79);
+ const baseX=origin?origin.x:xpad+s.gx*Math.max(20,W-2*xpad);
+ const baseY=origin?origin.y:ypad+s.gy*Math.max(55,H-ypad-95);
+ // Calm floating motion in galaxy mode only: a gentle 3–4px orbit per star.
+ // This is a visual offset, not a change to the PCA/similarity coordinates.
+ // The flow view remains perfectly anchored to dates and the weighted reference scale.
+ const driftX=reduceMotion?0:3.2*Math.sin(elapsed*.00072+s.index*1.37);
+ const driftY=reduceMotion?0:3.8*Math.cos(elapsed*.00090+s.index*1.79);
  return {x:W*.5+(baseX-W*.5)*state.zoom+state.panX+driftX,y:H*.5+(baseY-H*.5)*state.zoom+state.panY+driftY};
 }
 function pos(s){const a=posFlow(s),b=posGalaxy(s);return {x:a.x+(b.x-a.x)*state.mix,y:a.y+(b.y-a.y)*state.mix};}
@@ -248,7 +302,8 @@ function drawGraph(){
  if(state.mix>.01){
   ctx.save();ctx.globalAlpha=state.mix;
   for(const [sa,sb,score] of linked){if(!visible(sa)||!visible(sb))continue;const a={...mapped.get(sa),s:sa},b={...mapped.get(sb),s:sb};const active=focus===sa||focus===sb;
-   drawPath(a,b,active?.73:.13,active?1.8:.9,true);}
+   // Similarity connections are visible even without hovering; selection highlights just its neighbors.
+   drawPath(a,b,active?.88:.27,active?2.2:1.25,true);}
   ctx.restore();
  }
  for(const s of stars){if(!visible(s))continue;const p=mapped.get(s),r=starRadius(s),active=state.selected===s,hovered=state.hovered===s,c=COL[s.top]||'#a99bff';
@@ -357,7 +412,7 @@ canvas.addEventListener('wheel',e=>{
  e.preventDefault();const p=pointerPos(e);
  zoomTo(state.zoom*(e.deltaY<0?1.13:1/1.13),p.x,p.y);
 },{passive:false});
-function resize(){const w=Math.max(1,stage.clientWidth),h=Math.max(1,stage.clientHeight);W=w;H=h;clampPan();DPR=Math.min(2,window.devicePixelRatio||1);canvas.width=Math.round(w*DPR);canvas.height=Math.round(h*DPR);canvas.style.width=w+'px';canvas.style.height=h+'px';render();}
+function resize(){const w=Math.max(1,stage.clientWidth),h=Math.max(1,stage.clientHeight);W=w;H=h;clampPan();DPR=Math.min(2,window.devicePixelRatio||1);canvas.width=Math.round(w*DPR);canvas.height=Math.round(h*DPR);canvas.style.width=w+'px';canvas.style.height=h+'px';buildGalaxyLayout();render();}
 new ResizeObserver(resize).observe(stage);
 window.addEventListener('resize',resize);
 let last=0;function tick(t){
