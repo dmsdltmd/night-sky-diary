@@ -51,27 +51,42 @@ button:focus-visible,select:focus-visible{outline:2px solid #d2beff;outline-offs
 .side .sub{font-size:11px;color:#abb5d6;margin:0 0 11px}
 .date-select{width:100%;padding:8px 11px;background:#141b3d;border:1px solid rgba(180,182,243,.23);border-radius:10px;color:#e9ebff;font-size:11.5px;outline:0;cursor:pointer;margin:0 0 12px}
 .date-select:focus{border-color:#b19dff}
-.portrait{display:flex;align-items:center;gap:14px;border-radius:16px;border:1px solid rgba(190,185,242,.22);background:linear-gradient(124deg,rgba(105,98,180,.20),rgba(11,19,46,.53));padding:13px 12px;margin-bottom:15px;min-height:104px}
-.portrait-orb{width:72px;height:72px;flex:none;border-radius:50%;position:relative;background:radial-gradient(circle at 32% 24%,rgba(255,255,255,.62) 0%,color-mix(in srgb,var(--c) 73%,white) 25%,var(--c) 74%,color-mix(in srgb,var(--c) 78%,#52469b) 100%);border:0;box-shadow:0 0 18px color-mix(in srgb,var(--c) 57%,transparent),0 0 45px color-mix(in srgb,var(--c) 20%,transparent),inset -5px -7px 16px rgba(20,11,63,.12)}
-.portrait-orb:after{content:'';position:absolute;inset:-5px;border:1px solid color-mix(in srgb,var(--c) 21%,transparent);border-radius:50%}
-.portrait-name{font-size:20px;font-weight:800;line-height:1.45;color:#fff}
+.portrait{display:flex;align-items:center;gap:12px;border-radius:15px;border:1px solid rgba(190,185,242,.19);background:linear-gradient(124deg,rgba(105,98,180,.15),rgba(11,19,46,.45));padding:11px 12px;margin-bottom:12px;min-height:80px}
+.portrait-orb{width:56px;height:56px;flex:none;border-radius:50%;position:relative;background:radial-gradient(circle at 34% 27%,color-mix(in srgb,var(--c) 72%,white),var(--c) 67%,color-mix(in srgb,var(--c) 74%,#252042));border:0;box-shadow:0 0 18px color-mix(in srgb,var(--c) 43%,transparent),0 0 35px color-mix(in srgb,var(--c) 14%,transparent)}
+.portrait-orb:after{content:'';position:absolute;inset:-4px;border:1px solid color-mix(in srgb,var(--c) 19%,transparent);border-radius:50%}
+.portrait-name{font-size:19px;font-weight:800;line-height:1.4;color:#fff}
 .portrait-note{font-size:11px;color:#b6c4e4;line-height:1.7}
 .side-label{color:#b8c3df;font-size:11px;font-weight:700;margin-bottom:8px}
 .ratio{display:flex;gap:2px;height:7px;overflow:hidden;border-radius:999px;background:#252a50}
 .ratio > span{height:100%;min-width:0}
-.ratio-names{font-size:10.5px;color:#c5c9e8;line-height:1.7;margin:7px 0 16px;overflow-wrap:anywhere}
-.note-box{background:rgba(10,16,38,.45);padding:13px;border:1px solid rgba(170,174,235,.23);border-left:3px solid var(--c,#a99bff);border-radius:12px;font-size:12px;line-height:1.85;white-space:pre-wrap;overflow-wrap:anywhere;max-height:112px;overflow-y:auto;color:#edf0ff;margin-bottom:16px}
+.ratio-names{font-size:10.5px;color:#c5c9e8;line-height:1.65;margin:7px 0 12px;overflow-wrap:anywhere}
+.note-box{background:rgba(10,16,38,.45);padding:11px 12px;border:1px solid rgba(170,174,235,.21);border-left:3px solid var(--c,#a99bff);border-radius:12px;font-size:11.5px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere;max-height:80px;overflow:hidden;color:#edf0ff;margin-bottom:5px}
 .sim-title{display:flex;align-items:baseline;justify-content:space-between;gap:7px;flex:none;margin-bottom:8px}
 .sim-title strong{font-size:12px;color:#e9ecff}
 .sim-title small{font-size:10px;color:#97a5c7}
-.sim-list{flex:1;min-height:0;overflow:auto;display:grid;align-content:start;gap:6px;padding-right:2px}
-.sim-list button{width:100%;display:grid;grid-template-columns:8px minmax(0,1fr) auto;align-items:center;gap:9px;text-align:left;padding:9px 10px;background:rgba(40,49,91,.40);border:1px solid rgba(171,179,240,.19);border-radius:11px;color:#e3eaff;cursor:pointer}
+.sim-list{flex:none;min-height:0;overflow:visible;display:grid;align-content:start;gap:6px;padding-right:0}
+.sim-list button{width:100%;display:grid;grid-template-columns:8px minmax(0,1fr) auto;align-items:center;gap:8px;text-align:left;padding:7px 9px;background:rgba(40,49,91,.34);border:1px solid rgba(171,179,240,.17);border-radius:10px;color:#e3eaff;cursor:pointer}
 .sim-list button:hover{background:rgba(72,79,140,.42);border-color:rgba(188,183,251,.45)}
 .sim-dot{width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 9px var(--c)}
 .sim-list button b{font-size:11px;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sim-list button em{font-size:10px;color:#c3c9e6;font-style:normal;white-space:nowrap}
 .sim-missing{padding:14px 5px;font-size:11px;line-height:1.7;color:#aab5d4}
-.side-foot{font-size:10px;color:#8796bd;margin-top:10px;line-height:1.6;flex:none}
+.side-foot{font-size:9.5px;color:#a0abcd;margin-top:auto;padding-top:11px;line-height:1.55;flex:none}
+/* Keep the journal tidy on first view; readers can open long entries and extra matches. */
+.journal-expand,.sim-toggle{align-self:flex-start;display:inline-flex;gap:5px;align-items:center;background:transparent;border:0;color:#c9baff;padding:2px 2px 7px;font-size:10.5px;font-weight:700;cursor:pointer}
+.journal-expand:hover,.sim-toggle:hover{color:white;text-decoration:underline}
+.sim-toggle{padding:6px 1px 0}
+.sim-list .sim-extra{display:none}
+.sim-list.expanded .sim-extra{display:grid}
+.side.related-open{overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(170,161,221,.38) transparent}
+.entry-dialog{width:min(490px,calc(100% - 34px));max-height:min(72vh,490px);overflow-y:auto;border:1px solid rgba(192,179,246,.4);border-radius:20px;padding:23px 25px;background:linear-gradient(145deg,#202446,#111a35);color:#f4f3ff;box-shadow:0 26px 80px rgba(0,0,0,.54)}
+.entry-dialog::backdrop{background:rgba(2,5,18,.76);backdrop-filter:blur(5px)}
+.entry-dialog .dialog-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.entry-dialog h4{font-size:18px;margin:0}
+.entry-dialog .dialog-close{background:rgba(139,125,220,.15);border:1px solid rgba(178,170,239,.24);border-radius:9px;padding:5px 11px;cursor:pointer;color:#f4f2ff}
+.entry-dialog .dialog-text{white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;line-height:1.95;color:#e6e7f7}
+@media(max-width:780px){.portrait{min-height:64px}.portrait-orb{width:47px;height:47px}.note-box{max-height:75px}.side-foot{font-size:9px}}
+
 @media(max-width:950px){#univ-app{grid-template-columns:minmax(0,1fr) 275px;gap:10px}.side{padding:16px 13px}.topline h2{font-size:20px}.portrait{gap:10px}.portrait-orb{width:62px;height:62px}.legend button{padding:5px 8px}}
 
 /* Streamlit's iframe is narrower than the full browser: keep the atlas and journal side-by-side. */
@@ -88,7 +103,7 @@ button:focus-visible,select:focus-visible{outline:2px solid #d2beff;outline-offs
  .portrait-note{font-size:10px;line-height:1.5}
  .side-label{font-size:10px;margin-bottom:5px}
  .ratio-names{font-size:9.5px;margin:6px 0 9px}
- .note-box{padding:9px 10px;max-height:138px;margin-bottom:9px;font-size:11px;line-height:1.65}
+ .note-box{padding:9px 10px;max-height:75px;margin-bottom:5px;font-size:11px;line-height:1.65}
  .sim-title{margin-bottom:5px}.sim-title strong{font-size:11px}.sim-title small{font-size:9px}
  .sim-list{gap:5px}
  .sim-list button{padding:6px 7px;gap:6px;grid-template-columns:7px minmax(0,1fr) auto}
@@ -107,7 +122,7 @@ button:focus-visible,select:focus-visible{outline:2px solid #d2beff;outline-offs
  .legend button i{width:6px;height:6px}
 }
 
-@media(max-width:550px){#univ-app{height:__HEIGHT__px;grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) 252px;gap:9px}#stage{border-radius:16px}.topline{top:12px;left:13px;max-width:calc(100% - 153px)}.topline .kicker{font-size:8px;letter-spacing:.12em}.topline h2{font-size:18px;margin:4px 0 2px}.topline p{font-size:10px}.mode{top:10px;right:9px;padding:3px;border-radius:10px}.mode button{padding:6px 9px;font-size:10.5px}.guide{left:13px;top:81px;font-size:9.5px;max-width:calc(100% - 26px)}.nav-tools{top:105px;right:9px;padding:2px}.nav-tools button{width:25px;height:25px;font-size:14px}.nav-tools .zoom-value{min-width:30px;font-size:9px}.legend{left:8px;right:7px;bottom:9px;gap:4px}.legend button{font-size:9px;padding:4px 6px;gap:4px}.legend button i{width:6px;height:6px}.side{border-radius:16px;padding:11px 13px;display:block;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(171,160,232,.48) transparent}.side h3{font-size:19px}.side .sub{font-size:10px}.side-head{margin-bottom:0}.date-select{margin-bottom:8px;padding:6px 9px}.portrait{min-height:0;margin-bottom:9px;padding:8px 10px}.portrait-orb{width:47px;height:47px}.portrait-name{font-size:17px}.portrait-note{font-size:10px}.ratio-names{margin-bottom:8px}.note-box{max-height:90px;margin-bottom:10px}.sim-list{overflow:visible}.side-foot{margin-top:8px}}
+@media(max-width:550px){#univ-app{height:__HEIGHT__px;grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) 252px;gap:9px}#stage{border-radius:16px}.topline{top:12px;left:13px;max-width:calc(100% - 153px)}.topline .kicker{font-size:8px;letter-spacing:.12em}.topline h2{font-size:18px;margin:4px 0 2px}.topline p{font-size:10px}.mode{top:10px;right:9px;padding:3px;border-radius:10px}.mode button{padding:6px 9px;font-size:10.5px}.guide{left:13px;top:81px;font-size:9.5px;max-width:calc(100% - 26px)}.nav-tools{top:105px;right:9px;padding:2px}.nav-tools button{width:25px;height:25px;font-size:14px}.nav-tools .zoom-value{min-width:30px;font-size:9px}.legend{left:8px;right:7px;bottom:9px;gap:4px}.legend button{font-size:9px;padding:4px 6px;gap:4px}.legend button i{width:6px;height:6px}.side{border-radius:16px;padding:11px 13px;display:block;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(171,160,232,.48) transparent}.side h3{font-size:19px}.side .sub{font-size:10px}.side-head{margin-bottom:0}.date-select{margin-bottom:8px;padding:6px 9px}.portrait{min-height:0;margin-bottom:9px;padding:8px 10px}.portrait-orb{width:47px;height:47px}.portrait-name{font-size:17px}.portrait-note{font-size:10px}.ratio-names{margin-bottom:8px}.note-box{max-height:68px;margin-bottom:5px}.sim-list{overflow:visible}.side-foot{margin-top:8px}}
 @media(prefers-reduced-motion:reduce){.legend button,.mode button{transition:none!important}}
 </style>
 </head>
@@ -134,9 +149,15 @@ button:focus-visible,select:focus-visible{outline:2px solid #d2beff;outline-offs
     <div class="portrait" id="portrait"><span class="portrait-orb" id="portraitOrb"></span><div><div class="portrait-name" id="emotionName"></div><div class="portrait-note" id="emotionDetail"></div></div></div>
     <div class="side-label">그날의 7가지 감정 비율</div><div class="ratio" id="ratio"></div><div class="ratio-names" id="ratioNames"></div>
     <div class="side-label">그날 남긴 기록</div><div class="note-box" id="noteBox"></div>
+    <button class="journal-expand" type="button" id="noteExpand" hidden>기록 전체 읽기 ↗</button>
     <div class="sim-title"><strong>비슷한 감정의 날</strong><small>감정 비율 기준</small></div><div class="sim-list" id="simList"></div>
+    <button class="sim-toggle" type="button" id="simToggle" hidden>다른 날짜 더 보기</button>
     <div class="side-foot">감정 분석 결과는 심리 상태를 진단하는 수치가 아닌 참고용 정보입니다.</div>
   </aside>
+  <dialog class="entry-dialog" id="entryDialog" aria-label="선택한 날짜의 전체 일기">
+    <div class="dialog-head"><h4 id="dialogTitle">그날의 기록</h4><button class="dialog-close" type="button" id="dialogClose" aria-label="닫기">닫기 ×</button></div>
+    <div id="dialogText" class="dialog-text"></div>
+  </dialog>
 </div>
 <script>
 'use strict';
@@ -170,6 +191,8 @@ let W=1,H=1,DPR=1,elapsed=0,lastFrame=0;
 function random32(seed){let s=seed|0;return()=>{s+=0x6D2B79F5;let t=Math.imul(s^(s>>>15),1|s);t^=t+Math.imul(t^(t>>>7),61|t);return ((t^(t>>>14))>>>0)/4294967296;};}
 const rand=random32(317);
 const distant=Array.from({length:125},()=>({x:rand(),y:rand(),r:.28+rand()*1.08,a:.07+rand()*.39,tw:rand()*6.28}));
+// Atmospheric dust is not a record or a selectable star. Render ONLY in Galaxy view.
+const nebulaDust=Array.from({length:100},()=>({x:.2+rand()*.6,y:.25+rand()*.53,r:.23+rand()*.46,a:.08+rand()*.18,t:rand()*6.283}));
 const palette=emotions.map(e=>e.color);
 function visible(s){return state.filter===null || s.top===state.filter;}
 function syncLegend(){
@@ -181,7 +204,7 @@ function syncLegend(){
   list.appendChild(btn);
  }
 }
-function clearPanel(message){ELEM('dateTitle').textContent='선택된 기록 없음';ELEM('dateSub').textContent=message;ELEM('portrait').hidden=true;ELEM('ratio').textContent='';ELEM('ratioNames').textContent='';ELEM('noteBox').textContent=message;ELEM('simList').textContent='';}
+function clearPanel(message){ELEM('dateTitle').textContent='선택된 기록 없음';ELEM('dateSub').textContent=message;ELEM('portrait').hidden=true;ELEM('ratio').textContent='';ELEM('ratioNames').textContent='';ELEM('noteBox').textContent=message;ELEM('noteExpand').hidden=true;ELEM('simList').textContent='';ELEM('simToggle').hidden=true;ELEM('simList').classList.remove('expanded');document.querySelector('.side').classList.remove('related-open');}
 function updateSelect(){
  const node=ELEM('dateSelect');node.textContent='';const candidates=stars.filter(visible);
  if(!candidates.length){const op=document.createElement('option');op.value='';op.textContent='선택 가능한 기록 없음';node.appendChild(op);node.disabled=true;return;}
@@ -201,21 +224,33 @@ function selectStar(s){
  const ratio=ELEM('ratio');ratio.textContent='';
  s.p.forEach((v,k)=>{const seg=document.createElement('span');seg.style.width=`${v*100}%`;seg.style.background=COL[k]||'#a99bff';seg.title=`${EMO[k]} ${Math.round(v*100)}%`;ratio.appendChild(seg);});
  ELEM('ratioNames').textContent=s.rank.slice(0,3).map(k=>`${EMO[k]} ${Math.round(s.p[k]*100)}%`).join(' · ');
- const note=ELEM('noteBox');note.textContent=s.text.trim()||'이날은 짧게 감정만 기록했어요.';
+ const note=ELEM('noteBox');const raw=(s.text||'').trim()||'이날은 짧게 감정만 기록했어요.';
+ const previewLimit=window.innerWidth<780?42:78;const longNote=[...raw].length>previewLimit||raw.split('\n').length>3;
+ note.textContent=longNote?[...raw].slice(0,previewLimit).join('')+'…':raw;
+ ELEM('noteExpand').hidden=!longNote;
+ ELEM('dialogText').textContent=raw;ELEM('dialogTitle').textContent=`${dateLabel(s.date)} · 그날의 기록`;
  note.style.setProperty('--c',COL[s.top]||'#a99bff');
- const sim=ELEM('simList');sim.textContent='';
+ const sim=ELEM('simList');sim.textContent='';sim.classList.remove('expanded');document.querySelector('.side').classList.remove('related-open');
  const related=(Array.isArray(s.similar)?s.similar:[]).filter(item=>item&&item.date!==s.date&&byDate.has(item.date)).sort((a,b)=>Number(b.score)-Number(a.score)).slice(0,4);
  if(!related.length){const el=document.createElement('div');el.className='sim-missing';el.textContent='비슷한 날짜가 아직 없어요. 기록이 쌓이면 이곳에서 확인할 수 있어요.';sim.appendChild(el);}
- for(const item of related){const target=byDate.get(item.date);const btn=document.createElement('button');btn.type='button';const dot=document.createElement('span');dot.className='sim-dot';dot.style.setProperty('--c',COL[target.top]||'#a99bff');const name=document.createElement('b');name.textContent=`${dateLabel(target.date)} · ${EMO[target.top]||'기록'}`;const pct=document.createElement('em');pct.textContent=`${Math.round(clamp(Number(item.score)||0,0,1)*100)}% 닮음`;btn.append(dot,name,pct);btn.addEventListener('click',()=>{if(state.filter!==null&&!visible(target)){state.filter=null;syncLegend();}selectStar(target);});sim.appendChild(btn);}
+ for(const [index,item] of related.entries()){const target=byDate.get(item.date);const btn=document.createElement('button');btn.type='button';if(index>=3)btn.classList.add('sim-extra');const dot=document.createElement('span');dot.className='sim-dot';dot.style.setProperty('--c',COL[target.top]||'#a99bff');const name=document.createElement('b');name.textContent=`${dateLabel(target.date)} · ${EMO[target.top]||'기록'}`;const pct=document.createElement('em');pct.textContent=`${Math.round(clamp(Number(item.score)||0,0,1)*100)}% 닮음`;btn.append(dot,name,pct);btn.addEventListener('click',()=>{if(state.filter!==null&&!visible(target)){state.filter=null;syncLegend();}selectStar(target);});sim.appendChild(btn);}
+ ELEM('simToggle').hidden=related.length<=3;ELEM('simToggle').textContent=related.length>3?`다른 날짜 ${related.length-3}개 더 보기 ↓`:'';
  updateSelect();render();
 }
+ELEM('noteExpand').addEventListener('click',()=>{const d=ELEM('entryDialog');if(typeof d.showModal==='function')d.showModal();else d.setAttribute('open','');});
+ELEM('dialogClose').addEventListener('click',()=>ELEM('entryDialog').close());
+ELEM('entryDialog').addEventListener('click',e=>{if(e.target===ELEM('entryDialog'))ELEM('entryDialog').close();});
+ELEM('simToggle').addEventListener('click',()=>{
+ const list=ELEM('simList'),open=!list.classList.contains('expanded');list.classList.toggle('expanded',open);document.querySelector('.side').classList.toggle('related-open',open);
+ ELEM('simToggle').textContent=open?'접기 ↑':'다른 날짜 더 보기 ↓';
+});
 // PCA coordinates still determine proximity; this only prevents separate days from hiding underneath each other.
 const xy3=[{x:.24,y:.50},{x:.79,y:.44},{x:.52,y:.75}];
 if(N===1){stars[0].gx=.52;stars[0].gy=.52;}
 else if(N<=3){stars.forEach((s,i)=>{s.gx=xy3[i].x;s.gy=xy3[i].y;});}
 let galaxyLayout=new Map();
 function buildGalaxyLayout(){
- const xpad=clamp(W*.15,35,120),ypad=116;
+ const xpad=clamp(W*.19,38,143),ypad=116;
  const usableW=Math.max(20,W-2*xpad),usableH=Math.max(55,H-ypad-95);
  const points=stars.map((s,i)=>({s,i,x:xpad+s.gx*usableW,y:ypad+s.gy*usableH,ox:xpad+s.gx*usableW,oy:ypad+s.gy*usableH}));
  if(N>3){
@@ -224,7 +259,7 @@ function buildGalaxyLayout(){
    for(let i=0;i<points.length;i++)for(let j=i+1;j<points.length;j++){
     const a=points[i],b=points[j];let dx=b.x-a.x,dy=b.y-a.y,dist=Math.hypot(dx,dy);
     if(dist<.0001){const angle=(i*73+j*37)*2.399963;dx=Math.cos(angle)*.01;dy=Math.sin(angle)*.01;dist=Math.hypot(dx,dy);}
-    const target=starRadius(a.s)+starRadius(b.s)+10;
+    const target=starRadius(a.s)+starRadius(b.s)+16;
     if(dist<target){const push=(target-dist)*.36/dist;const px=dx*push,py=dy*push;a.x-=px;a.y-=py;b.x+=px;b.y+=py;}
    }
    for(const p of points){
@@ -245,7 +280,7 @@ function posFlow(s){
 }
 function posGalaxy(s){
  const origin=galaxyLayout.get(s);
- const xpad=clamp(W*.15,35,120),ypad=116;
+ const xpad=clamp(W*.19,38,143),ypad=116;
  const baseX=origin?origin.x:xpad+s.gx*Math.max(20,W-2*xpad);
  const baseY=origin?origin.y:ypad+s.gy*Math.max(55,H-ypad-95);
  // Calm floating motion in galaxy mode only: a gentle 3–4px orbit per star.
@@ -262,6 +297,17 @@ function drawBackdrop(t){
  const blooms=[{x:.71,y:.62,r:.62,c:'#8e4db9',a:.23},{x:.12,y:.66,r:.53,c:'#1983b2',a:.17},{x:.59,y:.31,r:.39,c:'#6159bd',a:.11}];
  for(const b of blooms){const rad=Math.max(W,H)*b.r;const grad=ctx.createRadialGradient(W*b.x,H*b.y,0,W*b.x,H*b.y,rad);grad.addColorStop(0,hexRgba(b.c,b.a));grad.addColorStop(1,hexRgba(b.c,0));ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);}
  for(const s of distant){const alpha=s.a*(reduceMotion?1:(.86+.14*Math.sin(t*.0015+s.tw)));ctx.fillStyle=`rgba(229,227,255,${alpha})`;ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r,0,6.283);ctx.fill();}
+ // A restrained, translucent cloud connects empty space visually; these are not data points.
+ if(state.mix>.01){
+  ctx.save();ctx.globalAlpha=state.mix;
+  const clouds=[{x:.48,y:.52,rx:.35,ry:.33,c:'#8269c4',a:.085},{x:.37,y:.63,rx:.33,ry:.24,c:'#329cbb',a:.055},{x:.69,y:.48,rx:.28,ry:.25,c:'#a368c6',a:.060}];
+  for(const cloud of clouds){
+   ctx.save();ctx.translate(W*cloud.x,H*cloud.y);ctx.rotate(-.33);ctx.scale(Math.max(1,W*cloud.rx),Math.max(1,H*cloud.ry));
+   const haze=ctx.createRadialGradient(0,0,.06,0,0,1);haze.addColorStop(0,hexRgba(cloud.c,cloud.a));haze.addColorStop(.44,hexRgba(cloud.c,cloud.a*.52));haze.addColorStop(1,hexRgba(cloud.c,0));ctx.fillStyle=haze;ctx.beginPath();ctx.arc(0,0,1,0,6.283);ctx.fill();ctx.restore();
+  }
+  for(const p of nebulaDust){const a=p.a*(reduceMotion?1:(.87+.13*Math.sin(t*.0009+p.t)));ctx.fillStyle=`rgba(199,202,247,${a})`;ctx.beginPath();ctx.arc(W*p.x,H*p.y,p.r,0,6.283);ctx.fill();}
+  ctx.restore();
+ }
  // faint celestial arcs are atmosphere, not fabricated records
  ctx.save();ctx.strokeStyle='rgba(166,149,239,.035)';ctx.lineWidth=1;
  for(let i=0;i<3;i++){ctx.beginPath();ctx.ellipse(W*.76,H*.68,W*(.35+i*.14),H*(.21+i*.06),-.32,Math.PI*1.12,Math.PI*1.91);ctx.stroke();}ctx.restore();
@@ -290,6 +336,17 @@ function drawPath(a,b,alpha,width,dashed){
  ctx.strokeStyle=gr;ctx.lineCap='round';ctx.lineWidth=width;ctx.setLineDash(dashed?[4,6]:[]);
  ctx.beginPath();ctx.moveTo(a.x,a.y);if(dashed)ctx.lineTo(b.x,b.y);else ctx.bezierCurveTo(mid,a.y,mid,b.y,b.x,b.y);ctx.stroke();ctx.setLineDash([]);
 }
+// Data-grounded curved threads. Their very small bow keeps short connections visible
+// outside star glows without adding a relationship that does not exist.
+function drawSimilarityThread(a,b,score,active){
+ const dx=b.x-a.x,dy=b.y-a.y,dist=Math.max(1,Math.hypot(dx,dy));
+ const bow=clamp(dist*.16,7,18),mx=(a.x+b.x)*.5-dy/dist*bow,my=(a.y+b.y)*.5+dx/dist*bow;
+ const strength=clamp((Number(score)-.6)/.4,0,1),opacity=active?.88:(N>22?.25:.35)+strength*.10;
+ const color=active?'#cbd2ff':COL[a.s.top]||'#b5a7ed';
+ ctx.save();ctx.strokeStyle=hexRgba(color,opacity);ctx.lineWidth=active?2.2:1.2;ctx.lineCap='round';
+ ctx.shadowBlur=active?10:3;ctx.shadowColor=hexRgba(color,active?.60:.25);
+ ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.quadraticCurveTo(mx,my,b.x,b.y);ctx.stroke();ctx.restore();
+}
 function drawGraph(){
  const mapped=new Map(stars.map(s=>[s,pos(s)]));
  const focus=state.hovered||state.selected;
@@ -302,8 +359,8 @@ function drawGraph(){
  if(state.mix>.01){
   ctx.save();ctx.globalAlpha=state.mix;
   for(const [sa,sb,score] of linked){if(!visible(sa)||!visible(sb))continue;const a={...mapped.get(sa),s:sa},b={...mapped.get(sb),s:sb};const active=focus===sa||focus===sb;
-   // Similarity connections are visible even without hovering; selection highlights just its neighbors.
-   drawPath(a,b,active?.88:.27,active?2.2:1.25,true);}
+   // Only links provided by the real similarity algorithm are drawn.
+   drawSimilarityThread(a,b,score,active);}
   ctx.restore();
  }
  for(const s of stars){if(!visible(s))continue;const p=mapped.get(s),r=starRadius(s),active=state.selected===s,hovered=state.hovered===s,c=COL[s.top]||'#a99bff';
@@ -339,7 +396,7 @@ function setView(view){
  ELEM('galaxyBtn').setAttribute('aria-pressed',String(view==='galaxy'));
  ELEM('viewTitle').textContent=view==='flow'?'감정의 흐름':'감정의 은하';
  ELEM('viewDesc').textContent=view==='flow'?`${monthLabel} · 날짜별 감정의 변화`:`${monthLabel} · 감정이 비슷한 날의 관계`;
- ELEM('guide').innerHTML=view==='flow'?'<b>●</b> 왼쪽부터 날짜순 · 높이는 감정 비율을 바탕으로 한 참고 위치':'<b>●</b> 가까운 별은 감정이 비슷한 날이에요';
+ ELEM('guide').innerHTML=view==='flow'?'<b>●</b> 왼쪽부터 날짜순 · 높이는 감정 비율을 바탕으로 한 참고 위치':'<b>●</b> 가까운 별은 비슷한 감정 · 선은 실제 유사도 60% 이상';
  ELEM('navTools').hidden=view!=='galaxy';
  stage.classList.toggle('galaxy-mode',view==='galaxy');
  if(view==='flow')state.hovered=null;
