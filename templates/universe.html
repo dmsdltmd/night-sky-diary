@@ -196,7 +196,10 @@ function posFlow(s){
 function posGalaxy(s){
  const xpad=clamp(W*.15,35,120),ypad=116;
  const baseX=xpad+s.gx*Math.max(20,W-2*xpad),baseY=ypad+s.gy*Math.max(55,H-ypad-95);
- return {x:W*.5+(baseX-W*.5)*state.zoom+state.panX,y:H*.5+(baseY-H*.5)*state.zoom+state.panY};
+ // At most one screen pixel of motion: keep the layout and similarity meaning intact.
+ const driftX=reduceMotion?0:.85*Math.sin(elapsed*.00048+s.index*1.37);
+ const driftY=reduceMotion?0:.75*Math.cos(elapsed*.00055+s.index*1.79);
+ return {x:W*.5+(baseX-W*.5)*state.zoom+state.panX+driftX,y:H*.5+(baseY-H*.5)*state.zoom+state.panY+driftY};
 }
 function pos(s){const a=posFlow(s),b=posGalaxy(s);return {x:a.x+(b.x-a.x)*state.mix,y:a.y+(b.y-a.y)*state.mix};}
 function starRadius(s){return clamp(5.5+Math.max(0,s.p[s.top]||0)*9,6,14.5)*(N<=3?1.15:1);}
@@ -252,17 +255,19 @@ function drawGraph(){
   ctx.save();ctx.globalAlpha=focus&&focus!==s?.74:1;
   // Reference concept: a saturated, flat luminous star dot instead of a glossy 3D planet.
   // Wide diffuse glow + bright, clean circular core, matching the original '흐름 + 은하' sample.
-  const glowR=r*(active?4.0:3.5);
+  // Slow breathing light (no pulsing core or flashing effects).
+  const pulse=reduceMotion?1:1+.08*Math.sin(elapsed*.00125+s.index*.83);
+  const glowR=r*(active?4.0:3.5)*pulse;
   const halo=ctx.createRadialGradient(p.x,p.y,r*.20,p.x,p.y,glowR);
-  halo.addColorStop(0,hexRgba(c,active?.60:.48));
-  halo.addColorStop(.28,hexRgba(c,active?.33:.27));
-  halo.addColorStop(.64,hexRgba(c,active?.10:.08));
+  halo.addColorStop(0,hexRgba(c,(active?.60:.48)*pulse));
+  halo.addColorStop(.28,hexRgba(c,(active?.33:.27)*pulse));
+  halo.addColorStop(.64,hexRgba(c,(active?.10:.08)*pulse));
   halo.addColorStop(1,hexRgba(c,0));
   ctx.fillStyle=halo;ctx.beginPath();ctx.arc(p.x,p.y,glowR,0,6.283);ctx.fill();
   ctx.fillStyle=c;ctx.beginPath();ctx.arc(p.x,p.y,r,0,6.283);ctx.fill();
   // The secondary emotion is only a subtle, thin accent; no thick sphere rim.
   if((s.p[s.second]||0)>.18){ctx.strokeStyle=hexRgba(COL[s.second]||'#fff',.76);ctx.lineWidth=1.6;ctx.beginPath();ctx.arc(p.x,p.y,r+3,0,6.283);ctx.stroke();}
-  if(active){ctx.strokeStyle=hexRgba('#ffffff',.92);ctx.lineWidth=1.55;ctx.beginPath();ctx.arc(p.x,p.y,r+8,0,6.283);ctx.stroke();}
+  if(active){ctx.strokeStyle=hexRgba('#ffffff',.92);ctx.lineWidth=1.55;ctx.beginPath();ctx.arc(p.x,p.y,r+8+(reduceMotion?0:.45*Math.sin(elapsed*.0013)),0,6.283);ctx.stroke();}
   if(active||hovered||(N<=3&&state.mix>.5)){ctx.fillStyle='#eef1ff';ctx.shadowColor='#080c24';ctx.shadowBlur=7;ctx.font=(active?'700 ':'500 ')+'11px sans-serif';ctx.textAlign='center';ctx.fillText(dateLabel(s.date),p.x,p.y-r-14);}
   ctx.restore();
  }
@@ -355,7 +360,17 @@ canvas.addEventListener('wheel',e=>{
 function resize(){const w=Math.max(1,stage.clientWidth),h=Math.max(1,stage.clientHeight);W=w;H=h;clampPan();DPR=Math.min(2,window.devicePixelRatio||1);canvas.width=Math.round(w*DPR);canvas.height=Math.round(h*DPR);canvas.style.width=w+'px';canvas.style.height=h+'px';render();}
 new ResizeObserver(resize).observe(stage);
 window.addEventListener('resize',resize);
-let last=0;function tick(t){if(t-last>=32){const dt=Math.min(t-last,100);last=t;elapsed+=dt;if(!reduceMotion){const target=state.view==='flow'?0:1;const diff=target-state.mix;if(Math.abs(diff)>.002){state.mix+=diff*.16;if(Math.abs(target-state.mix)<.003)state.mix=target;render();}else if(state.hovered)render();}}requestAnimationFrame(tick);}
+let last=0;function tick(t){
+ if(document.hidden){last=t;requestAnimationFrame(tick);return;}
+ // ~20 fps is enough for imperceptibly slow stars while avoiding excess battery use.
+ if(t-last>=50){
+  const dt=Math.min(t-last,100);last=t;elapsed+=dt;
+  const target=state.view==='flow'?0:1,diff=target-state.mix;
+  if(Math.abs(diff)>.002){state.mix+=diff*.18;if(Math.abs(target-state.mix)<.003)state.mix=target;}
+  if(N)render();
+ }
+ requestAnimationFrame(tick);
+}
 syncLegend();updateSelect();if(N){selectStar(state.selected);}else{clearPanel('오늘의 감정을 기록하면 첫 번째 별이 나타나요.');ELEM('empty').hidden=false;}setView('flow');resize();if(!reduceMotion)requestAnimationFrame(tick);
 </script>
 </body>
