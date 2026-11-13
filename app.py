@@ -495,6 +495,94 @@ def page_universe():
 
 
 # ---------- 화면 4: 우주의 기록 (월간 리포트) ----------
+_REPORT_INSIGHTS_CSS = """<style>
+.et-report-insights {
+  background: radial-gradient(ellipse at 100% 0%, rgba(110,91,181,.13), transparent 48%),
+              linear-gradient(145deg, rgba(24,30,63,.97), rgba(13,19,44,.98));
+  border: 1px solid rgba(162,174,235,.2);
+  border-radius: 20px;
+  color: #f0f2ff;
+  padding: 17px 18px 14px;
+  container-type:inline-size;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035);
+}
+.et-report-insights * {box-sizing:border-box}
+.et-report-insights .et-ih {display:flex;justify-content:space-between;gap:10px;align-items:baseline;margin-bottom:11px}
+.et-report-insights .et-ih h3 {font-size:16px;line-height:1.45;letter-spacing:-.035em;font-weight:800;margin:0;color:#f3f2ff}
+.et-report-insights .et-kicker{font-size:9px;letter-spacing:.16em;font-weight:800;color:#b2a4ee;margin:0 0 3px}
+.et-report-insights .et-count{font-size:10px;color:#a5b2d6;white-space:nowrap}
+.et-report-insights .et-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;align-items:start}
+.et-report-insights .et-group{min-width:0;border:1px solid rgba(157,167,230,.13);border-radius:13px;padding:11px 11px 10px;background:rgba(51,62,111,.13)}
+.et-report-insights .et-group-h{display:flex;align-items:center;gap:7px;justify-content:space-between;flex-wrap:wrap;margin-bottom:8px}
+.et-report-insights .et-group h4{font-weight:750;font-size:12px;line-height:1.5;letter-spacing:-.02em;margin:0;color:#e5e9ff}
+.et-report-insights .et-group small{font-size:10px;color:#93a3ca;white-space:nowrap}
+.et-report-insights .et-rows{display:grid;gap:5px}
+.et-report-insights .et-item{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0;min-height:33px;padding:7px 9px;border-radius:9px;background:rgba(78,91,152,.13);border:1px solid rgba(161,173,242,.085)}
+.et-report-insights .et-item-main{display:flex;gap:5px;align-items:center;min-width:0;flex-wrap:wrap;color:#e2e7ff;font-size:11px;font-weight:650;line-height:1.5}
+.et-report-insights .et-date{font-size:10px;color:#9aaad3;font-weight:650;white-space:nowrap}
+.et-report-insights .et-tag{color:#e7eaff;font-size:10px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.et-report-insights .et-dot{display:inline-block;flex:none;width:7px;height:7px;border-radius:50%;background:var(--m);box-shadow:0 0 8px color-mix(in srgb,var(--m) 30%,transparent)}
+.et-report-insights .et-arrow{color:#8797c3;margin:0 1px}
+.et-report-insights .et-empty{color:#9eadd4;font-size:11px;line-height:1.6;min-height:44px;padding:8px 5px}
+.et-report-insights .et-pair-summary{font-size:10px;color:#a1b0d3;margin:10px 0 5px;line-height:1.5}
+.et-report-insights .et-pair-track{height:5px;background:rgba(146,161,228,.14);border-radius:99px;overflow:hidden}
+.et-report-insights .et-pair-track i{display:block;height:100%;background:linear-gradient(90deg,#b08cf0,#6fd3a8);border-radius:99px}
+.et-report-insights .et-note{border-top:1px solid rgba(156,171,235,.1);margin:10px 0 0;padding-top:9px;font-size:10px;color:#93a1c9;line-height:1.55}
+/* The column should naturally grow with records, never clip its last row. */
+@media(max-width:960px){.et-report-insights{padding:12px 11px}.et-report-insights .et-grid{gap:7px}.et-report-insights .et-group{padding:9px 8px}}
+@container(max-width:440px){.et-report-insights .et-grid{grid-template-columns:1fr}}
+@media(max-width:640px){.et-report-insights .et-ih h3{font-size:15px}}
+</style>"""
+
+
+def _report_insights_html(entries: list[dict]) -> str:
+    """Two monthly insights in one compact, content-sized card. No scrollable iframe."""
+    # These statistics come from the same existing analysis functions as the old report.
+    all_pairs = A.co_occurring(entries)
+    pairs = all_pairs[:3]
+    joint_days = min(len(entries), sum(int(row[2]) for row in all_pairs))
+    joint_share = 100 * joint_days / max(1, len(entries))
+    changes = A.turning_points(entries, top=3)
+    def mood(m: str) -> str:
+        color = COL.get(m, '#9aa6b8')
+        return (f'<span class="et-dot" style="--m:{color}"></span>'
+                f'<span>{html.escape(m)}</span>')
+    pair_rows = ''.join(
+        '<div class="et-item"><div class="et-item-main">'
+        + mood(a) + '<span class="et-arrow">+</span>' + mood(b)
+        + f'</div><span class="et-tag">{int(n)}일</span></div>'
+        for a,b,n in pairs
+    ) or '<div class="et-empty">이번 달에는 함께 두드러진 감정 조합이 없어요.</div>'
+
+    change_rows = []
+    for item in changes:
+        date = dt.date.fromisoformat(item['date'])
+        # Jensen–Shannon divergence (0–1) is an analysis reference, not a clinical score.
+        score = round(min(1., max(0., float(item['jsd']))) * 100)
+        change_rows.append(
+            f'<div class="et-item"><div class="et-item-main">'
+            f'<span class="et-date">{date.month}/{date.day}</span>'
+            + mood(item['from']) + '<span class="et-arrow">→</span>' + mood(item['to'])
+            + f'</div><span class="et-tag" title="감정 비율의 분포 차이 참고 지수">차이 {score}</span></div>'
+        )
+    changes_html = ''.join(change_rows) or '<div class="et-empty">이전 기록과 큰 차이를 보인 날이 아직 없어요.</div>'
+
+    return (
+        '<section class="et-report-insights">'
+        '<div class="et-ih"><div><div class="et-kicker">MONTHLY INSIGHTS</div><h3>이번 달 감정의 특징</h3></div>'
+        f'<span class="et-count">{len(entries)}일의 기록 기준</span></div>'
+        '<div class="et-grid">'
+        '<div class="et-group"><div class="et-group-h"><h4>함께 나타난 감정</h4><small>각각 20% 이상</small></div>'
+        f'<div class="et-rows">{pair_rows}</div>'
+        f'<p class="et-pair-summary">기록한 {len(entries)}일 중 {joint_days}일에 감정 조합이 나타났어요.</p>'
+        f'<div class="et-pair-track"><i style="width:{joint_share:.1f}%"></i></div></div>'
+        '<div class="et-group"><div class="et-group-h"><h4>감정이 달라진 날</h4><small>이전 기록과 비교</small></div>'
+        f'<div class="et-rows">{changes_html}</div></div>'
+        '</div><p class="et-note">감정 비율을 바탕으로 한 참고 분석이에요. 차이 지수는 심리 상태를 진단하는 수치가 아닙니다.</p>'
+        '</section>'
+    )
+
+
 def page_archive():
     nick = nick_or_login()
     entries = db.load_entries(nick)
@@ -510,18 +598,17 @@ def page_archive():
     if len(cur) < 3:
         st.caption(f"이 달의 기록은 {len(cur)}일이에요. 기록이 쌓이면 감정 변화를 비교할 수 있어요.")
     components.html(sky.report_html(cur, y, m, part="top"), height=290)
-    if not cur:
-        return
-    report_bottom_height = 215 if len(cur) <= 6 else (245 if len(cur) <= 15 else 285)
+    # Lower insight cards use native Streamlit HTML, not a fixed-height iframe.
+    # Their height adapts to the actual number of items, so none are clipped.
     l, r = st.columns([2, 1], gap="medium")
     with l:
-        components.html(sky.report_html(cur, y, m, part="bottom"), height=report_bottom_height)
+        st.markdown(_REPORT_INSIGHTS_CSS + _report_insights_html(cur), unsafe_allow_html=True)
     with r:
-        with st.container(border=True):
+        with st.container(border=True, key="et_report_recent"):
             st.markdown('<div class="ctitle">최근 일기</div>' + "".join(
                 f'<div class="rec2"><b>{int(e["date"][5:7])}월 {int(e["date"][8:])}일</b><span>{html.escape(e["text"])}</span></div>'
                 for e in sorted(cur, key=lambda e: e["date"], reverse=True)[:5]), unsafe_allow_html=True)
-            if st.button("전체 기록 보기", key="all_rec"):
+            if st.button("전체 기록 보기", key="all_rec", use_container_width=True):
                 st.session_state["show_all"] = not st.session_state.get("show_all", False)
     if not st.session_state.get("show_all"):
         return
