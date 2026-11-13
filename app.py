@@ -69,7 +69,7 @@ header[data-testid="stHeader"] button, header[data-testid="stHeader"] a { pointe
 .st-key-all_rec, .st-key-all_rec [data-testid="stButton"], .st-key-all_rec button { width:100% !important; }
 .month-pill { display:flex; align-items:center; justify-content:center; height:36px; font-size:13px; font-weight:500; font-variant-numeric:tabular-nums; white-space:nowrap; }
 .month-pill span { color:var(--faint); margin-left:8px; font-size:11px; }
-.st-key-calpick [data-testid="stButton"] button { height:38px !important; min-height:38px !important; border-radius:10px !important; background:var(--card) !important; border:1px solid var(--line) !important; padding:0 !important; width:100% !important; font-size:16px !important; }
+.st-key-calpick [data-testid="stPopover"] button { height:38px !important; min-height:38px !important; border-radius:10px !important; background:var(--card) !important; border:1px solid var(--line) !important; padding:0 !important; width:100% !important; font-size:16px !important; }
 .cal { display:grid; place-items:center; height:38px; border:1px solid var(--line); border-radius:10px; background:var(--card); font-size:15px; }
 .st-key-more [data-testid="stPopover"] button { border:0 !important; background:transparent !important; color:var(--sub); width:auto; padding:.3rem .6rem; }
 .st-key-save .stButton > button { width:auto; padding:.4rem 1.6rem; float:right; }
@@ -283,12 +283,6 @@ def open_diary_date(chosen_date: dt.date):
     st.switch_page(PAGES["home"])
 
 
-@st.dialog("감정 기록 달력", width="small")
-def _show_shared_calendar(ym: str, entries: list[dict], on_date_open=None):
-    """Centered, compact dialog shared by solar, universe and report."""
-    render_solar_calendar(ym, entries, on_date_open=on_date_open)
-
-
 def header(title: str, desc: str, months=None, pill=None, small: str = "", solar_entries=None, on_solar_date=None):
     """Shared top navigation; all three insights pages use one identical monthly calendar."""
     left, right = st.columns([2.4, 1.15], vertical_alignment="center")
@@ -314,10 +308,9 @@ def header(title: str, desc: str, months=None, pill=None, small: str = "", solar
                     st.session_state.pop("solar_selected_date", None)
                     st.rerun()
             with cal.container(key="calpick"):
-                if st.button("📅", key="open_shared_calendar", help="중앙 달력에서 기록 날짜를 확인하세요"):
-                    st.session_state["calendar_view_month"] = ym
-                    st.session_state.pop("solar_selected_date", None)
-                    _show_shared_calendar(ym, solar_entries if solar_entries is not None else [], on_solar_date)
+                # 원래 작은 달력: 아이콘 옆에 열리고 다시 누르면 닫힙니다.
+                with st.popover("📅", help="날짜를 눌러 감정 기록을 확인하세요"):
+                    render_solar_calendar(ym, solar_entries if solar_entries is not None else [], on_date_open=on_solar_date)
         st.session_state["ym"] = ym
     elif nick:
         right.markdown(f'<div class="user-chip">{html.escape(nick)}님 <i>{html.escape(nick[:1])}</i></div>',unsafe_allow_html=True)
