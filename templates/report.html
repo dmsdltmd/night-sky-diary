@@ -10,8 +10,8 @@
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:transparent;color:var(--text);font:13px/1.53 'Pretendard','Gothic A1','Apple SD Gothic Neo','Malgun Gothic',sans-serif}
 button{font:inherit}
 #app{width:100%;height:100%;min-width:0}
-.top-grid{display:grid;grid-template-columns:minmax(235px,.37fr) minmax(0,.63fr);gap:12px;height:100%;min-height:0}
-.bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;height:100%;min-height:0}
+.top-grid{display:grid;grid-template-columns:minmax(230px,.38fr) minmax(0,.62fr);gap:10px;height:100%;min-height:0}
+.bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;height:100%;min-height:0}
 .card{position:relative;overflow:hidden;min-width:0;min-height:0;height:100%;padding:17px 19px;background:radial-gradient(ellipse at 100% -10%,rgba(111,95,188,.14),transparent 49%),linear-gradient(145deg,rgba(23,29,62,.97),rgba(13,18,43,.97));border:1px solid var(--border);border-radius:19px;box-shadow:0 14px 35px rgba(0,2,17,.11),inset 0 1px rgba(255,255,255,.035)}
 .eyebrow{color:#b4a6ed;letter-spacing:.16em;font-weight:700;font-size:9px;line-height:1.5;text-transform:uppercase}
 .head{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin:5px 0 9px}
@@ -29,7 +29,7 @@ button{font:inherit}
 .barrow strong{text-align:right;font-weight:700;color:#e2e5fa;font-size:11px;font-variant-numeric:tabular-nums}
 .snapshot-note{margin-top:10px;color:var(--quiet);font-size:10.5px;line-height:1.4}
 .trend{display:flex;flex-direction:column}
-.trend .topbar{display:flex;gap:10px;align-items:center;justify-content:space-between;min-width:0;flex-wrap:wrap}
+.trend .topbar{display:flex;gap:8px;align-items:flex-start;justify-content:space-between;min-width:0;flex-wrap:wrap}
 .filter{display:flex;gap:5px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
 .filter button{display:inline-flex;gap:5px;align-items:center;border-radius:999px;color:#c4cbe4;border:1px solid rgba(160,167,226,.17);background:rgba(12,17,41,.42);cursor:pointer;font-size:10px;padding:4px 7px;line-height:1.35;white-space:nowrap}
 .filter button[aria-pressed=true]{background:rgba(127,108,219,.20);border-color:rgba(183,164,245,.58);color:#fff}
@@ -37,7 +37,7 @@ button{font:inherit}
 .filter i,.bubble{width:7px;height:7px;flex:none;border-radius:50%;display:inline-block;background:var(--accent)}
 .chart-wrap{flex:1;min-height:0;margin-top:5px}
 .chart-wrap svg{display:block;width:100%;height:100%;overflow:visible}
-.chart-note{color:var(--quiet);font-size:10px;line-height:1.35;margin-top:0}
+.chart-note{color:#a4b0d6;font-size:10px;line-height:1.35;margin-top:2px}
 .line-swatch{height:5px;width:5px;display:inline-block;border-radius:50%;margin-right:4px}
 .section-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:14px}
 .section-head h2{font-size:16px;margin:5px 0 0;letter-spacing:-.04em}
@@ -54,7 +54,7 @@ button{font:inherit}
 .empty strong{display:block;margin-bottom:5px;color:#e5e9ff;font-size:13px}
 .empty span{font-size:11px}
 .card-foot{color:var(--quiet);font-size:10.5px;margin-top:12px;line-height:1.45}
-.bottom-grid .card{padding:17px 18px}
+.bottom-grid .card{padding:17px 18px;display:flex;flex-direction:column}.bottom-grid .card .card-foot{margin-top:auto;padding-top:10px;border-top:1px solid rgba(162,171,239,.11)}
 @media(max-width:780px){
  .top-grid{grid-template-columns:minmax(180px,.37fr) minmax(0,.63fr);gap:8px}
  .bottom-grid{gap:8px}
@@ -110,11 +110,11 @@ function summaryCard(){
  return `<section class="card snapshot"><div class="eyebrow">MONTHLY SNAPSHOT</div><div class="head"><h2>한 달의 마음</h2><span class="small">${days}일 기록</span></div>
  <div class="highlight"><span class="orb" ${colorStyle(top)}></span><div><div class="highlight-label">이번 달 가장 두드러진 감정</div><div class="highlight-name">${eText(EMO[top]||'기록')} <span class="highlight-percent">${fmtPct(max)}</span></div></div></div>
  <div class="bars">${order.map(k=>`<div class="barrow"><span>${eText(EMO[k])}</span><div class="track"><i class="fill" style="--accent:${palette(k)};--value:${Math.min(100,Math.max(0,(avg[k]||0)*100))}%"></i></div><strong>${fmtPct(avg[k])}</strong></div>`).join('')}</div>
- <div class="snapshot-note">하루별 감정 비율의 월간 평균이에요.</div></section>`;
+ <div class="snapshot-note">기록한 ${days}일의 감정 비율 평균이에요.</div></section>`;
 }
 const chosen=new Set(ranked.slice(0,Math.min(3,ranked.length)));
 function trendCard(){
- return `<section class="card trend"><div class="topbar"><div><div class="eyebrow">EMOTIONAL TIMELINE</div><div class="head"><h2>감정 변화 추이</h2><span class="small">기록한 날짜 기준</span></div></div><div class="filter" id="filter"></div></div><div class="chart-wrap" id="chart"></div><div class="chart-note">그래프의 점은 실제로 기록한 날짜를 나타냅니다.</div></section>`;
+ return `<section class="card trend"><div class="topbar"><div><div class="eyebrow">EMOTIONAL TIMELINE</div><div class="head"><h2>감정 변화 추이</h2><span class="small">기록한 날짜 기준</span></div></div><div class="filter" id="filter"></div></div><div class="chart-wrap" id="chart"></div><div class="chart-note" id="chartNote">점은 실제로 기록한 날짜를 나타내며, 빈 날짜는 추정하지 않았습니다.</div></section>`;
 }
 function drawFilter(){const f=$('filter');if(!f)return;f.innerHTML=ranked.map(k=>`<button type="button" aria-pressed="${chosen.has(k)}" data-k="${k}"><i style="--accent:${palette(k)}"></i>${eText(EMO[k])}</button>`).join('');
  f.querySelectorAll('button').forEach(btn=>{btn.addEventListener('click',()=>{const k=Number(btn.dataset.k);if(chosen.has(k)){if(chosen.size===1)return;chosen.delete(k);}else chosen.add(k);drawFilter();drawChart();});});
@@ -122,11 +122,22 @@ function drawFilter(){const f=$('filter');if(!f)return;f.innerHTML=ranked.map(k=
 function drawChart(){
  const box=$('chart');if(!box)return;
  const w=620,h=177,L=37,Rt=14,T=8,B=25;const last=new Date(Number(R.year),Number(R.month),0).getDate()||31;
- const x=d=>L+(Math.max(1,Math.min(last,d))-1)/Math.max(1,last-1)*(w-L-Rt);
+ const dates=series.map(o=>Number(String(o.date).slice(-2))).filter(d=>d>=1&&d<=last);
+ const minD=dates.length?Math.min(...dates):1,maxD=dates.length?Math.max(...dates):last;
+ // Few records are shown over a limited date window for readability, not extrapolation.
+ const focused=dates.length>0&&dates.length<=7&&maxD-minD<=12;
+ const span=focused?Math.max(9,maxD-minD+5):last-1;
+ const mid=(minD+maxD)/2;
+ let start=focused?Math.max(1,Math.floor(mid-span/2)):1;
+ let finish=focused?Math.min(last,start+span):last;
+ start=Math.max(1,finish-span);
+ const x=d=>L+(Math.max(start,Math.min(finish,d))-start)/Math.max(1,finish-start)*(w-L-Rt);
+ if($('chartNote'))$('chartNote').textContent=focused?'기록한 날짜 주변을 확대해 표시했어요. 빈 날짜의 감정은 추정하지 않았습니다.':'점은 실제 기록한 날이에요. 기록 사이 3일 이상 공백은 점선으로 표시합니다.';
  const y=v=>T+(1-Math.max(0,Math.min(1,Number(v)||0)))*(h-T-B);
  let markup='';
- for(const v of [0,.25,.5,.75,1]){markup+=`<line x1="${L}" x2="${w-Rt}" y1="${y(v)}" y2="${y(v)}" stroke="rgba(181,190,240,${v===0?.22:.11})" stroke-dasharray="${v===0?'none':'3 5'}"/><text x="${L-9}" y="${y(v)+4}" fill="#8b98bc" font-size="10" text-anchor="end">${Math.round(v*100)}</text>`;}
- for(const d of [1,7,14,21,28].filter(d=>d<=last)){markup+=`<text x="${x(d)}" y="${h-4}" fill="#8b98bc" font-size="10" text-anchor="middle">${d}일</text>`;}
+ for(const v of [0,.25,.5,.75,1]){markup+=`<line x1="${L}" x2="${w-Rt}" y1="${y(v)}" y2="${y(v)}" stroke="rgba(181,190,240,${v===0?.22:.11})" stroke-dasharray="${v===0?'none':'3 5'}"/><text x="${L-9}" y="${y(v)+4}" fill="#8b98bc" font-size="10" text-anchor="end">${Math.round(v*100)}%</text>`;}
+ const tickDays=focused?[start, Math.round((start+finish)/2),finish]:[1,7,14,21,28].filter(d=>d<=last);
+ for(const d of [...new Set(tickDays)]){markup+=`<text x="${x(d)}" y="${h-4}" fill="#a7b4d5" font-size="10" text-anchor="middle">${d}일</text>`;}
  const visible=ranked.slice().reverse().filter(k=>chosen.has(k));
  for(const k of visible){
   const points=series.filter(o=>Array.isArray(o.p)).map(o=>({x:x(Number(String(o.date).slice(-2))),y:y(o.p[k]),date:String(o.date),v:Number(o.p[k])||0}));
@@ -141,16 +152,16 @@ function drawChart(){
  box.innerHTML=`<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img" aria-label="이번 달 감정 비율의 날짜별 변화. 3일 초과 기록 공백은 점선으로 연결">${markup}</svg>`;
 }
 function moodPair(item,index){const [a,b,n]=item;const ai=EMO.indexOf(a),bi=EMO.indexOf(b);return `<div class="result"><span class="result-num">${index+1}</span><div class="result-main">${dot(ai)} ${eText(a)} <span class="arrow">+</span> ${dot(bi)} ${eText(b)}</div><div class="result-value">${Math.max(0,Number(n)||0)}일</div></div>`;}
-function change(item,index){const ai=EMO.indexOf(item.from),bi=EMO.indexOf(item.to);const score=Math.min(100,Math.max(0,Math.round((Number(item.jsd)||0)*100)));return `<div class="result"><span class="result-num">${index+1}</span><div><div class="result-main">${fmtDate(item.date)} <span class="arrow">·</span> ${dot(ai)}${eText(item.from)} <span class="arrow">→</span> ${dot(bi)}${eText(item.to)}</div><div class="result-meta">기록된 감정의 구성 변화</div></div><div class="result-value">지수 ${score}</div></div>`;}
+function change(item,index){const ai=EMO.indexOf(item.from),bi=EMO.indexOf(item.to);const score=Math.min(100,Math.max(0,Math.round((Number(item.jsd)||0)*100)));return `<div class="result"><span class="result-num">${index+1}</span><div><div class="result-main">${fmtDate(item.date)} <span class="arrow">·</span> ${dot(ai)}${eText(item.from)} <span class="arrow">→</span> ${dot(bi)}${eText(item.to)}</div><div class="result-meta">기록된 감정의 구성 변화</div></div><div class="result-value">차이 ${score}</div></div>`;}
 function bottom(){
  const pairs=Array.isArray(R.pairs)?R.pairs.slice(0,3):[];
  const turns=Array.isArray(R.turns)?R.turns.slice(0,3):[];
  return `<div class="bottom-grid"><section class="card"><div class="section-head"><div><div class="eyebrow">EMOTION COMBINATIONS</div><h2>함께 나타난 감정</h2></div><span class="sub">각 감정 20% 이상</span></div>
  ${pairs.length?`<div class="result-list">${pairs.map(moodPair).join('')}</div>`:`<div class="empty"><div><strong>눈에 띄는 조합이 없어요</strong><span>기록이 늘어나면 함께 나타난 감정도 확인할 수 있어요.</span></div></div>`}
- <div class="card-foot">두 감정이 함께 일정 비율 이상 나타난 날짜 수입니다.</div></section>
+ <div class="card-foot">각 감정이 20% 이상 함께 나타난 날짜 수예요.</div></section>
  <section class="card"><div class="section-head"><div><div class="eyebrow">EMOTIONAL CHANGES</div><h2>감정이 달라진 날</h2></div><span class="sub">이전 기록과 비교</span></div>
  ${turns.length?`<div class="result-list">${turns.map(change).join('')}</div>`:`<div class="empty"><div><strong>큰 변화가 감지되지 않았어요</strong><span>기록이 더 쌓이면 감정 변화가 두드러진 날을 살펴볼 수 있어요.</span></div></div>`}
- <div class="card-foot">변화 지수는 감정 비율의 차이를 나타내는 참고값입니다.</div></section></div>`;
+ <div class="card-foot">차이 지수는 감정 비율의 차이를 비교하는 참고값이며 심리 진단 수치는 아니에요.</div></section></div>`;
 }
 const app=$('app');
 if(!days){app.innerHTML='<section class="card"><div class="empty"><div><strong>이번 달 기록이 아직 없어요</strong><span>하루의 마음을 기록하면 리포트가 만들어져요.</span></div></div></section>';}
