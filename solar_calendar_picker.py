@@ -31,8 +31,30 @@ div[data-testid="stPopoverBody"]:has(.st-key-solar_picker_root){
  border:1px solid rgba(175,182,245,.20)!important;
  background:linear-gradient(155deg,#19203e,#0c1229 90%)!important;
  box-shadow:0 22px 70px rgba(0,0,0,.57),inset 0 1px rgba(255,255,255,.055)!important;
+ /* The calendar is short enough to show in full on regular screens. */
+ height:auto!important;
+ max-height:none!important;
+ overflow:visible!important;
 }
+/* Streamlit can impose a second scroll area inside the popover. */
+div[data-testid="stPopoverBody"]:has(.st-key-solar_picker_root) [data-testid="stVerticalBlockBorderWrapper"]{
+ max-height:none!important;overflow:visible!important;
+}
+/* On a very short browser window, allow intentional scrolling rather than clipping dates. */
+@media(max-height:580px){
+ div[data-testid="stPopoverBody"]:has(.st-key-solar_picker_root){
+  max-height:calc(100dvh - 96px)!important;
+  overflow-y:auto!important;overflow-x:hidden!important;
+  overscroll-behavior:contain;
+ }
+}
+
 .st-key-solar_picker_root [data-testid="stVerticalBlock"]{gap:0!important;}
+.st-key-solar_picker_root [data-testid="stElementContainer"]{margin:0!important;}
+.st-key-solar_picker_root [data-testid="stHorizontalBlock"]{row-gap:0!important;}
+/* Keep six-week months as compact as five-week months. */
+.st-key-solar_picker_root [data-testid="stHorizontalBlock"]:has([class*="st-key-solar_cal_day_"]){min-height:30px!important;margin:0!important;padding:0!important;}
+
 .st-key-solar_picker_root [data-testid="stHorizontalBlock"]:has([class*="st-key-solar_cal_day_"]){gap:3px!important;flex-wrap:nowrap!important;}
 .st-key-solar_picker_root [data-testid="stHorizontalBlock"]:has([class*="st-key-solar_cal_day_"]) [data-testid="stColumn"]{width:0!important;flex:1 1 0!important;min-width:0!important;}
 .st-key-solar_picker_root [data-testid="stVerticalBlockBorderWrapper"]{border:none!important;}
@@ -59,7 +81,7 @@ div[data-testid="stPopoverBody"]:has(.st-key-solar_picker_root){
 .solar-cal-footer strong{color:#e6eaff;font-weight:600}
 .solar-cal-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(151,174,233,.19);padding:4px 7px;border-radius:999px;background:rgba(39,51,92,.24)}
 .solar-cal-chip i{width:7px;height:7px;background:#78d7ba;border-radius:100%;box-shadow:0 0 10px rgba(105,213,170,.5)}
-.solar-day-detail{border-radius:11px;padding:8px 10px;margin-top:8px;background:linear-gradient(130deg,rgba(72,85,137,.25),rgba(22,33,65,.5));border:1px solid rgba(158,180,238,.19);}
+.solar-day-detail{border-radius:11px;padding:7px 9px;margin-top:6px;background:linear-gradient(130deg,rgba(72,85,137,.25),rgba(22,33,65,.5));border:1px solid rgba(158,180,238,.19);}
 .solar-day-detail .date{font-size:11px;font-weight:700;color:#aab8dc;margin-bottom:3px}
 .solar-day-detail .mood{font-size:13px;font-weight:800;letter-spacing:-.02em}
 .solar-day-detail .note{font-size:10.5px;line-height:1.45;color:#c4cee8;margin-top:3px;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
