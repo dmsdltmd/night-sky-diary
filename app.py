@@ -69,7 +69,7 @@ header[data-testid="stHeader"] button, header[data-testid="stHeader"] a { pointe
 .st-key-all_rec, .st-key-all_rec [data-testid="stButton"], .st-key-all_rec button { width:100% !important; }
 .month-pill { display:flex; align-items:center; justify-content:center; height:36px; font-size:13px; font-weight:500; font-variant-numeric:tabular-nums; white-space:nowrap; }
 .month-pill span { color:var(--faint); margin-left:8px; font-size:11px; }
-.st-key-calpick [data-testid="stPopover"] button { height:38px; border-radius:10px; background:var(--card); border:1px solid var(--line); padding:0 6px; width:100%; }
+.st-key-calpick [data-testid="stButton"] button { height:38px !important; min-height:38px !important; border-radius:10px !important; background:var(--card) !important; border:1px solid var(--line) !important; padding:0 !important; width:100% !important; font-size:16px !important; }
 .cal { display:grid; place-items:center; height:38px; border:1px solid var(--line); border-radius:10px; background:var(--card); font-size:15px; }
 .st-key-more [data-testid="stPopover"] button { border:0 !important; background:transparent !important; color:var(--sub); width:auto; padding:.3rem .6rem; }
 .st-key-save .stButton > button { width:auto; padding:.4rem 1.6rem; float:right; }
@@ -283,6 +283,12 @@ def open_diary_date(chosen_date: dt.date):
     st.switch_page(PAGES["home"])
 
 
+@st.dialog("감정 기록 달력", width="small")
+def _show_shared_calendar(ym: str, entries: list[dict], on_date_open=None):
+    """Centered, compact dialog shared by solar, universe and report."""
+    render_solar_calendar(ym, entries, on_date_open=on_date_open)
+
+
 def header(title: str, desc: str, months=None, pill=None, small: str = "", solar_entries=None, on_solar_date=None):
     """Shared top navigation; all three insights pages use one identical monthly calendar."""
     left, right = st.columns([2.4, 1.15], vertical_alignment="center")
@@ -308,8 +314,10 @@ def header(title: str, desc: str, months=None, pill=None, small: str = "", solar
                     st.session_state.pop("solar_selected_date", None)
                     st.rerun()
             with cal.container(key="calpick"):
-                with st.popover("📅", help="날짜를 선택하면 감정과 기록을 확인할 수 있어요"):
-                    render_solar_calendar(ym, solar_entries if solar_entries is not None else [], on_date_open=on_solar_date)
+                if st.button("📅", key="open_shared_calendar", help="중앙 달력에서 기록 날짜를 확인하세요"):
+                    st.session_state["calendar_view_month"] = ym
+                    st.session_state.pop("solar_selected_date", None)
+                    _show_shared_calendar(ym, solar_entries if solar_entries is not None else [], on_solar_date)
         st.session_state["ym"] = ym
     elif nick:
         right.markdown(f'<div class="user-chip">{html.escape(nick)}님 <i>{html.escape(nick[:1])}</i></div>',unsafe_allow_html=True)
@@ -499,8 +507,7 @@ def page_archive():
     entries = db.load_entries(nick)
     ym = st.session_state.get("ym") or dt.date.today().strftime("%Y-%m")
     ym = header("나의 감정 리포트", "기록된 감정의 비율과 변화를 살펴보세요", month_options(entries),
-                small=f"{ym[:4]}년 {int(ym[5:])}월", solar_entries=entries, on_solar_date=open_diary_date)
-    render_explainer("archive")
+                solar_entries=entries, on_solar_date=open_diary_date)
     y, m = int(ym[:4]), int(ym[5:])
     cur = [e for e in entries if e["date"].startswith(ym)]
     if not cur:
@@ -512,11 +519,12 @@ def page_archive():
     components.html(sky.report_html(cur, y, m, part="top"), height=290)
     if not cur:
         return
+    report_bottom_height = 215 if len(cur) <= 6 else (245 if len(cur) <= 15 else 285)
     l, r = st.columns([2, 1], gap="medium")
     with l:
-        components.html(sky.report_html(cur, y, m, part="bottom"), height=315)
+        components.html(sky.report_html(cur, y, m, part="bottom"), height=report_bottom_height)
     with r:
-        with st.container(border=True, height=313):
+        with st.container(border=True):
             st.markdown('<div class="ctitle">최근 일기</div>' + "".join(
                 f'<div class="rec2"><b>{int(e["date"][5:7])}월 {int(e["date"][8:])}일</b><span>{html.escape(e["text"])}</span></div>'
                 for e in sorted(cur, key=lambda e: e["date"], reverse=True)[:5]), unsafe_allow_html=True)
