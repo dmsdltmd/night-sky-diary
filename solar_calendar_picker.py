@@ -32,20 +32,10 @@ div[data-testid="stPopoverBody"]:has(.st-key-solar_picker_root){
  background:linear-gradient(155deg,#19203e,#0c1229 90%)!important;
  box-shadow:0 22px 70px rgba(0,0,0,.57),inset 0 1px rgba(255,255,255,.055)!important;
  /* The calendar is short enough to show in full on regular screens. */
- height:max-content!important;
- max-height:unset!important;
+ height:auto!important;
+ max-height:none!important;
  overflow:visible!important;
- /* The popover may be scrollable by default; content should size to its rows. */
- scrollbar-width:none!important;
 }
-/* Only the shared calendar popup: clear nested overflow constraints. */
-[data-testid="stPopoverBody"]:has(.st-key-solar_picker_root) > div,
-[data-testid="stPopoverBody"]:has(.st-key-solar_picker_root) [data-testid="stVerticalBlock"],
-[data-testid="stPopoverBody"]:has(.st-key-solar_picker_root) [data-testid="stVerticalBlockBorderWrapper"]{
-  max-height:none!important;overflow:visible!important;
-}
-/* Keep the right-top positioning; do not apply any dialog or fullscreen styles. */
-[data-testid="stPopoverBody"]:has(.st-key-solar_picker_root)::-webkit-scrollbar{display:none!important;}
 /* Streamlit can impose a second scroll area inside the popover. */
 div[data-testid="stPopoverBody"]:has(.st-key-solar_picker_root) [data-testid="stVerticalBlockBorderWrapper"]{
  max-height:none!important;overflow:visible!important;
@@ -60,7 +50,7 @@ div[data-testid="stPopoverBody"]:has(.st-key-solar_picker_root) [data-testid="st
 }
 
 .st-key-solar_picker_root [data-testid="stVerticalBlock"]{gap:0!important;}
-.st-key-solar_picker_root [data-testid="stElementContainer"]{margin:0!important;padding:0!important;}
+.st-key-solar_picker_root [data-testid="stElementContainer"]{margin:0!important;}
 .st-key-solar_picker_root [data-testid="stHorizontalBlock"]{row-gap:0!important;}
 /* Keep six-week months as compact as five-week months. */
 .st-key-solar_picker_root [data-testid="stHorizontalBlock"]:has([class*="st-key-solar_cal_day_"]){min-height:30px!important;margin:0!important;padding:0!important;}
@@ -148,7 +138,6 @@ def render_solar_calendar(ym: str, entries: list[dict], on_date_open=None) -> No
                         if st.button(str(day),key=f'solar_pick_{date_key.replace("-", "")}',help=f'{month}월 {day}일 · {mood}',disabled=dt.date(yr,month,day)>today,use_container_width=True):
                             st.session_state['solar_selected_date']=date_key
                             st.rerun()
-        st.markdown(f'<div class="solar-cal-footer"><span class="solar-cal-chip"><i></i> 색이 있는 날짜 = 감정 기록</span><span><strong>{len(by_date)}일</strong> 기록</span></div>',unsafe_allow_html=True)
         if not selected:
             return
         sdate=dt.date.fromisoformat(selected)
